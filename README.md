@@ -57,19 +57,33 @@ exodus90 days                       # list the days of the configured program
 `print` defaults to today's date and the formats from the config, and never
 prompts — safe for cron.
 
-## Cron
+## Install & Cron
 
-Install the console script once (`uv tool install .` puts `exodus90` on your
-PATH), then add:
+Install the `exodus90` command globally so cron can find it without `uv run`:
+
+```sh
+uv tool install .              # puts `exodus90` on your PATH
+exodus90 login                 # complete OTP login (one time, then ~monthly)
+exodus90 status                # sanity check that the session works
+```
+
+`uv tool upgrade exodus90-printer` updates the installed command after pulling
+changes to this repo.
+
+Then add a cron line that prints each day's reading automatically:
 
 ```
 # print today's reading at 05:30
 30 5 * * *  exodus90 print >> ~/.cache/exodus90-printer/cron.log 2>&1
 ```
 
-The command exits non-zero on session expiry or missing reading, which cron
-surfaces via its mail/log output. Re-authenticate with `exodus90 login` when the
-session lapses.
+Notes:
+
+- `exodus90 print` never prompts and defaults to today, so it is safe for cron.
+- The command exits non-zero on session expiry or a missing reading, which cron
+  surfaces via its mail/log output.
+- When the session lapses (typically after a few weeks), run `exodus90 login`
+  again from a terminal.
 
 ## Development
 
