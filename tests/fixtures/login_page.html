@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exodus 90</title>
+<link rel="icon" type="image/x-icon" href="/favicon.png">
+<meta name="description" content="Be Uncommonly Free">
+<link rel="image_src" href="https://app.exodus90.com/assets/promo/sml-2026-976e6633fa34a7c749f86fa2036b51b2d62760da3ca9c659e75bf59d68defeec.jpg">
+<meta property="og:site_name" content="Exodus 90">
+<meta property="og:title" content="Exodus 90">
+<meta property="og:description" content="Be Uncommonly Free">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://app.exodus90.com/assets/promo/sml-2026-976e6633fa34a7c749f86fa2036b51b2d62760da3ca9c659e75bf59d68defeec.jpg">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="g-cJ9U7xRI-Og5r_9r_1PNU7KtfWEg6-rRwrthiutVHmKOfwFXE_btJNXcxYcL9x1UZOFL5l0wsARzqUUiLbMA" />
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/application-946c70046aef311334bc6201263c4d191bfe6b1a83e50980dbea6b2b88afe8db.css" data-turbo-track="reload" />
+<link rel="stylesheet" href="/assets/tailwind-20dbc1ceb31af2aaef0a50aa488c17874047bbdaf7d51a33ba83f6cb0231c035.css" data-turbo-track="reload" />
+<link rel="stylesheet" href="/assets/inter-font-c2ddab218623d7492890cfad22b9b8365df63dc39799a4d72a04c1b6a9ba0f73.css" data-turbo-track="reload" />
+    <link rel="icon" type="image/x-icon" href="/favicon.png" />
+  <style>
+    :root {
+      --xd-color: #FD5A26; /* default -xcolor (if not overridden by the shared/xcolor partial) */
+      --xd-color-dim: #FD5A2644;
+      --xd-safe-inset-top: 0px;
+      --xd-safe-inset-right: 0px;
+      --xd-safe-inset-bottom: 0px;
+      --xd-safe-inset-left: 0px;
+      --xd-osk-height: 0px; /* on-screen keyboard height (native clients will update this when opened) */
+      --xd-reader-font-size: 1rem;
+    }
+  </style>
+
+    <script type="importmap" data-turbo-track="reload">{
+  "imports": {
+    "application": "/assets/application-9affb523161530624630dbf7757554e0e62862eccd4fb46389faa7edace8dd56.js",
+    "@hotwired/turbo-rails": "/assets/turbo.min-9044c9532897ef76340397bd755e8920312016514a2bd36107a344a8303a77d5.js",
+    "@hotwired/stimulus-loading": "/assets/stimulus-loading-d80f0feea68692981b568bbfef0ed4370b56927ae5c663421e8461a466f0618f.js",
+    "intl-tel-input": "/assets/intl-tel-input-aa487617ee5d6a8208495a7f9cb4584131b3478b6ad3a0016f235501bfc57299.js",
+    "@stripe/stripe-js": "/assets/@stripe--stripe-js-14edf37a34c57ceba95b09e9e958c47986f242b4c328b7ebe166fad742492953.js",
+    "@splidejs/splide": "/assets/@splidejs--splide-537d470b4c4e1e3b4730c33a0ac8b2bb40f4d93cc947ae09f3883d6741fa09a3.js",
+    "marked": "/assets/marked-a34e5a73a57ffd564326a4b5723c092389b0dab18fb2168314e6247a6c483015.js",
+    "sortablejs": "/assets/sortablejs-dae3e6a2f25379e9493457ee0b57b8ea1b4b1f0dabd5b92d103da64393b6920d.js",
+    "@rails/request.js": "/assets/@rails--request.js-cd9c48b0e45176d87d0c47cbe44bf60a7f4da9aa16b8ad5b9a9afa82b365ca65.js",
+    "countup.js": "/assets/countup.js-9bd2d9463d8b273471ebb30d3d09f9ea8c36bc5b56fac30a879d2f643462672f.js",
+    "@hotwired/hotwire-native-bridge": "/assets/@hotwired--hotwire-native-bridge-74c75433efc577a39b6a3fee1f7d7961de5040985d882a6fc6eb8428ce99f9f9.js",
+    "@hotwired/stimulus": "/assets/@hotwired--stimulus-1bdae26281004856d7f494fc3571c2488032e1307a3409b77bdd4a7f962f9e6c.js",
+    "photoswipe": "/assets/photoswipe-ce4c0c838cf8121803610f66fa14dc5d87fa22bba73ff29708d6dcddb6e3731f.js",
+    "photoswipe/lightbox": "/assets/photoswipe--lightbox-940cb9cf5f24625234f063c6931b6c493ef79e84da8735a5f469d1c585270ef9.js",
+    "leaflet": "/assets/leaflet-22a4707c0f3e28aa9ddc2461f98a3eca9f40d6ae9d77c1f3a8dfd00ec2cb320b.js",
+    "leaflet.markercluster": "/assets/leaflet.markercluster-31f70663802e17ef4d91500b510e4ae4e86b458f7b5f0753c05f54fd5f0aa892.js",
+    "@rails/activestorage": "/assets/@rails--activestorage-fcc4acc24ca385414d613617f9a4dc3007519c2921a075f5962afd0fe4c99205.js",
+    "controllers/admin_announcement_controller": "/assets/controllers/admin_announcement_controller-08244cb0edee3f8c46d7a6526534bd8396b3db370a5551b0aebcaeb6407ad03e.js",
+    "controllers/admin_controller": "/assets/controllers/admin_controller-b8496a183452638156919e7ba5a91f596d0e44d97b1735e3318368150881b26e.js",
+    "controllers/admin_daily_gospel_meditation_controller": "/assets/controllers/admin_daily_gospel_meditation_controller-83adfccae3cf9d95e16f001173ffd8cf1626e021c855c59cb0fff2a8881205b3.js",
+    "controllers/admin_discipline_controller": "/assets/controllers/admin_discipline_controller-e24014028812b2b554b30622ee9a34fffe4d9291d645a26e60db8eee9cfc6cd0.js",
+    "controllers/admin_program_controller": "/assets/controllers/admin_program_controller-83a310c2d6077db7485721843977fbaffa59139c051931fcdbdfdfdf3dec6633.js",
+    "controllers/admin_survey_results_controller": "/assets/controllers/admin_survey_results_controller-eea71e4beeab7f6272c30c235c65a85bb039e05d20a8090df0b78832aebf5a7d.js",
+    "controllers/admin_user_search_controller": "/assets/controllers/admin_user_search_controller-3e26e223c4cc568950c370ceda466573c95e92045db4cfdfbf2b129122f84501.js",
+    "controllers/app_controller": "/assets/controllers/app_controller-e11181f984e15abacfcfc401c2f1c8bfd793ef7a764444c458d89242346bed52.js",
+    "controllers/application": "/assets/controllers/application-c94520c37eb4074ce5cb14b43faf485df7a40f1ce7966b8967fe0964f7180a63.js",
+    "controllers/audio_controller": "/assets/controllers/audio_controller-f4e9e42720044d642fcb1d8f758941009afb9da4673f4acc49ccf0878b7e99f1.js",
+    "controllers/auth_code_controller": "/assets/controllers/auth_code_controller-bf2102ab7d8975b7a75bc3b4c80bd79a0bad86453211a3745003dfcd4ec231e0.js",
+    "controllers/auth_name_controller": "/assets/controllers/auth_name_controller-b0bc0a512bbe653db762e3e7365128718062a5813360a24e50c3b73ca07810a1.js",
+    "controllers/auth_phone_controller": "/assets/controllers/auth_phone_controller-6df92fd1096d258851df6c1a51d73b3916897fc8570461c59055caa401d06562.js",
+    "controllers/auth_photo_controller": "/assets/controllers/auth_photo_controller-21096f6bacc1dfb5a3f5fb596cc76f7d7aff06c705b4dd477c58c9565d6fb587.js",
+    "controllers/autocomplete_select_controller": "/assets/controllers/autocomplete_select_controller-cedee9ba54bdf15c4c353b234460ca482c3c9dcebf138ed4802c45380c9abcb1.js",
+    "controllers/avatar_uploader_controller": "/assets/controllers/avatar_uploader_controller-91b08288f0e095e95fca5111d2a9c839ca63277a4870cb787304895f4e393c2a.js",
+    "controllers/blur_up_controller": "/assets/controllers/blur_up_controller-4c99cedd049a81d725be40b67011de79cf15086b7dc7a5f6ff47579b9082aff7.js",
+    "controllers/bridge/audio_controller": "/assets/controllers/bridge/audio_controller-14a3608687ec51c2c09cdaa5c87bd617b8b702351c0243830023ba4f4ddc108c.js",
+    "controllers/bridge/autofocus_controller": "/assets/controllers/bridge/autofocus_controller-2de56ad37f9da15c4b449a2e7fd093c5be30d7461ee4b55d9d3aefbc6ab65787.js",
+    "controllers/bridge/close_modal_controller": "/assets/controllers/bridge/close_modal_controller-8e4c0fe88de09c2e51f5f00fe3d3c2fb554afb88dc99875af791a0de350210b6.js",
+    "controllers/bridge/contacts_controller": "/assets/controllers/bridge/contacts_controller-e32355454d18d87f28282a96eaba0ed9c227cfe37c35f584b7903507b102c3e0.js",
+    "controllers/bridge/haptics_controller": "/assets/controllers/bridge/haptics_controller-2205010ec4664f406870eb4bd7c157fb931121051ea4481a09ac04c9cb34dc46.js",
+    "controllers/bridge/input_controller": "/assets/controllers/bridge/input_controller-4952fe3b34236be6762031747d37d5284ef561010b98cb7e4ec09763bac3ef23.js",
+    "controllers/bridge/location_controller": "/assets/controllers/bridge/location_controller-2bce8e0cb19cd702d842d236cd8f867283b8dca15aeb7da7dc9f1fe56193dc0f.js",
+    "controllers/bridge/page_controller": "/assets/controllers/bridge/page_controller-3bcc9055b8aadddfa3a96d38aff9a8df379f98bcaf4926110077a28be73a0f9d.js",
+    "controllers/bridge/permissions_controller": "/assets/controllers/bridge/permissions_controller-518164a98b998e9d6d515eeb3d95d4f14bc0b32ec02ee0d3f0e57fb0202a91a4.js",
+    "controllers/bridge/purchases_controller": "/assets/controllers/bridge/purchases_controller-28a9f6619a967abbfbbcd0634832675134b51057205028ecbe45944b0b155ab2.js",
+    "controllers/bridge/share_controller": "/assets/controllers/bridge/share_controller-4835b56854cd13b0608d008989d7c57edb59bbe5f15beb2e2f38359104e4f2ae.js",
+    "controllers/brother_card_controller": "/assets/controllers/brother_card_controller-c87f863ac632053cda409f8f017ae337aec4409c59158d5b794bb48700414dfd.js",
+    "controllers/brothers_panel_controller": "/assets/controllers/brothers_panel_controller-794add98e0cb98f33258c3c771b174e03092e362d857b6baa16ab121ec240f96.js",
+    "controllers/cache_controller": "/assets/controllers/cache_controller-9a85fe9afede58fc23cd8b5a4b9ddd7c585fce100a1ccfc358ea9afbfd28cd0c.js",
+    "controllers/challenge_editor_controller": "/assets/controllers/challenge_editor_controller-71cf3492f2270190a8c42d46de85d87542ab773abd6b586f28c10f653825a472.js",
+    "controllers/chat_controller": "/assets/controllers/chat_controller-e370d1687d2efac61874f546579e5aaddcc81b327c80dbc148911f1ee1816504.js",
+    "controllers/chat_message_controller": "/assets/controllers/chat_message_controller-fa40e8ee479caa05ee2e275bc30a5ce9b2dbadbfd2d53d517194929031e4fd7c.js",
+    "controllers/chat_recipients_controller": "/assets/controllers/chat_recipients_controller-b0f8fa8b9506f81942291debbb79c3a1344457320c2811333e6cc9bae0bf896f.js",
+    "controllers/checkins_controller": "/assets/controllers/checkins_controller-9623d7e760d1dd036f62145001a3f947998029ce6b4b715883ad60b98a0b9c51.js",
+    "controllers/checkins_sharing_controller": "/assets/controllers/checkins_sharing_controller-1c6cc58b87c5863323a73e112d36841743bedbc29849123d3be23ef98943829f.js",
+    "controllers/communities_controller": "/assets/controllers/communities_controller-bc41fd6ed60be23e77ba1f004163662c54c67a57fb0c2c3d3aecb8dd1ba88885.js",
+    "controllers/community_controller": "/assets/controllers/community_controller-2f460338c4dc651ccdf246918e3342e00021dc06618d61ecb0c1b2b2c359bf66.js",
+    "controllers/community_picker_controller": "/assets/controllers/community_picker_controller-f11af23ab32f3180876b9f3be7c769056ea0d88e87e1bc61c8df368ac69cc93e.js",
+    "controllers/copy_controller": "/assets/controllers/copy_controller-e32baca438e333364dedf2cfcdc2dd1dc006bb5937fa255b4545321df6967ccd.js",
+    "controllers/dark_controller": "/assets/controllers/dark_controller-3c713bb7b8bcc310afa7a5e41fbf251ef0056e76d6117755a463e8150fafd579.js",
+    "controllers/discipline_carousel_controller": "/assets/controllers/discipline_carousel_controller-637ab72ef178a7370b155a88f55fb501449f95b7b50fa4553b16027be3c3e375.js",
+    "controllers/discipline_controller": "/assets/controllers/discipline_controller-b13e9ccd6b0123fc797638438e29daf63e0a6c89e828e5c59d843daa0e0f16b1.js",
+    "controllers/discipline_editor_controller": "/assets/controllers/discipline_editor_controller-b61804ba8fecdab215d903f0fdfa3b2851fdc8e9e32e680cc4876c3caa306d1c.js",
+    "controllers/download_controller": "/assets/controllers/download_controller-9d1cf73b98cea6191337551d2514dd519f9feb8155b286edeeec33c21f70efaf.js",
+    "controllers/file_upload_controller": "/assets/controllers/file_upload_controller-171369f950d2a5db0e799fcdb33dc35bbefc90199c7febddda8b899f1abe0f34.js",
+    "controllers/fontawesome_controller": "/assets/controllers/fontawesome_controller-d4f2722e51589dba1c825157382175fb37092172d49ca2c4919926c0b1924dfc.js",
+    "controllers/gallery_controller": "/assets/controllers/gallery_controller-488dd994e60f9f0af222582d33fbd2a9bdd1700c8b2a2a4d53b6716c88d27347.js",
+    "controllers/gift_carousel_controller": "/assets/controllers/gift_carousel_controller-32b48b87ce1c740605b00bf4ee50f2db5714027be21f55cdc4a4be35c7f63b13.js",
+    "controllers/gift_share_controller": "/assets/controllers/gift_share_controller-63895b7abcbc8e842881fc61b107676107fd0e98a9172c88bf548416bb6e2540.js",
+    "controllers/group_editor_controller": "/assets/controllers/group_editor_controller-91222246aa918b244761b92988634c654f6a2a070904ff90bd869dc8758bae58.js",
+    "controllers/group_invite_controller": "/assets/controllers/group_invite_controller-e00aeaa37e49ebee670746b524ad2280629efbb9ed292ad4a03105552fc2711c.js",
+    "controllers/growtext_controller": "/assets/controllers/growtext_controller-5b9ac13104afd494e1777791f0be3c5b16b0501b5e9d52dea395191a922fc0d3.js",
+    "controllers/image_loader_controller": "/assets/controllers/image_loader_controller-1a7083c6344c8e751901fcd8b3a8216c7cae49080d63e12ff4e34ed12bf5bcb0.js",
+    "controllers/impact_controller": "/assets/controllers/impact_controller-cdae9bd11b4d966a38155f691c4d22390e69427e09d9b3542f33cdd2e83b0e60.js",
+    "controllers": "/assets/controllers/index-a01640d75554c93cb612bd3e49528c3854bb2872ce26bd31ef652708643574f0.js",
+    "controllers/installment_preview_controller": "/assets/controllers/installment_preview_controller-49108a28325ad3b798c8fbacbce10955d700e3e16981b2cebd5f80f86a1d5f7e.js",
+    "controllers/locale_controller": "/assets/controllers/locale_controller-010c0315844791584c5289f52e89423382fae593034747fe1370214007b7661e.js",
+    "controllers/logout_controller": "/assets/controllers/logout_controller-3a2769a13b2b5c4d2ae4f74d2a8cf80a7e5dfae7c92e2eadf158d89781355fe3.js",
+    "controllers/longpress_controller": "/assets/controllers/longpress_controller-28264ad368daa7f89bef7ccce0ecb4bbb3409d6020810167f39e4d18a26fc08b.js",
+    "controllers/map_controller": "/assets/controllers/map_controller-dd902ae54958161872bc6af60930626f30b5b2eccffede0bce950865f0fddb5b.js",
+    "controllers/me_controller": "/assets/controllers/me_controller-0f34992a5a8f31349a97837796cc4044b0537b8a05157d29fdfa3f212031e01e.js",
+    "controllers/message_composer_controller": "/assets/controllers/message_composer_controller-b5617219fadea647fdcadd1c9e8a95ca505379dc6716974aa40b8ae154e81774.js",
+    "controllers/message_modal_controller": "/assets/controllers/message_modal_controller-eee49f1681a58b5c6253e51e0d2049aa53e9cf4a420be018cee9cbe39fab7096.js",
+    "controllers/modal_controller": "/assets/controllers/modal_controller-f7b9ed5c16d0af73a29809ef69059d3e05ec84716208c314ddc37632faf18e9f.js",
+    "controllers/modals_controller": "/assets/controllers/modals_controller-bd041d43ddb85f595b7ccdd1076ce7e0b9df353a39fc48d76697a84ebb9497c5.js",
+    "controllers/navbar_controller": "/assets/controllers/navbar_controller-ee5988c19b4619e3667fb3a733416cf21733e6888299edff8528f2fe7b92ddeb.js",
+    "controllers/now_playing_controller": "/assets/controllers/now_playing_controller-a5b23dae136f7b4c5e7bbafe46a30300bbccf1970f7d169dff8fc4b54d9255e7.js",
+    "controllers/phone_input_controller": "/assets/controllers/phone_input_controller-fbbaaedc4a75a7bb3816a90b18a7c19ab58224f28e2fbe8fc57329c64de81f50.js",
+    "controllers/plan_mode_controller": "/assets/controllers/plan_mode_controller-90a33f3eaa074005181ff3dda996dc50744b8a0aab634f6e9c8b0c755e69ac66.js",
+    "controllers/playback_controller": "/assets/controllers/playback_controller-b794ec8e5f7f7e281bcc407595ef8f9b98a37001db5ff7255750cdcea2030ce9.js",
+    "controllers/player_controller": "/assets/controllers/player_controller-920b6b95f4353e9beac210577cc77b5539e1b14aca3f0619b99f3fb34fe28249.js",
+    "controllers/playerfab_controller": "/assets/controllers/playerfab_controller-3a63e04c75f7d94f2b2d2c2825495fc705bbca763b91d121fb1d6a4eb72ce749.js",
+    "controllers/profile_editor_controller": "/assets/controllers/profile_editor_controller-38261f870ed832ccd357c8cd8dc72aa09c200d2a7ddd9514c3c8a4cae5b26a0c.js",
+    "controllers/reader_controller": "/assets/controllers/reader_controller-e38b6a7dbadadcc4756ca847a36a87f65bb927bfb40c1322e3aeffcc3ef60aad.js",
+    "controllers/reader_settings_controller": "/assets/controllers/reader_settings_controller-a4d99619d64fc4859bd35325949b8fe5da06522ea557175e64b38fe936cc9564.js",
+    "controllers/share_controller": "/assets/controllers/share_controller-4db305fa40dc6997e21e30f3c2ae85bb3770660d066c06ab7e85783c72f4c16c.js",
+    "controllers/slide_controller": "/assets/controllers/slide_controller-f0f64a11c4aa95fa08a10d685a4d20b52a0f385a89ce188e237a67237f2e0b27.js",
+    "controllers/sortable_controller": "/assets/controllers/sortable_controller-6eeb896cba86c20cfce7be87f09d0bb499b4a856dac560d00dfc9e0e360cd808.js",
+    "controllers/stripe_controller": "/assets/controllers/stripe_controller-5c933c2736c224373d5efb92590fff169a6ac2076efae64e529a1ba3600c3107.js",
+    "controllers/subscription_controller": "/assets/controllers/subscription_controller-52371a220dba1aa7bc71e99a6e5d4b7147c132af5bacbfb8ad9cba774930355b.js",
+    "controllers/survey_form_controller": "/assets/controllers/survey_form_controller-cf53b1ff2215edf6dce9eb1037108b3e22dd756bd60b630e2ca8291449ea686b.js",
+    "controllers/survey_question_type_controller": "/assets/controllers/survey_question_type_controller-293d1a0c4f72a38d9a1ce6d406b024d6e63c5d10da3952e917d2dd3ddc852027.js",
+    "controllers/toast_controller": "/assets/controllers/toast_controller-1eaecd99b9289b44a8ef051b9497d06b026ed4732a2bb633d781a9c7d6489fd6.js",
+    "controllers/today_controller": "/assets/controllers/today_controller-fb714ad70065267300fe609eff6ef5b96ddb1f0faefff46fb7921eac2cb1fa21.js",
+    "controllers/toggle_controller": "/assets/controllers/toggle_controller-48e68051ab5bae8e12f0ef39ebf035699a61267ee31d02caf2fa075052d2f465.js",
+    "controllers/upgrade_controller": "/assets/controllers/upgrade_controller-ff7a7bf0c1385cd84bd0810c04e8c7d91f2d50f98a7968f7d78ac6c21cb34b44.js",
+    "controllers/verify_contact_controller": "/assets/controllers/verify_contact_controller-9f477241c2241727e1f9eaf0f25022f0b0fc782b81e482849dd130a23f48ef93.js",
+    "helpers/utils": "/assets/helpers/utils-cd10e4c9bdf9adda6ea22c481bfa6d48a58007b379a65e1914d5b4855ad78c96.js",
+    "intl-tel-input-utils": "/assets/intl-tel-input-utils-90ecf08de340a61583588ed5c91f3f436b5d2f7cdf711cc8bfc5170751282702.js"
+  }
+}</script>
+<link rel="modulepreload" href="/assets/application-9affb523161530624630dbf7757554e0e62862eccd4fb46389faa7edace8dd56.js">
+<link rel="modulepreload" href="/assets/turbo.min-9044c9532897ef76340397bd755e8920312016514a2bd36107a344a8303a77d5.js">
+<link rel="modulepreload" href="/assets/stimulus-loading-d80f0feea68692981b568bbfef0ed4370b56927ae5c663421e8461a466f0618f.js">
+<link rel="modulepreload" href="/assets/intl-tel-input-aa487617ee5d6a8208495a7f9cb4584131b3478b6ad3a0016f235501bfc57299.js">
+<link rel="modulepreload" href="/assets/@stripe--stripe-js-14edf37a34c57ceba95b09e9e958c47986f242b4c328b7ebe166fad742492953.js">
+<link rel="modulepreload" href="/assets/@splidejs--splide-537d470b4c4e1e3b4730c33a0ac8b2bb40f4d93cc947ae09f3883d6741fa09a3.js">
+<link rel="modulepreload" href="/assets/marked-a34e5a73a57ffd564326a4b5723c092389b0dab18fb2168314e6247a6c483015.js">
+<link rel="modulepreload" href="/assets/sortablejs-dae3e6a2f25379e9493457ee0b57b8ea1b4b1f0dabd5b92d103da64393b6920d.js">
+<link rel="modulepreload" href="/assets/@rails--request.js-cd9c48b0e45176d87d0c47cbe44bf60a7f4da9aa16b8ad5b9a9afa82b365ca65.js">
+<link rel="modulepreload" href="/assets/countup.js-9bd2d9463d8b273471ebb30d3d09f9ea8c36bc5b56fac30a879d2f643462672f.js">
+<link rel="modulepreload" href="/assets/@hotwired--hotwire-native-bridge-74c75433efc577a39b6a3fee1f7d7961de5040985d882a6fc6eb8428ce99f9f9.js">
+<link rel="modulepreload" href="/assets/@hotwired--stimulus-1bdae26281004856d7f494fc3571c2488032e1307a3409b77bdd4a7f962f9e6c.js">
+<link rel="modulepreload" href="/assets/photoswipe-ce4c0c838cf8121803610f66fa14dc5d87fa22bba73ff29708d6dcddb6e3731f.js">
+<link rel="modulepreload" href="/assets/photoswipe--lightbox-940cb9cf5f24625234f063c6931b6c493ef79e84da8735a5f469d1c585270ef9.js">
+<link rel="modulepreload" href="/assets/leaflet-22a4707c0f3e28aa9ddc2461f98a3eca9f40d6ae9d77c1f3a8dfd00ec2cb320b.js">
+<link rel="modulepreload" href="/assets/leaflet.markercluster-31f70663802e17ef4d91500b510e4ae4e86b458f7b5f0753c05f54fd5f0aa892.js">
+<link rel="modulepreload" href="/assets/@rails--activestorage-fcc4acc24ca385414d613617f9a4dc3007519c2921a075f5962afd0fe4c99205.js">
+<link rel="modulepreload" href="/assets/controllers/admin_announcement_controller-08244cb0edee3f8c46d7a6526534bd8396b3db370a5551b0aebcaeb6407ad03e.js">
+<link rel="modulepreload" href="/assets/controllers/admin_controller-b8496a183452638156919e7ba5a91f596d0e44d97b1735e3318368150881b26e.js">
+<link rel="modulepreload" href="/assets/controllers/admin_daily_gospel_meditation_controller-83adfccae3cf9d95e16f001173ffd8cf1626e021c855c59cb0fff2a8881205b3.js">
+<link rel="modulepreload" href="/assets/controllers/admin_discipline_controller-e24014028812b2b554b30622ee9a34fffe4d9291d645a26e60db8eee9cfc6cd0.js">
+<link rel="modulepreload" href="/assets/controllers/admin_program_controller-83a310c2d6077db7485721843977fbaffa59139c051931fcdbdfdfdf3dec6633.js">
+<link rel="modulepreload" href="/assets/controllers/admin_survey_results_controller-eea71e4beeab7f6272c30c235c65a85bb039e05d20a8090df0b78832aebf5a7d.js">
+<link rel="modulepreload" href="/assets/controllers/admin_user_search_controller-3e26e223c4cc568950c370ceda466573c95e92045db4cfdfbf2b129122f84501.js">
+<link rel="modulepreload" href="/assets/controllers/app_controller-e11181f984e15abacfcfc401c2f1c8bfd793ef7a764444c458d89242346bed52.js">
+<link rel="modulepreload" href="/assets/controllers/application-c94520c37eb4074ce5cb14b43faf485df7a40f1ce7966b8967fe0964f7180a63.js">
+<link rel="modulepreload" href="/assets/controllers/audio_controller-f4e9e42720044d642fcb1d8f758941009afb9da4673f4acc49ccf0878b7e99f1.js">
+<link rel="modulepreload" href="/assets/controllers/auth_code_controller-bf2102ab7d8975b7a75bc3b4c80bd79a0bad86453211a3745003dfcd4ec231e0.js">
+<link rel="modulepreload" href="/assets/controllers/auth_name_controller-b0bc0a512bbe653db762e3e7365128718062a5813360a24e50c3b73ca07810a1.js">
+<link rel="modulepreload" href="/assets/controllers/auth_phone_controller-6df92fd1096d258851df6c1a51d73b3916897fc8570461c59055caa401d06562.js">
+<link rel="modulepreload" href="/assets/controllers/auth_photo_controller-21096f6bacc1dfb5a3f5fb596cc76f7d7aff06c705b4dd477c58c9565d6fb587.js">
+<link rel="modulepreload" href="/assets/controllers/autocomplete_select_controller-cedee9ba54bdf15c4c353b234460ca482c3c9dcebf138ed4802c45380c9abcb1.js">
+<link rel="modulepreload" href="/assets/controllers/avatar_uploader_controller-91b08288f0e095e95fca5111d2a9c839ca63277a4870cb787304895f4e393c2a.js">
+<link rel="modulepreload" href="/assets/controllers/blur_up_controller-4c99cedd049a81d725be40b67011de79cf15086b7dc7a5f6ff47579b9082aff7.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/audio_controller-14a3608687ec51c2c09cdaa5c87bd617b8b702351c0243830023ba4f4ddc108c.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/autofocus_controller-2de56ad37f9da15c4b449a2e7fd093c5be30d7461ee4b55d9d3aefbc6ab65787.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/close_modal_controller-8e4c0fe88de09c2e51f5f00fe3d3c2fb554afb88dc99875af791a0de350210b6.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/contacts_controller-e32355454d18d87f28282a96eaba0ed9c227cfe37c35f584b7903507b102c3e0.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/haptics_controller-2205010ec4664f406870eb4bd7c157fb931121051ea4481a09ac04c9cb34dc46.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/input_controller-4952fe3b34236be6762031747d37d5284ef561010b98cb7e4ec09763bac3ef23.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/location_controller-2bce8e0cb19cd702d842d236cd8f867283b8dca15aeb7da7dc9f1fe56193dc0f.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/page_controller-3bcc9055b8aadddfa3a96d38aff9a8df379f98bcaf4926110077a28be73a0f9d.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/permissions_controller-518164a98b998e9d6d515eeb3d95d4f14bc0b32ec02ee0d3f0e57fb0202a91a4.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/purchases_controller-28a9f6619a967abbfbbcd0634832675134b51057205028ecbe45944b0b155ab2.js">
+<link rel="modulepreload" href="/assets/controllers/bridge/share_controller-4835b56854cd13b0608d008989d7c57edb59bbe5f15beb2e2f38359104e4f2ae.js">
+<link rel="modulepreload" href="/assets/controllers/brother_card_controller-c87f863ac632053cda409f8f017ae337aec4409c59158d5b794bb48700414dfd.js">
+<link rel="modulepreload" href="/assets/controllers/brothers_panel_controller-794add98e0cb98f33258c3c771b174e03092e362d857b6baa16ab121ec240f96.js">
+<link rel="modulepreload" href="/assets/controllers/cache_controller-9a85fe9afede58fc23cd8b5a4b9ddd7c585fce100a1ccfc358ea9afbfd28cd0c.js">
+<link rel="modulepreload" href="/assets/controllers/challenge_editor_controller-71cf3492f2270190a8c42d46de85d87542ab773abd6b586f28c10f653825a472.js">
+<link rel="modulepreload" href="/assets/controllers/chat_controller-e370d1687d2efac61874f546579e5aaddcc81b327c80dbc148911f1ee1816504.js">
+<link rel="modulepreload" href="/assets/controllers/chat_message_controller-fa40e8ee479caa05ee2e275bc30a5ce9b2dbadbfd2d53d517194929031e4fd7c.js">
+<link rel="modulepreload" href="/assets/controllers/chat_recipients_controller-b0f8fa8b9506f81942291debbb79c3a1344457320c2811333e6cc9bae0bf896f.js">
+<link rel="modulepreload" href="/assets/controllers/checkins_controller-9623d7e760d1dd036f62145001a3f947998029ce6b4b715883ad60b98a0b9c51.js">
+<link rel="modulepreload" href="/assets/controllers/checkins_sharing_controller-1c6cc58b87c5863323a73e112d36841743bedbc29849123d3be23ef98943829f.js">
+<link rel="modulepreload" href="/assets/controllers/communities_controller-bc41fd6ed60be23e77ba1f004163662c54c67a57fb0c2c3d3aecb8dd1ba88885.js">
+<link rel="modulepreload" href="/assets/controllers/community_controller-2f460338c4dc651ccdf246918e3342e00021dc06618d61ecb0c1b2b2c359bf66.js">
+<link rel="modulepreload" href="/assets/controllers/community_picker_controller-f11af23ab32f3180876b9f3be7c769056ea0d88e87e1bc61c8df368ac69cc93e.js">
+<link rel="modulepreload" href="/assets/controllers/copy_controller-e32baca438e333364dedf2cfcdc2dd1dc006bb5937fa255b4545321df6967ccd.js">
+<link rel="modulepreload" href="/assets/controllers/dark_controller-3c713bb7b8bcc310afa7a5e41fbf251ef0056e76d6117755a463e8150fafd579.js">
+<link rel="modulepreload" href="/assets/controllers/discipline_carousel_controller-637ab72ef178a7370b155a88f55fb501449f95b7b50fa4553b16027be3c3e375.js">
+<link rel="modulepreload" href="/assets/controllers/discipline_controller-b13e9ccd6b0123fc797638438e29daf63e0a6c89e828e5c59d843daa0e0f16b1.js">
+<link rel="modulepreload" href="/assets/controllers/discipline_editor_controller-b61804ba8fecdab215d903f0fdfa3b2851fdc8e9e32e680cc4876c3caa306d1c.js">
+<link rel="modulepreload" href="/assets/controllers/download_controller-9d1cf73b98cea6191337551d2514dd519f9feb8155b286edeeec33c21f70efaf.js">
+<link rel="modulepreload" href="/assets/controllers/file_upload_controller-171369f950d2a5db0e799fcdb33dc35bbefc90199c7febddda8b899f1abe0f34.js">
+<link rel="modulepreload" href="/assets/controllers/fontawesome_controller-d4f2722e51589dba1c825157382175fb37092172d49ca2c4919926c0b1924dfc.js">
+<link rel="modulepreload" href="/assets/controllers/gallery_controller-488dd994e60f9f0af222582d33fbd2a9bdd1700c8b2a2a4d53b6716c88d27347.js">
+<link rel="modulepreload" href="/assets/controllers/gift_carousel_controller-32b48b87ce1c740605b00bf4ee50f2db5714027be21f55cdc4a4be35c7f63b13.js">
+<link rel="modulepreload" href="/assets/controllers/gift_share_controller-63895b7abcbc8e842881fc61b107676107fd0e98a9172c88bf548416bb6e2540.js">
+<link rel="modulepreload" href="/assets/controllers/group_editor_controller-91222246aa918b244761b92988634c654f6a2a070904ff90bd869dc8758bae58.js">
+<link rel="modulepreload" href="/assets/controllers/group_invite_controller-e00aeaa37e49ebee670746b524ad2280629efbb9ed292ad4a03105552fc2711c.js">
+<link rel="modulepreload" href="/assets/controllers/growtext_controller-5b9ac13104afd494e1777791f0be3c5b16b0501b5e9d52dea395191a922fc0d3.js">
+<link rel="modulepreload" href="/assets/controllers/image_loader_controller-1a7083c6344c8e751901fcd8b3a8216c7cae49080d63e12ff4e34ed12bf5bcb0.js">
+<link rel="modulepreload" href="/assets/controllers/impact_controller-cdae9bd11b4d966a38155f691c4d22390e69427e09d9b3542f33cdd2e83b0e60.js">
+<link rel="modulepreload" href="/assets/controllers/index-a01640d75554c93cb612bd3e49528c3854bb2872ce26bd31ef652708643574f0.js">
+<link rel="modulepreload" href="/assets/controllers/installment_preview_controller-49108a28325ad3b798c8fbacbce10955d700e3e16981b2cebd5f80f86a1d5f7e.js">
+<link rel="modulepreload" href="/assets/controllers/locale_controller-010c0315844791584c5289f52e89423382fae593034747fe1370214007b7661e.js">
+<link rel="modulepreload" href="/assets/controllers/logout_controller-3a2769a13b2b5c4d2ae4f74d2a8cf80a7e5dfae7c92e2eadf158d89781355fe3.js">
+<link rel="modulepreload" href="/assets/controllers/longpress_controller-28264ad368daa7f89bef7ccce0ecb4bbb3409d6020810167f39e4d18a26fc08b.js">
+<link rel="modulepreload" href="/assets/controllers/map_controller-dd902ae54958161872bc6af60930626f30b5b2eccffede0bce950865f0fddb5b.js">
+<link rel="modulepreload" href="/assets/controllers/me_controller-0f34992a5a8f31349a97837796cc4044b0537b8a05157d29fdfa3f212031e01e.js">
+<link rel="modulepreload" href="/assets/controllers/message_composer_controller-b5617219fadea647fdcadd1c9e8a95ca505379dc6716974aa40b8ae154e81774.js">
+<link rel="modulepreload" href="/assets/controllers/message_modal_controller-eee49f1681a58b5c6253e51e0d2049aa53e9cf4a420be018cee9cbe39fab7096.js">
+<link rel="modulepreload" href="/assets/controllers/modal_controller-f7b9ed5c16d0af73a29809ef69059d3e05ec84716208c314ddc37632faf18e9f.js">
+<link rel="modulepreload" href="/assets/controllers/modals_controller-bd041d43ddb85f595b7ccdd1076ce7e0b9df353a39fc48d76697a84ebb9497c5.js">
+<link rel="modulepreload" href="/assets/controllers/navbar_controller-ee5988c19b4619e3667fb3a733416cf21733e6888299edff8528f2fe7b92ddeb.js">
+<link rel="modulepreload" href="/assets/controllers/now_playing_controller-a5b23dae136f7b4c5e7bbafe46a30300bbccf1970f7d169dff8fc4b54d9255e7.js">
+<link rel="modulepreload" href="/assets/controllers/phone_input_controller-fbbaaedc4a75a7bb3816a90b18a7c19ab58224f28e2fbe8fc57329c64de81f50.js">
+<link rel="modulepreload" href="/assets/controllers/plan_mode_controller-90a33f3eaa074005181ff3dda996dc50744b8a0aab634f6e9c8b0c755e69ac66.js">
+<link rel="modulepreload" href="/assets/controllers/playback_controller-b794ec8e5f7f7e281bcc407595ef8f9b98a37001db5ff7255750cdcea2030ce9.js">
+<link rel="modulepreload" href="/assets/controllers/player_controller-920b6b95f4353e9beac210577cc77b5539e1b14aca3f0619b99f3fb34fe28249.js">
+<link rel="modulepreload" href="/assets/controllers/playerfab_controller-3a63e04c75f7d94f2b2d2c2825495fc705bbca763b91d121fb1d6a4eb72ce749.js">
+<link rel="modulepreload" href="/assets/controllers/profile_editor_controller-38261f870ed832ccd357c8cd8dc72aa09c200d2a7ddd9514c3c8a4cae5b26a0c.js">
+<link rel="modulepreload" href="/assets/controllers/reader_controller-e38b6a7dbadadcc4756ca847a36a87f65bb927bfb40c1322e3aeffcc3ef60aad.js">
+<link rel="modulepreload" href="/assets/controllers/reader_settings_controller-a4d99619d64fc4859bd35325949b8fe5da06522ea557175e64b38fe936cc9564.js">
+<link rel="modulepreload" href="/assets/controllers/share_controller-4db305fa40dc6997e21e30f3c2ae85bb3770660d066c06ab7e85783c72f4c16c.js">
+<link rel="modulepreload" href="/assets/controllers/slide_controller-f0f64a11c4aa95fa08a10d685a4d20b52a0f385a89ce188e237a67237f2e0b27.js">
+<link rel="modulepreload" href="/assets/controllers/sortable_controller-6eeb896cba86c20cfce7be87f09d0bb499b4a856dac560d00dfc9e0e360cd808.js">
+<link rel="modulepreload" href="/assets/controllers/stripe_controller-5c933c2736c224373d5efb92590fff169a6ac2076efae64e529a1ba3600c3107.js">
+<link rel="modulepreload" href="/assets/controllers/subscription_controller-52371a220dba1aa7bc71e99a6e5d4b7147c132af5bacbfb8ad9cba774930355b.js">
+<link rel="modulepreload" href="/assets/controllers/survey_form_controller-cf53b1ff2215edf6dce9eb1037108b3e22dd756bd60b630e2ca8291449ea686b.js">
+<link rel="modulepreload" href="/assets/controllers/survey_question_type_controller-293d1a0c4f72a38d9a1ce6d406b024d6e63c5d10da3952e917d2dd3ddc852027.js">
+<link rel="modulepreload" href="/assets/controllers/toast_controller-1eaecd99b9289b44a8ef051b9497d06b026ed4732a2bb633d781a9c7d6489fd6.js">
+<link rel="modulepreload" href="/assets/controllers/today_controller-fb714ad70065267300fe609eff6ef5b96ddb1f0faefff46fb7921eac2cb1fa21.js">
+<link rel="modulepreload" href="/assets/controllers/toggle_controller-48e68051ab5bae8e12f0ef39ebf035699a61267ee31d02caf2fa075052d2f465.js">
+<link rel="modulepreload" href="/assets/controllers/upgrade_controller-ff7a7bf0c1385cd84bd0810c04e8c7d91f2d50f98a7968f7d78ac6c21cb34b44.js">
+<link rel="modulepreload" href="/assets/controllers/verify_contact_controller-9f477241c2241727e1f9eaf0f25022f0b0fc782b81e482849dd130a23f48ef93.js">
+<link rel="modulepreload" href="/assets/helpers/utils-cd10e4c9bdf9adda6ea22c481bfa6d48a58007b379a65e1914d5b4855ad78c96.js">
+<script type="module">import "application"</script>
+
+    <meta name="turbo-refresh-method" content="morph"><meta name="turbo-refresh-scroll" content="preserve">
+  </head>
+
+  <body data-controller="app dark modals" data-user-id="200320" data-bridge--purchases-has-access-value="true" data-bridge--purchases-show-trial-value="false" data-dark-display-mode-value="system" data-bridge--purchases-bypass-iap-value="default" data-modals-bridge--page-outlet="body" data-bridge--purchases-modals-outlet="body" data-action="modals:open-&gt;bridge--page#modalOpen modals:close-&gt;bridge--page#modalClose
+  exodus:device-token-update@document-&gt;bridge--page#deviceTokenReceived 
+  exodus:reading-complete@document-&gt;app#readingComplete exodus:request-review@document-&gt;bridge--share#requestReview
+  click@document-&gt;bridge--haptics#pageTap exodus:dark-mode-set@document-&gt;dark#update
+  exodus:dark-mode-change@document-&gt;bridge--page#darkModeChange exodus:modal-close@document-&gt;modals#close
+  turbo:load@document-&gt;dark#update exodus:sync-hashes@document-&gt;bridge--contacts#syncHashes
+  turbo:before-cache@document-&gt;modals#beforeCache exodus:haptics@document-&gt;bridge--haptics#perform
+  chat-recipients:searchContacts-&gt;bridge--contacts#search chat-recipients:inviteContact-&gt;bridge--contacts#inviteContact" class="group  bg-orange ">
+
+      <script>
+        document.body.classList.toggle('dark', window.matchMedia("(prefers-color-scheme: dark)").matches)
+      </script>
+
+      <div>
+        
+<div id="page" data-controller="auth-phone" class="page group/page bg-white dark:bg-dark dark:text-white flex flex-col fixed inset-0 overflow-hidden 
+transition-all duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0
+native:group-[.modal-open]:scale-[.88] native:group-[.modal-open]:rounded-2xl group/auth">
+  <header id="header" class=" pt-safe-t">
+    
+    <input type="hidden" data-controller="logout" data-immediate>
+
+  <div class="flex items-center justify-between gap-2 p-4 web:bg-gradient-to-b web:from-orange web:to-orange-light">
+    <svg class="h-7 md:h-12" viewBox="0 0 127 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26.9231" height="28" rx="5.6" stroke="white"/>
+      <path d="M5.97753 12.377H23.2083V17.9534L14.5929 20.4539L5.97753 17.9534V12.377Z" fill="white"/>
+      <path d="M39.0902 9.96046V13.6952H43.4841V15.3978H39.0902V19.2974H44.0333V21H37.0031V8.25785H44.0333V9.96046H39.0902ZM50.9246 15.8922L54.1833 21H51.8216L49.643 17.5765L47.5926 21H45.4139L48.6727 16.0386L45.4139 10.9125H47.7756L49.9542 14.336L52.0047 10.9125H54.1833L50.9246 15.8922ZM60.1154 21.1648C59.1634 21.1648 58.303 20.9512 57.5341 20.524C56.7651 20.0846 56.161 19.4744 55.7216 18.6932C55.2822 17.8999 55.0625 16.9845 55.0625 15.9471C55.0625 14.9218 55.2883 14.0126 55.7399 13.2192C56.1915 12.4259 56.8079 11.8156 57.589 11.3885C58.3701 10.9613 59.2428 10.7477 60.207 10.7477C61.1712 10.7477 62.0439 10.9613 62.825 11.3885C63.6061 11.8156 64.2225 12.4259 64.6741 13.2192C65.1256 14.0126 65.3514 14.9218 65.3514 15.9471C65.3514 16.9723 65.1195 17.8816 64.6558 18.6749C64.192 19.4683 63.5573 20.0846 62.7518 20.524C61.9584 20.9512 61.0796 21.1648 60.1154 21.1648ZM60.1154 19.3523C60.6525 19.3523 61.1529 19.2242 61.6167 18.9678C62.0927 18.7115 62.4771 18.3271 62.7701 17.8145C63.063 17.3018 63.2094 16.6794 63.2094 15.9471C63.2094 15.2148 63.0691 14.5984 62.7884 14.098C62.5076 13.5854 62.1354 13.2009 61.6716 12.9446C61.2078 12.6883 60.7074 12.5602 60.1704 12.5602C59.6333 12.5602 59.1329 12.6883 58.6691 12.9446C58.2175 13.2009 57.8575 13.5854 57.589 14.098C57.3205 14.5984 57.1862 15.2148 57.1862 15.9471C57.1862 17.0333 57.4608 17.8755 58.0101 18.4735C58.5715 19.0594 59.2733 19.3523 60.1154 19.3523ZM66.7189 15.9105C66.7189 14.8974 66.9264 14.0004 67.3414 13.2192C67.7686 12.4381 68.3422 11.8339 69.0623 11.4068C69.7946 10.9674 70.6063 10.7477 71.4972 10.7477C72.1563 10.7477 72.8032 10.8942 73.4379 11.1871C74.0847 11.4678 74.5974 11.8462 74.9757 12.3222V7.45231H77.0811V21H74.9757V19.4805C74.634 19.9687 74.158 20.3714 73.5477 20.6888C72.9497 21.0061 72.2601 21.1648 71.4789 21.1648C70.6002 21.1648 69.7946 20.9451 69.0623 20.5057C68.3422 20.0541 67.7686 19.4316 67.3414 18.6383C66.9264 17.8328 66.7189 16.9235 66.7189 15.9105ZM74.9757 15.9471C74.9757 15.2514 74.8292 14.6472 74.5363 14.1346C74.2556 13.622 73.8834 13.2314 73.4196 12.9629C72.9558 12.6944 72.4554 12.5602 71.9183 12.5602C71.3813 12.5602 70.8809 12.6944 70.4171 12.9629C69.9533 13.2192 69.5749 13.6037 69.282 14.1163C69.0013 14.6167 68.8609 15.2148 68.8609 15.9105C68.8609 16.6062 69.0013 17.2164 69.282 17.7412C69.5749 18.2661 69.9533 18.6688 70.4171 18.9495C70.8931 19.2181 71.3935 19.3523 71.9183 19.3523C72.4554 19.3523 72.9558 19.2181 73.4196 18.9495C73.8834 18.681 74.2556 18.2905 74.5363 17.7778C74.8292 17.253 74.9757 16.6428 74.9757 15.9471ZM88.9579 10.9125V21H86.8708V19.81C86.5413 20.225 86.108 20.5545 85.571 20.7986C85.0462 21.0305 84.4847 21.1465 83.8867 21.1465C83.0934 21.1465 82.3794 20.9817 81.7447 20.6522C81.1222 20.3226 80.6279 19.8344 80.2618 19.1875C79.9078 18.5407 79.7308 17.7595 79.7308 16.8442V10.9125H81.7996V16.5329C81.7996 17.4361 82.0254 18.1318 82.477 18.62C82.9286 19.096 83.545 19.334 84.3261 19.334C85.1072 19.334 85.7236 19.096 86.1752 18.62C86.639 18.1318 86.8708 17.4361 86.8708 16.5329V10.9125H88.9579ZM95.3732 21.1648C94.5799 21.1648 93.8659 21.0244 93.2312 20.7437C92.6087 20.4508 92.1144 20.0602 91.7483 19.572C91.3821 19.0716 91.1868 18.5163 91.1624 17.906H93.3227C93.3594 18.3332 93.5607 18.6932 93.9269 18.9862C94.3053 19.2669 94.7751 19.4072 95.3366 19.4072C95.9224 19.4072 96.374 19.2974 96.6914 19.0777C97.0209 18.8458 97.1857 18.5529 97.1857 18.1989C97.1857 17.8206 97.0026 17.5398 96.6364 17.3568C96.2825 17.1737 95.7149 16.9723 94.9338 16.7526C94.1771 16.5451 93.5607 16.3437 93.0847 16.1485C92.6087 15.9532 92.1938 15.6542 91.8398 15.2514C91.4981 14.8486 91.3272 14.3177 91.3272 13.6586C91.3272 13.1216 91.4859 12.6334 91.8032 12.194C92.1205 11.7424 92.5721 11.3885 93.158 11.1322C93.756 10.8758 94.4395 10.7477 95.2084 10.7477C96.3557 10.7477 97.2772 11.0406 97.9729 11.6265C98.6808 12.2001 99.0591 12.9873 99.108 13.9882H97.0209C96.9843 13.5366 96.8012 13.1765 96.4717 12.908C96.1421 12.6395 95.6966 12.5052 95.1352 12.5052C94.586 12.5052 94.1649 12.609 93.872 12.8165C93.579 13.0239 93.4326 13.2986 93.4326 13.6403C93.4326 13.9088 93.5302 14.1346 93.7255 14.3177C93.9208 14.5008 94.1588 14.6472 94.4395 14.7571C94.7202 14.8547 95.1352 14.9829 95.6844 15.1415C96.4167 15.3368 97.0148 15.5382 97.4786 15.7457C97.9546 15.941 98.3635 16.2339 98.7052 16.6245C99.0469 17.015 99.2239 17.5337 99.2361 18.1806C99.2361 18.7543 99.0775 19.2669 98.7601 19.7185C98.4428 20.1701 97.9912 20.524 97.4054 20.7803C96.8317 21.0366 96.1543 21.1648 95.3732 21.1648ZM107.318 21L110.431 16.2034L110.394 16.1668C110.26 16.24 110.077 16.2949 109.845 16.3315C109.625 16.3682 109.405 16.3865 109.186 16.3865C108.612 16.3865 108.087 16.2766 107.611 16.0569C107.135 15.8372 106.72 15.5382 106.366 15.1598C106.025 14.7815 105.756 14.3421 105.561 13.8417C105.378 13.3413 105.286 12.8104 105.286 12.2489C105.286 11.5776 105.402 10.9674 105.634 10.4182C105.866 9.86892 106.183 9.40513 106.586 9.02677C107.001 8.6362 107.489 8.33718 108.051 8.12969C108.624 7.92221 109.241 7.81846 109.9 7.81846C110.571 7.81846 111.187 7.92221 111.749 8.12969C112.322 8.32497 112.811 8.61179 113.213 8.99015C113.628 9.36851 113.946 9.83231 114.165 10.3815C114.397 10.9308 114.513 11.5471 114.513 12.2306C114.513 12.9141 114.397 13.5366 114.165 14.098C113.946 14.6472 113.659 15.2087 113.305 15.7823L109.991 21H107.318ZM112.206 12.2672C112.206 11.9377 112.145 11.6326 112.023 11.3518C111.901 11.0589 111.73 10.8087 111.511 10.6012C111.303 10.3815 111.053 10.2107 110.76 10.0886C110.479 9.96656 110.174 9.90554 109.845 9.90554C109.515 9.90554 109.204 9.96656 108.911 10.0886C108.63 10.2107 108.38 10.3815 108.16 10.6012C107.953 10.8087 107.788 11.0589 107.666 11.3518C107.544 11.6326 107.483 11.9377 107.483 12.2672C107.483 12.5968 107.544 12.908 107.666 13.2009C107.788 13.4816 107.953 13.7318 108.16 13.9515C108.38 14.159 108.63 14.3238 108.911 14.4458C109.204 14.5679 109.515 14.6289 109.845 14.6289C110.174 14.6289 110.479 14.5679 110.76 14.4458C111.053 14.3238 111.303 14.159 111.511 13.9515C111.73 13.7318 111.901 13.4816 112.023 13.2009C112.145 12.908 112.206 12.5968 112.206 12.2672ZM116.047 14.5191C116.047 13.4938 116.127 12.6212 116.285 11.9011C116.456 11.1688 116.676 10.5585 116.944 10.0703C117.213 9.5699 117.512 9.17323 117.841 8.88031C118.183 8.57518 118.525 8.34938 118.867 8.20292C119.221 8.04426 119.556 7.94051 119.874 7.89169C120.203 7.84287 120.49 7.81846 120.734 7.81846C120.978 7.81846 121.259 7.84287 121.576 7.89169C121.906 7.94051 122.241 8.04426 122.583 8.20292C122.937 8.34938 123.279 8.57518 123.608 8.88031C123.95 9.17323 124.255 9.5699 124.524 10.0703C124.792 10.5585 125.006 11.1688 125.165 11.9011C125.335 12.6212 125.421 13.4938 125.421 14.5191C125.421 15.5443 125.335 16.4231 125.165 17.1554C125.006 17.8755 124.792 18.4857 124.524 18.9862C124.255 19.4744 123.95 19.871 123.608 20.1762C123.279 20.4691 122.937 20.6949 122.583 20.8535C122.241 21 121.906 21.0976 121.576 21.1465C121.259 21.1953 120.978 21.2197 120.734 21.2197C120.49 21.2197 120.203 21.1953 119.874 21.1465C119.556 21.0976 119.221 21 118.867 20.8535C118.525 20.6949 118.183 20.4691 117.841 20.1762C117.512 19.871 117.213 19.4744 116.944 18.9862C116.676 18.4857 116.456 17.8755 116.285 17.1554C116.127 16.4231 116.047 15.5443 116.047 14.5191ZM118.244 14.5191C118.244 14.9218 118.269 15.3917 118.317 15.9288C118.378 16.4536 118.494 16.954 118.665 17.43C118.836 17.906 119.086 18.3088 119.416 18.6383C119.745 18.9678 120.185 19.1326 120.734 19.1326C121.283 19.1326 121.723 18.9678 122.052 18.6383C122.382 18.3088 122.632 17.906 122.803 17.43C122.974 16.954 123.084 16.4536 123.132 15.9288C123.193 15.3917 123.224 14.9218 123.224 14.5191C123.224 14.1163 123.193 13.6525 123.132 13.1277C123.084 12.5907 122.974 12.0842 122.803 11.6082C122.632 11.1322 122.382 10.7294 122.052 10.3998C121.723 10.0703 121.283 9.90554 120.734 9.90554C120.185 9.90554 119.745 10.0703 119.416 10.3998C119.086 10.7294 118.836 11.1322 118.665 11.6082C118.494 12.0842 118.378 12.5907 118.317 13.1277C118.269 13.6525 118.244 14.1163 118.244 14.5191Z" fill="white"/>
+    </svg>
+  </div>
+
+
+
+</header>
+  <main id="main" class="page-body h-full overflow-y-auto ">
+      <div class="container mx-auto">
+        
+  <form class="p-6 native:pt-16" data-auth-phone-target="form" data-action="auth-phone#submit" action="/auth/login" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="ujza8pkEZxGhf5nxsqX6E1zqJVnutxISWHIWU1ekDoTuWZX82JIR-0iB26PjeJ9rguS20H5IbpBURTS62CovRA" autocomplete="off" />
+    <div class="group-[.email]/auth:hidden">
+      <h1 class="font-medium text-xl mb-8">
+        Add meg a telefonszámodat
+      </h1>
+      <input class="ml-2 p-3 text-xl border-none focus:ring-0" autocomplete="tel" data-controller="bridge--autofocus" data-bridge--autofocus-delay-value="1500" data-auth-phone-target="phoneFormatted" data-action="auth-phone#updateValid" autofocus="autofocus" type="tel" name="phone_formatted" id="phone_formatted" />
+      <input data-auth-phone-target="phone" autocomplete="off" type="hidden" name="phone" id="phone" />
+    </div>
+    <div class="hidden group-[.email]/auth:block">
+      <h1 class="font-medium text-xl mb-8">
+        Add meg az e-mail címedet
+      </h1>
+      <input placeholder="E-mail cím" autocomplete="email" data-auth-phone-target="email" data-action="auth-phone#updateValid" class="w-full p-3 text-xl border-none focus:ring-0" type="email" name="email" id="email" />
+    </div>
+    
+    <input data-auth-phone-target="mode" autocomplete="off" type="hidden" name="mode" id="mode" />
+    <input type="submit" name="commit" value="Save " class="hidden" data-disable-with="Save " />
+</form>
+
+      </div>
+</main>
+  <footer id="footer" class="relative transition-[padding-bottom] duration-300 osk:pb-osk m-4 pb-safe-b">
+      <p class="mb-6 text-gray-500 text-center group-[.email]/auth:hidden">
+    <label for="sms_terms">
+      <input type="checkbox" class="rounded" id="sms_terms" data-auth-phone-target="smsConsent" data-action="auth-phone#updateValid" checked>
+      Egyetértek az SMS fogadásával és a     <a class="font-semibold text-link" target="_blank" href="https://exodus90.com/terms/">Feltételek</a>
+ kel
+    </label>
+  </p>
+  <p class="mb-6 text-gray-500 text-center hidden group-[.email]/auth:block">
+    A <span class="font-semibold">Következő</span> koppintásával egyetértesz a     <a class="font-semibold text-link" target="_blank" href="https://exodus90.com/terms/">Feltételek</a>
+ ünkkel
+  </p>
+  <div class="grid grid-cols-2 gap-4 max-w-screen-xl mx-auto">
+    <button name="button" type="button" class="btn-outline text-lg" data-auth-phone-target="toggleBtn" data-action="auth-phone#toggleEmail">
+      <span class="group-[.email]/auth:hidden">
+        E-mail használata
+      </span>
+      <span class="hidden group-[.email]/auth:inline">
+        Telefon használata
+      </span>
+</button>    <button name="button" type="button" class="btn-primary text-lg font-semibold" data-auth-phone-target="submitBtn" data-action="auth-phone#requestSubmit" disabled="disabled">
+      <div class="group-[.submitted]/auth:hidden">
+        Következő
+      </div>
+      <div class="hidden group-[.submitted]/auth:block"><div class="flex gap-2 items-center justify-center text-white p-1">
+  <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+  </svg>
+  
+</div></div>
+</button>  </div>
+
+
+
+    <div class="hidden group-[.playing]:block group-[.playerfab-hidden]/page:hidden 
+    absolute z-[1001] top-[-50px] right-2.5 web:right-3  root:-mt-navbar web:-mt-2">
+      <button name="button" type="button" data-controller="playerfab" data-action="playerfab#open exodus:refresh@document-&gt;playerfab#refresh" data-turbo-permanent="" class="size-11 rounded-full bg-orange-tint dark:bg-xgray-800 text-orange shadow-lg shadow-dark/25 flex items-center justify-center">
+        <div class="size-4 grid grid-cols-5 ">
+  <svg xmlns="http://www.w3.org/2000/svg" class="group-[.playing]:animate-spring h-full" fill="currentColor" viewBox="0 0 5 25">
+    <rect width="5" height="25" y=".116" rx="2.5"/>
+  </svg>
+  <div></div>
+  <svg xmlns="http://www.w3.org/2000/svg" class="group-[.playing]:animate-spring h-full" style="animation-delay:200ms" fill="currentColor" viewBox="0 0 5 25">
+    <rect width="5" height="25" y=".116" rx="2.5"/>
+  </svg>
+  <div></div>
+  <svg xmlns="http://www.w3.org/2000/svg" class="group-[.playing]:animate-spring h-full" fill="currentColor" viewBox="0 0 5 25">
+    <rect width="5" height="25" y=".116" rx="2.5"/>
+  </svg>
+</div>
+</button></div></footer>
+</div>
+</div>
+      <input type="hidden" name="cache-manager" id="cache-manager" value="" data-controller="cache" data-turbo-permanent="" data-action="turbo:visit@document-&gt;cache#visit turbo:before-cache@document-&gt;cache#beforeCache 
+      turbo:before-stream-render@document-&gt;cache#beforeStreamRender turbo:render@document-&gt;cache#render 
+      exodus:native-modal-dismissed@document-&gt;cache#nativeModalDismissed" autocomplete="off" />
+
+      <div id="player" data-controller="player" data-player-modals-outlet="body" data-turbo-permanent="" data-action="turbo:load@document-&gt;player#refresh turbo:frame-load@document-&gt;player#refresh 
+      exodus:player-open@document-&gt;player#open exodus:player-state@document-&gt;player#updatePlayingState">
+          <audio data-controller="audio" data-audio-player-outlet="#player" data-action="timeupdate-&gt;audio#progressed ended-&gt;audio#ended 
+          waiting-&gt;audio#buffering canplay-&gt;audio#buffered seeking-&gt;audio#buffering seeked-&gt;audio#buffered
+          play-&gt;audio#played pause-&gt;audio#paused exodus:player-playpause@document-&gt;audio#playPaused 
+          exodus:player-seek@document-&gt;audio#seeked exodus:player-nudge@document-&gt;audio#nudged"></audio>
+</div>    
+        <div class="hidden">
+          <div id="map" data-turbo-permanent="" data-controller="map" data-action="exodus:tab-change@document-&gt;map#tabChange exodus:community-select@document-&gt;map#communitySelect 
+turbo:visit@document-&gt;map#visit exodus:member-remove@document-&gt;map#leftCommunity">
+  <div data-map-target="container" class="leaflet-container w-full h-[100vh]"></div>
+</div>
+        </div>    
+
+    <div data-modals-target="overlay" data-action="transitionend->modals#afterClose" 
+    class="fixed inset-0 bg-black transition-opacity duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0 
+    hidden opacity-0 group-[.modal-open]:opacity-40"></div>
+
+    <div id="modals">
+      
+    </div>
+
+    <div id="root-modals" data-turbo-permanent>
+      <div id="modal-discipline" data-controller="discipline-editor modal" data-discipline-editor-modals-outlet="body" data-action="modals:open-&gt;discipline-editor#open turbo:frame-load-&gt;modal#frameLoaded touchmove-&gt;modals#drag:passive touchstart-&gt;modals#dragStart:passive touchend-&gt;modals#dragEnd:passive" data-modal-modals-outlet="body" data-modal-style="half" class="hidden group/modal modal touch-none fixed z-20 inset-x-0 -bottom-20 data-[fullscreen]:inset-y-0 pb-24 native:pb-20
+data-[fullscreen]:pb-0 data-[fullscreen]:native:pb-0 text-white overflow-hidden flex flex-col translate-y-full data-[open]:translate-y-0 
+transition-all duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0
+bg-gradient rounded-t-3xl data-[fullscreen]:rounded-t-none shadow-[0px_0px_16px_0px_rgba(0,0,0,0.25)]">
+
+<div class="modal-handle px-4 pt-4 w-full flex items-start justify-between">
+  <div class="size-8"></div>
+  <div class="hidden touch:block group-[.busy]/modal:block relative rounded-full h-2 w-16 bg-white/45 transition-transform group-[.busy]/modal:scale-150">
+    <div class="hidden group-[.busy]/modal:block absolute animate-pong opacity-0 rounded-full size-2 transition-all bg-white/90"></div>
+  </div>
+  <button class="touch:invisible size-8 flex items-center justify-center opacity-90" data-action="modals#close">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 14 14">
+      <path d="m6.575 7.975-4.9 4.9a.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275.948.948 0 0 1-.275-.7.95.95 0 0 1 .275-.7l4.9-4.9-4.9-4.9A.948.948 0 0 1 0 .975a.95.95 0 0 1 .275-.7.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275l4.9 4.9 4.9-4.9a.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7l-4.9 4.9 4.9 4.9a.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275l-4.9-4.9Z"/>
+    </svg>
+  </button>
+</div>
+
+    
+  <div class="max-w-screen-sm mx-auto w-full">
+    <form data-action="discipline-editor#submit" data-discipline-editor-target="form" action="#" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="1PufUF2D7GTSY2-ZLPj0bveDiUAEkW5wtHy2NhwOxp6AntBeHBWajjudLct9JZEWKY0ayZRuEvK4S5Tfk4DnXg" autocomplete="off" />
+      <div class="modal-body flex flex-col gap-6 osk:pb-osk duration-300">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="group-[.user-discipline]/modal:hidden relative text-5xl size-16 shrink-0">
+              <i data-discipline-editor-target="icon"></i>
+              <i data-discipline-editor-target="iconOverlay" class="group-[.user-discipline]/modal:hidden far fa-slash absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+            </div>
+            <h1 class="text-2xl font-medium grow">
+              <span data-discipline-editor-target="title" class="group-[.user-discipline]/modal:hidden"></span>
+              <span class="hidden group-[.user-discipline.new]/modal:inline">
+                Új fegyelem létrehozása
+              </span>
+              <span class="hidden group-[.user-discipline.edit]/modal:inline">
+                Fegyelem szerkesztése
+              </span>
+            </h1>
+          </div>
+          <p data-discipline-editor-target="description" class="group-[.user-discipline]/modal:hidden"></p>
+        </div>
+
+        <div class="group/field w-full group-[.program-discipline]/modal:hiddenf">
+          <label class="flex items-center gap-2 mb-2 font-semibold text-lg" for="title">
+            Cím
+            <div class="scale-0 group-[.error]/field:scale-100 duration-200 flex items-center gap-1 rounded-full bg-red-200 py-0.5 pl-1 pr-2 text-sm text-red-600">
+              <svg class="size-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75s9.75-4.365 9.75-9.75S17.385 2.25 12 2.25m0 4.627a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0v-5.5a.75.75 0 0 1 .75-.75m.75 8.996v.5a.75.75 0 0 1-1.5 0v-.5a.75.75 0 0 1 1.5 0" fill="currentColor"/>
+              </svg>
+              Adj meg egy címet
+            </div>
+</label>          <input data-discipline-editor-target="titleInput" data-action="discipline-editor#fieldChanged" class="text-xgray-700 w-full rounded-lg bg-white py-3 px-4 border border-xgray-300" type="text" name="title" id="title" />
+        </div>
+
+        <div class="group/field w-full group-[.program-discipline]/modal:hidden">
+          <label class="flex items-center gap-2 mb-2 font-semibold text-lg" for="type">
+            Típus
+            <div class="scale-0 group-[.error]/field:scale-100 duration-200 flex items-center gap-1 rounded-full bg-red-200 py-0.5 pl-1 pr-2 text-sm text-red-600">
+              <svg class="size-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75s9.75-4.365 9.75-9.75S17.385 2.25 12 2.25m0 4.627a.75.75 0 0 1 .75.75v5.5a.75.75 0 0 1-1.5 0v-5.5a.75.75 0 0 1 .75-.75m.75 8.996v.5a.75.75 0 0 1-1.5 0v-.5a.75.75 0 0 1 1.5 0" fill="currentColor"/>
+              </svg>
+              Válassz egyet
+            </div>
+</label>          <div class="flex gap-4">
+            <div class="flex-1 truncate">
+              <input class="hidden peer" data-discipline-editor-target="typeAdding" data-action="discipline-editor#fieldChanged" type="radio" value="adding" checked="checked" name="type" id="type_adding" />
+              <label class="flex p-4 gap-2 items-center justify-center rounded-lg border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold" for="type_adding">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-8 shrink-0" fill="currentColor" viewBox="0 0 33 32">
+                  <path d="M15.167 22.667h2.666v-5.333h5.334v-2.667h-5.334V9.334h-2.666v5.333H9.833v2.667h5.334v5.333Zm1.333 6.667c-1.845 0-3.578-.35-5.2-1.051a13.486 13.486 0 0 1-4.233-2.85 13.432 13.432 0 0 1-2.85-4.233c-.7-1.623-1.05-3.356-1.05-5.2-.001-1.843.349-3.577 1.05-5.2a13.496 13.496 0 0 1 2.85-4.233 13.445 13.445 0 0 1 4.233-2.85c1.624-.7 3.357-1.05 5.2-1.05s3.576.35 5.2 1.05c1.624.701 3.035 1.65 4.233 2.85a13.516 13.516 0 0 1 2.851 4.233c.702 1.623 1.052 3.357 1.05 5.2-.003 1.844-.354 3.577-1.051 5.2a13.376 13.376 0 0 1-2.85 4.234 13.545 13.545 0 0 1-4.233 2.85c-1.62.702-3.354 1.051-5.2 1.05Zm0-2.667c2.978 0 5.5-1.033 7.567-3.1 2.066-2.067 3.1-4.589 3.1-7.567 0-2.977-1.034-5.5-3.1-7.566-2.067-2.067-4.59-3.1-7.567-3.1-2.978 0-5.5 1.033-7.567 3.1-2.066 2.066-3.1 4.589-3.1 7.566 0 2.978 1.034 5.5 3.1 7.567 2.067 2.067 4.59 3.1 7.567 3.1Z"/>
+                </svg>
+                <p class="text-sm truncate">
+                  Hozzáadás
+                </p>
+</label>            </div>
+            <div class="flex-1 truncate">
+              <input class="hidden peer" data-discipline-editor-target="typeAbstaining" data-action="discipline-editor#fieldChanged" type="radio" value="abstaining" name="type" id="type_abstaining" />
+              <label class="flex p-4 gap-2 items-center justify-center rounded-lg border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold" for="type_abstaining">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-8 shrink-0" fill="currentColor" viewBox="0 0 33 32">
+                  <path d="M16.5 29.334c-1.844 0-3.578-.35-5.2-1.051a13.486 13.486 0 0 1-4.233-2.85 13.432 13.432 0 0 1-2.85-4.233c-.7-1.623-1.05-3.356-1.05-5.2-.001-1.843.35-3.577 1.05-5.2a13.495 13.495 0 0 1 2.85-4.233 13.445 13.445 0 0 1 4.233-2.85c1.624-.7 3.357-1.05 5.2-1.05s3.576.35 5.2 1.05c1.624.701 3.035 1.65 4.233 2.85a13.514 13.514 0 0 1 2.851 4.233c.702 1.623 1.052 3.357 1.05 5.2-.003 1.844-.354 3.577-1.051 5.2a13.378 13.378 0 0 1-2.85 4.234 13.545 13.545 0 0 1-4.233 2.85c-1.62.702-3.354 1.051-5.2 1.05Zm0-2.667c1.2 0 2.356-.194 3.467-.583a10.57 10.57 0 0 0 3.066-1.684L8.1 9.467a10.612 10.612 0 0 0-1.684 3.067A10.383 10.383 0 0 0 5.833 16c0 2.978 1.034 5.5 3.1 7.567 2.067 2.067 4.59 3.1 7.567 3.1Zm8.4-4.133a10.614 10.614 0 0 0 1.684-3.067c.39-1.111.584-2.267.583-3.467 0-2.977-1.034-5.5-3.1-7.566-2.067-2.067-4.59-3.1-7.567-3.1-1.2 0-2.355.194-3.467.582A10.57 10.57 0 0 0 9.967 7.6L24.9 22.534Z"/>
+                </svg>
+                <p class="text-sm truncate">
+                  Tartózkodás
+                </p>
+</label>            </div>
+          </div>
+        </div>
+
+        <div class="group/field">
+          <label class="block mb-2 font-semibold text-lg">
+            Ütemezés
+          </label>
+          <div class="flex items-center gap-2 w-full">
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="1" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  v
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="2" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  h
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="4" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  k
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="8" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  s
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="16" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  c
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="32" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  p
+                </div>
+              </label>
+              <label class="w-full">
+                <input type="checkbox" name="days[]" id="days" value="64" checked="checked" class="hidden peer" data-discipline-editor-target="weekday" data-action="discipline-editor#fieldChanged" />
+                <div class="flex items-center justify-center rounded-lg aspect-square border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold">
+                  s
+                </div>
+              </label>
+          </div>
+        </div>
+
+        <div class="group/field">
+          <div class="group/remind">
+            <label class="flex items-center cursor-pointer py-2">
+              <div class="grow">
+                <p class="font-semibold">Reminder</p>
+                <p class="text-sm">Receive a notification at the specified time on active days</p>
+              </div>
+              <input type="checkbox" name="reminder" value="1" data-discipline-editor-target="reminderCheckbox" class="sr-only peer" />
+              <div class="shrink-0 relative peer w-[50px] h-8 bg-black/10 rounded-full peer-checked:after:translate-x-[18px] peer-checked:after:border-white peer-checked:after:dark:border-xgray-200 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:dark:bg-xgray-200 after:border-black/10 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-emerald-500 opacity-90 peer-checked:opacity-100"></div>
+            </label>
+            <div class="grid duration-300 grid-rows-[0fr] group-has-[.peer:checked]/remind:grid-rows-[1fr]">
+              <div class="overflow-hidden">
+                <div class="mt-1 mb-3 flex items-center gap-2">
+                  <input type="time" name="reminder_time" id="reminder_time" value="08:00" data-discipline-editor-target="reminderTime" class="text-xgray-700 placeholder-xgray-400 w-full rounded-lg bg-white py-3 px-4 border border-xgray-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <label class="flex items-center cursor-pointer py-2 mb-2">
+            <div class="grow">
+              <p class="font-semibold">Streaks</p>
+              <p class="text-sm">Counts the <em>consecutive</em> number of discipline completions</p>
+            </div>
+            <input type="checkbox" name="show_streaks" value="1" data-discipline-editor-target="streaksCheckbox" class="sr-only peer" />
+            <div class="shrink-0 relative peer w-[50px] h-8 bg-black/10 rounded-full peer-checked:after:translate-x-[18px] peer-checked:after:border-white peer-checked:after:dark:border-xgray-200 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:dark:bg-xgray-200 after:border-black/10 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-emerald-500 opacity-90 peer-checked:opacity-100"></div>
+          </label>
+
+          <div class="group/tallies">
+            <label class="flex items-center cursor-pointer py-2">
+              <div class="grow">
+                <p class="font-semibold">Tallies</p>
+                <p class="text-sm">Counts the <em>total</em> number of discipline completions</p>
+              </div>
+              <input type="checkbox" name="show_tallies" value="1" data-discipline-editor-target="talliesCheckbox" class="sr-only peer tallies" />
+              <div class="shrink-0 relative peer w-[50px] h-8 bg-black/10 rounded-full peer-checked:after:translate-x-[18px] peer-checked:after:border-white peer-checked:after:dark:border-xgray-200 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:dark:bg-xgray-200 after:border-black/10 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-emerald-500 opacity-90 peer-checked:opacity-100"></div>
+            </label>
+
+            <div class="grid duration-150 grid-rows-[0fr] group-has-[.tallies:checked]/tallies:grid-rows-[1fr]">
+              <div class="overflow-hidden">
+                <div class="flex gap-2 pb-4">
+                  <div class="flex-1 truncate">
+                    <input data-discipline-editor-target="tallyTotal" class="hidden peer" type="radio" value="total" name="tally_type" id="tally_type_total" />
+                    <label class="flex px-2 py-1.5 items-center justify-center rounded-lg border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold" for="tally_type_total">
+                      <p class="text-sm truncate">
+                        All Time
+                      </p>
+</label>                  </div>
+                  <div class="flex-1 truncate">
+                    <input data-discipline-editor-target="tallyProgram" class="hidden peer" type="radio" value="program" name="tally_type" id="tally_type_program" />
+                    <label class="flex px-2 py-1.5 items-center justify-center rounded-lg border border-orange-shade bg-orange-shade/50 peer-checked:border-white peer-checked:bg-black/30 peer-checked:font-semibold" for="tally_type_program">
+                      <p class="text-sm truncate">
+                        Current Challenge
+                      </p>
+</label>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="group/field group-[.program-discipline]/modal:hidden">
+          <label class="flex items-center gap-2 mb-2 font-semibold text-lg">
+            Color
+          </label>
+          <div class="flex items-center justify-center w-full mb-4">
+            <div class="grid grid-cols-5 grid-rows-2 gap-3">
+              
+              <div class="hidden bg-xorange bg-xred bg-xgold bg-xsilver bg-xgreen bg-xteal bg-xblue bg-xpurple bg-xrose bg-xblack"></div>
+              
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="orange" checked="checked" name="color" id="color_orange" />
+                  <label class="rounded-full block size-12 bg-xorange border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_orange">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="red" name="color" id="color_red" />
+                  <label class="rounded-full block size-12 bg-xred border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_red">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="gold" name="color" id="color_gold" />
+                  <label class="rounded-full block size-12 bg-xgold border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_gold">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="silver" name="color" id="color_silver" />
+                  <label class="rounded-full block size-12 bg-xsilver border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_silver">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="green" name="color" id="color_green" />
+                  <label class="rounded-full block size-12 bg-xgreen border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_green">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="teal" name="color" id="color_teal" />
+                  <label class="rounded-full block size-12 bg-xteal border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_teal">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="blue" name="color" id="color_blue" />
+                  <label class="rounded-full block size-12 bg-xblue border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_blue">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="purple" name="color" id="color_purple" />
+                  <label class="rounded-full block size-12 bg-xpurple border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_purple">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="rose" name="color" id="color_rose" />
+                  <label class="rounded-full block size-12 bg-xrose border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_rose">
+</label>                </div>
+                <div>
+                  <input class="peer hidden" data-discipline-editor-target="color" type="radio" value="black" name="color" id="color_black" />
+                  <label class="rounded-full block size-12 bg-xblack border border-white transition-transform peer-[:checked]:border-2 peer-[:checked]:scale-[1.2]" for="color_black">
+</label>                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
+    <div class="modal-footer web:pb-4 pt-6">
+      <button name="button" type="button" class="btn-gradient-modal w-full py-3 text-xgray-700 text-lg font-semibold" data-action="discipline-editor#requestSubmit">Mentés</button>
+
+      <div class="hidden group-[.user-discipline.edit]/modal:flex items-center justify-center mt-5">
+        <form data-discipline-editor-target="deleteForm" data-action="discipline-editor#delete" class="button_to" method="post" action="#"><input type="hidden" name="_method" value="delete" autocomplete="off" /><button type="submit">Fegyelem eltávolítása</button><input type="hidden" name="authenticity_token" value="5RBsPtfWXNGOyTVO1rBaVfl7JV20NHPst_x8dYk_Owrnf10UYl--FMrn6I9PyplaYQs7aTtX3Y0nigGpgvzdsA" autocomplete="off" /></form>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+      <div id="modal-brothers-picker" data-controller=" modal" data-action=" turbo:frame-load-&gt;modal#frameLoaded touchmove-&gt;modals#drag:passive touchstart-&gt;modals#dragStart:passive touchend-&gt;modals#dragEnd:passive" data-modal-modals-outlet="body" data-modal-style="half" class="hidden group/modal modal touch-none fixed z-20 inset-x-0 -bottom-20 data-[fullscreen]:inset-y-0 pb-24 native:pb-20
+data-[fullscreen]:pb-0 data-[fullscreen]:native:pb-0 text-white overflow-hidden flex flex-col translate-y-full data-[open]:translate-y-0 
+transition-all duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0
+bg-gradient rounded-t-3xl data-[fullscreen]:rounded-t-none shadow-[0px_0px_16px_0px_rgba(0,0,0,0.25)]">
+
+<div class="modal-handle px-4 pt-4 w-full flex items-start justify-between">
+  <div class="size-8"></div>
+  <div class="hidden touch:block group-[.busy]/modal:block relative rounded-full h-2 w-16 bg-white/45 transition-transform group-[.busy]/modal:scale-150">
+    <div class="hidden group-[.busy]/modal:block absolute animate-pong opacity-0 rounded-full size-2 transition-all bg-white/90"></div>
+  </div>
+  <button class="touch:invisible size-8 flex items-center justify-center opacity-90" data-action="modals#close">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 14 14">
+      <path d="m6.575 7.975-4.9 4.9a.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275.948.948 0 0 1-.275-.7.95.95 0 0 1 .275-.7l4.9-4.9-4.9-4.9A.948.948 0 0 1 0 .975a.95.95 0 0 1 .275-.7.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275l4.9 4.9 4.9-4.9a.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7l-4.9 4.9 4.9 4.9a.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275l-4.9-4.9Z"/>
+    </svg>
+  </button>
+</div>
+
+    <div class="grid duration-300 group-[.busy]/modal:grid-rows-[0fr] grid-rows-[1fr] [&>turbo-frame]:block [&>turbo-frame]:overflow-hidden">
+      <turbo-frame loading="lazy" id="brothers_picker_frame" target="_top"></turbo-frame>
+    </div>
+  
+</div>
+      <div id="modal-brother" data-controller=" modal" data-action=" turbo:frame-load-&gt;modal#frameLoaded touchmove-&gt;modals#drag:passive touchstart-&gt;modals#dragStart:passive touchend-&gt;modals#dragEnd:passive" data-modal-modals-outlet="body" data-modal-style="half" class="hidden group/modal modal touch-none fixed z-20 inset-x-0 -bottom-20 data-[fullscreen]:inset-y-0 pb-24 native:pb-20
+data-[fullscreen]:pb-0 data-[fullscreen]:native:pb-0 text-white overflow-hidden flex flex-col translate-y-full data-[open]:translate-y-0 
+transition-all duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0
+bg-gradient rounded-t-3xl data-[fullscreen]:rounded-t-none shadow-[0px_0px_16px_0px_rgba(0,0,0,0.25)]">
+
+<div class="modal-handle px-4 pt-4 w-full flex items-start justify-between">
+  <div class="size-8"></div>
+  <div class="hidden touch:block group-[.busy]/modal:block relative rounded-full h-2 w-16 bg-white/45 transition-transform group-[.busy]/modal:scale-150">
+    <div class="hidden group-[.busy]/modal:block absolute animate-pong opacity-0 rounded-full size-2 transition-all bg-white/90"></div>
+  </div>
+  <button class="touch:invisible size-8 flex items-center justify-center opacity-90" data-action="modals#close">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 14 14">
+      <path d="m6.575 7.975-4.9 4.9a.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275.948.948 0 0 1-.275-.7.95.95 0 0 1 .275-.7l4.9-4.9-4.9-4.9A.948.948 0 0 1 0 .975a.95.95 0 0 1 .275-.7.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275l4.9 4.9 4.9-4.9a.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7l-4.9 4.9 4.9 4.9a.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275l-4.9-4.9Z"/>
+    </svg>
+  </button>
+</div>
+
+    <div class="grid duration-300 group-[.busy]/modal:grid-rows-[0fr] grid-rows-[1fr] [&>turbo-frame]:block [&>turbo-frame]:overflow-hidden">
+      <turbo-frame loading="lazy" id="brother_frame" target="_top"></turbo-frame>
+    </div>
+  
+</div>
+      <div id="modal-community-picker" data-controller="community-picker modal" data-community-picker-modals-outlet="body" data-action=" turbo:frame-load-&gt;modal#frameLoaded touchmove-&gt;modals#drag:passive touchstart-&gt;modals#dragStart:passive touchend-&gt;modals#dragEnd:passive" data-modal-modals-outlet="body" data-modal-style="half" class="hidden group/modal modal touch-none fixed z-20 inset-x-0 -bottom-20 data-[fullscreen]:inset-y-0 pb-24 native:pb-20
+data-[fullscreen]:pb-0 data-[fullscreen]:native:pb-0 text-white overflow-hidden flex flex-col translate-y-full data-[open]:translate-y-0 
+transition-all duration-300 group-[.modal-drag]:transition-none group-[.modal-drag]:duration-0
+bg-gradient rounded-t-3xl data-[fullscreen]:rounded-t-none shadow-[0px_0px_16px_0px_rgba(0,0,0,0.25)]">
+
+<div class="modal-handle px-4 pt-4 w-full flex items-start justify-between">
+  <div class="size-8"></div>
+  <div class="hidden touch:block group-[.busy]/modal:block relative rounded-full h-2 w-16 bg-white/45 transition-transform group-[.busy]/modal:scale-150">
+    <div class="hidden group-[.busy]/modal:block absolute animate-pong opacity-0 rounded-full size-2 transition-all bg-white/90"></div>
+  </div>
+  <button class="touch:invisible size-8 flex items-center justify-center opacity-90" data-action="modals#close">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 14 14">
+      <path d="m6.575 7.975-4.9 4.9a.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275.948.948 0 0 1-.275-.7.95.95 0 0 1 .275-.7l4.9-4.9-4.9-4.9A.948.948 0 0 1 0 .975a.95.95 0 0 1 .275-.7.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275l4.9 4.9 4.9-4.9a.948.948 0 0 1 .7-.275.95.95 0 0 1 .7.275.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7l-4.9 4.9 4.9 4.9a.948.948 0 0 1 .275.7.948.948 0 0 1-.275.7.948.948 0 0 1-.7.275.948.948 0 0 1-.7-.275l-4.9-4.9Z"/>
+    </svg>
+  </button>
+</div>
+
+    
+  <div class="max-w-screen-sm mx-auto w-full modal-body">
+    <h1 class="text-2xl font-medium mb-4">
+      Közösségeim
+    </h1>
+
+    <button name="button" type="button" class="rounded-lg bg-black/10 w-full mb-1 flex items-center gap-3 py-2 px-3" data-action="community-picker#browse">
+      <svg class="size-8 p-1" viewBox="0 0 376 384" xmlns="http://www.w3.org/2000/svg">
+        <path d="m267 235l106 106l-32 32l-106-106v-17l-6-6q-39 33-90 33q-58 0-98.5-40.5T0 138.5t40.5-98t98-40.5t98 40.5T277 139q0 51-33 90l6 6h17zm-128 0q40 0 68-28t28-68t-28-68t-68-28t-68 28t-28 68t28 68t68 28z" fill="currentColor"/>
+      </svg>
+      Összes közösség böngészése
+</button>  </div>
+
+  
+</div>
+    </div>
+
+    <div id="reader-settings" data-controller="reader-settings" class="z-20 p-8 dark:bg-xgray-900 dark:text-white font-sans duration-300 hidden transition-transform translate-y-[150%] data-[open]:translate-y-0 
+fixed inset-x-4 bottom-4 native:bottom-safe-b bg-white rounded-2xl shadow-[0px_0px_16px_0px_rgba(0,0,0,0.25)]">
+<turbo-frame id="reader-settings-frame">
+  <form class="max-w-screen-sm mx-auto" data-reader-settings-target="form" action="/readings/settings" accept-charset="UTF-8" method="post"><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="xpUFSDMtsqvHIrriF3A9HUudMwVSlxoLxDPe5lN8W79xgGyGBeyQIh1YueWVGWYfccX6UOBTYGnZaI_TQjF1tA" autocomplete="off" />
+    <h3 class="text-2xl font-medium mb-6">
+      Olvasó beállításai
+    </h3>
+    <p class="font-semibold mb-2">
+      Betűméret
+    </p>
+    <div class="flex gap-3 mb-6">
+      <div class="flex-1">
+        <input class="hidden peer" data-action="reader-settings#fontSize" data-size="1rem" type="radio" value="normal" checked="checked" name="user[font_size]" id="user_font_size_normal" />
+        <label class="aspect-square flex flex-col items-center justify-center bg-orange-tint rounded-lg dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_font_size_normal">
+          <p class="font-reader text-lg">Aa</p>
+          <p class="text-sm">
+            Normál
+          </p>
+</label>      </div>
+      <div class="flex-1">
+        <input class="hidden peer" data-action="reader-settings#fontSize" data-size="1.1rem" type="radio" value="large" name="user[font_size]" id="user_font_size_large" />
+        <label class="aspect-square flex flex-col items-center justify-center bg-orange-tint rounded-lg dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_font_size_large">
+          <p class="font-reader text-2xl">Aa</p>
+          <p class="text-sm">
+            Nagy
+          </p>
+</label>      </div>
+      <div class="flex-1">
+        <input class="hidden peer" data-action="reader-settings#fontSize" data-size="1.2rem" type="radio" value="extra_large" name="user[font_size]" id="user_font_size_extra_large" />
+        <label class="aspect-square flex flex-col items-center justify-center bg-orange-tint rounded-lg dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_font_size_extra_large">
+          <p class="font-reader text-3xl">Aa</p>
+          <p class="text-sm">
+            Legnagyobb
+          </p>
+</label>      </div>
+    </div>
+
+    <p class="font-semibold mb-2">
+      Megjelenés
+    </p>
+
+    <div class="flex gap-3 mb-6">
+        <div class="flex-1">
+          <input class="hidden peer" data-action="reader-settings#displayMode dark#update" data-dark-value-param="light" type="radio" value="light" name="user[display_mode]" id="user_display_mode_light" />
+          <label class="py-2 flex flex-col items-center justify-center bg-orange-tint dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_display_mode_light">Világos</label>
+        </div>
+        <div class="flex-1">
+          <input class="hidden peer" data-action="reader-settings#displayMode dark#update" data-dark-value-param="dark" type="radio" value="dark" name="user[display_mode]" id="user_display_mode_dark" />
+          <label class="py-2 flex flex-col items-center justify-center bg-orange-tint dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_display_mode_dark">Sötét</label>
+        </div>
+        <div class="flex-1">
+          <input class="hidden peer" data-action="reader-settings#displayMode dark#update" data-dark-value-param="system" type="radio" value="system" checked="checked" name="user[display_mode]" id="user_display_mode_system" />
+          <label class="py-2 flex flex-col items-center justify-center bg-orange-tint dark:bg-xgray-900 dark:peer-checked:bg-orange/30 rounded-lg text-orange dark:text-white border-2 border-orange-tint dark:border-xgray-800 peer-checked:border-orange" for="user_display_mode_system">Rendszer</label>
+        </div>
+    </div>
+  
+    <button name="button" type="button" class="btn-gradient border border-xgray-300 dark:border-xgray-700 py-3 text-lg font-semibold w-full" data-action="reader-settings#done">Kész</button>
+</form></turbo-frame>
+</div>
+
+</body></html>

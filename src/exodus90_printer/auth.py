@@ -49,8 +49,9 @@ def _find_code_form(page: str) -> CodeForm:
     soup = BeautifulSoup(page, "lxml")
     for form in soup.find_all("form"):
         action, hidden, text_fields = _parse_form(form)
-        if text_fields and all(field not in _LOGIN_TEXT_FIELDS for field in text_fields):
-            return CodeForm(action=action, fields=hidden, code_field=text_fields[0])
+        code_fields = [field for field in text_fields if field not in _LOGIN_TEXT_FIELDS]
+        if code_fields:
+            return CodeForm(action=action, fields=hidden, code_field=code_fields[0])
     raise AuthError("Could not find the verification code form. The app layout may have changed.")
 
 
@@ -63,9 +64,12 @@ def request_otp(client: ExodusClient, email: str) -> CodeForm:
     data["mode"] = "email"
     data.pop("phone", None)
     data.pop("phone_formatted", None)
-    response = client.post(action, data=data)
-    if response.status_code in (301, 302, 303) and response.headers.get("location"):
-        response = client.get(response.headers["location"])
+    try:
+        response = client.post(action, data=data)
+        if response.status_code in (301, 302, 303) and response.headers.get("location"):
+            response = client.get(response.headers["location"])
+    except SessionExpiredError as exc:
+        raise AuthError("Could not complete login. Check the email address and try again.") from exc
     return _find_code_form(response.text)
 
 

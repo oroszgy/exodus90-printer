@@ -21,6 +21,8 @@ def fetch_days(client: ExodusClient, program_id: int) -> list[Day]:
     days: list[Day] = []
     for button in soup.select("button[data-reading-date]"):
         day_id = str(button.get("data-modal") or "")
+        if not day_id:
+            raise FetchError("Could not parse the day list; the app layout may have changed.")
         try:
             reading_date = date.fromisoformat(str(button["data-reading-date"]))
         except (ValueError, KeyError) as exc:

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from exodus90_printer.exceptions import NoReadingForDateError
+from exodus90_printer.exceptions import FetchError, NoReadingForDateError
 from exodus90_printer.models import Day
 from exodus90_printer.scraper import (
     fetch_days,
@@ -71,6 +71,13 @@ def test_fetch_days_rejects_date(program_client: _FakeClient) -> None:
     days = fetch_days(program_client, 208)  # type: ignore[arg-type]
     with pytest.raises(NoReadingForDateError):
         find_day(days, date(2026, 1, 1))
+
+
+def test_fetch_days_missing_data_modal_raises(program_client: _FakeClient) -> None:
+    html = program_client.pages["/programs/208/days"].replace('data-modal="program_day_3320"', "")
+    program_client.pages["/programs/208/days"] = html
+    with pytest.raises(FetchError):
+        fetch_days(program_client, 208)  # type: ignore[arg-type]
 
 
 def test_fetch_reading_extracts_markdown(program_client: _FakeClient) -> None:
