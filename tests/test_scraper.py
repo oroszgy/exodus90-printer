@@ -27,8 +27,10 @@ class _FakeResponse:
 class _FakeClient:
     def __init__(self, pages: dict[str, str]) -> None:
         self.pages = pages
+        self.requests: list[tuple[str, dict[str, str]]] = []
 
-    def get(self, path: str, **_kwargs: object) -> _FakeResponse:
+    def get(self, path: str, headers: dict[str, str] | None = None, **_: object) -> _FakeResponse:
+        self.requests.append((path, headers or {}))
         return _FakeResponse(self.pages[path])
 
 
@@ -36,7 +38,7 @@ class _FakeClient:
 def program_client() -> _FakeClient:
     return _FakeClient(
         {
-            "/programs/208": (FIXTURES / "program_page.html").read_text(),
+            "/programs/208/days": (FIXTURES / "days_page.html").read_text(),
             "/readings/program_day_3320": (FIXTURES / "reading_page.html").read_text(),
         }
     )
@@ -50,6 +52,14 @@ def test_fetch_days_maps_date_to_day(program_client: _FakeClient) -> None:
     assert by_date[date(2026, 8, 1)].scripture == "Kiv 14,10-20"
     assert by_date[date(2026, 8, 10)].day_id == "program_day_3321"
     assert by_date[date(2026, 8, 10)].title == "Ragaszkodj ahhoz, amit kaptál"
+    assert by_date[date(2026, 8, 10)].scripture == "2Tessz 2,13-3,5"
+
+
+def test_fetch_days_requests_days_frame(program_client: _FakeClient) -> None:
+    fetch_days(program_client, 208)  # type: ignore[arg-type]
+    path, headers = program_client.requests[0]
+    assert path == "/programs/208/days"
+    assert headers.get("Turbo-Frame") == "program_days_frame"
 
 
 def test_fetch_days_returns_all_days(program_client: _FakeClient) -> None:

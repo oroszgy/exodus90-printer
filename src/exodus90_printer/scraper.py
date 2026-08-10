@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 from exodus90_printer.client import ExodusClient
 from exodus90_printer.exceptions import FetchError, NoReadingForDateError
@@ -12,8 +12,11 @@ from exodus90_printer.models import Day, Reading
 
 
 def fetch_days(client: ExodusClient, program_id: int) -> list[Day]:
-    """Fetch the list of days for a program from the program page."""
-    response = client.get(f"/programs/{program_id}")
+    """Fetch the list of days for a program from its days Turbo frame."""
+    response = client.get(
+        f"/programs/{program_id}/days",
+        headers={"Turbo-Frame": "program_days_frame"},
+    )
     soup = BeautifulSoup(response.text, "lxml")
     days: list[Day] = []
     for button in soup.select("button[data-reading-date]"):
@@ -25,7 +28,7 @@ def fetch_days(client: ExodusClient, program_id: int) -> list[Day]:
                 "Could not parse the day list; the app layout may have changed."
             ) from exc
         title_element = button.select_one("p.text-left.grow")
-        title = title_element.get_text(strip=True) if title_element else ""
+        title = _element_text(title_element) if title_element is not None else ""
         days.append(
             Day(
                 day_id=day_id,
@@ -39,11 +42,20 @@ def fetch_days(client: ExodusClient, program_id: int) -> list[Day]:
     return days
 
 
+def _element_text(element: Tag) -> str:
+    """Extract visible text, working around a lxml quirk where get_text can be empty."""
+    text = element.get_text(strip=True)
+    if text:
+        return text
+    string = element.string
+    return string.strip() if string else ""
+
+
 def _scripture_reference(soup: BeautifulSoup, day_id: str) -> str | None:
     heading = soup.select_one(f"#{day_id} h2")
     if heading is None:
         return None
-    text = heading.get_text(strip=True)
+    text = _element_text(heading)
     return text or None
 
 
