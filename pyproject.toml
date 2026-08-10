@@ -1,0 +1,57 @@
+[project]
+name = "exodus90-printer"
+version = "0.1.0"
+description = "Fetch and print the daily readings from the Exodus 90 app"
+readme = "README.md"
+authors = [
+    { name = "Gyorgy Orosz", email = "gyorgy@orosz.link" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "httpx>=0.27",
+    "lxml>=5.3",
+    "markdown>=3.7",
+    "platformdirs>=4.3",
+    "pydantic-settings>=2.6",
+    "typer>=0.15",
+    "xhtml2pdf>=0.2.16",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "respx>=0.21",
+    "ruff>=0.8",
+]
+
+[project.scripts]
+exodus90 = "exodus90_printer.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+
+[tool.ruff.lint.per-file-ignores]
+# typer requires callable defaults for options, which triggers B008.
+"src/exodus90_printer/cli.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+exclude = ["tests/fixtures"]
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]

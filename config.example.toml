@@ -1,0 +1,15 @@
+# Copy to ~/.config/exodus90-printer/config.toml and adjust.
+# All keys are optional; every value can also be set via EXODUS90_* env vars.
+
+base_url = "https://app.exodus90.com"
+program_id = 208
+output_dir = "~/Desktop/exodus90-readings"
+
+# Any subset of: "markdown", "pdf", "print"
+formats = ["pdf", "print"]
+
+# CUPS printer name; omit to use the system default printer.
+printer = "HL-B2080DW_series"
+
+pdf_font_dir = "/usr/share/fonts/liberation-serif-fonts"
+pdf_font_family = "LiberationSerif"
