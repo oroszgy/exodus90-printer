@@ -1,0 +1,48 @@
+name: "Exodus90 Printer"
+version: "0.1.0"
+slug: exodus90_printer
+description: "Fetch and print the daily Exodus 90 reading"
+url: "https://github.com/oroszgy/exodus90-printer"
+arch:
+  - aarch64
+  - amd64
+image: "ghcr.io/oroszgy/exodus90-printer"
+startup: application
+boot: auto
+init: true
+ingress: true
+ingress_port: 8099
+ingress_entry: "/"
+panel_icon: mdi:printer
+map:
+  - type: share
+    read_only: false
+options:
+  schedule: "05:30"
+  timezone: "UTC"
+  email: ""
+  login_code: ""
+  program_id: 208
+  formats:
+    - pdf
+    - print
+  printer_name: "exodus90"
+  printer_uri: ""
+  output_dir: "/share/exodus90-readings"
+  pdf_font_dir: "/usr/share/fonts/truetype/liberation"
+  pdf_retention_days: 30
+  run_on_startup: true
+schema:
+  schedule: str
+  timezone: str
+  email: str
+  login_code: str
+  program_id: int
+  formats:
+    - str
+  printer_name: str
+  printer_uri: str
+  output_dir: str
+  pdf_font_dir: str
+  pdf_retention_days: int
+  run_on_startup: bool
