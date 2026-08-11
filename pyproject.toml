@@ -3,6 +3,8 @@ name = "exodus90-printer"
 version = "0.1.0"
 description = "Fetch and print the daily readings from the Exodus 90 app"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Gyorgy Orosz", email = "gyorgy@orosz.link" }
 ]
@@ -30,6 +32,10 @@ dev = [
 [project.scripts]
 exodus90 = "exodus90_printer.cli:app"
 
+[project.urls]
+Repository = "https://github.com/oroszgy/exodus90-printer"
+Issues = "https://github.com/oroszgy/exodus90-printer/issues"
+
 [build-system]
 requires = ["uv_build>=0.8.4,<0.9.0"]
 build-backend = "uv_build"
@@ -55,3 +61,21 @@ files = ["src", "tests"]
 [tool.pytest.ini_options]
 addopts = "-ra"
 testpaths = ["tests"]
+
+[tool.bumpversion]
+current_version = "0.1.0"
+commit = false
+tag = false
+tag_name = "v{new_version}"
+message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "addon/config.yaml"
+search = 'version: "{current_version}"'
+replace = 'version: "{new_version}"'

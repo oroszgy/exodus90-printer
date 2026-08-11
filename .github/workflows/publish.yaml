@@ -1,0 +1,152 @@
+name: Publish Exodus90 Printer
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "addon/**"
+      - "src/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "scripts/**"
+      - ".github/workflows/*"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pypi_target:
+        description: "PyPI target for the Python package"
+        required: false
+        default: "testpypi"
+        type: choice
+        options:
+          - testpypi
+          - pypi
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  addon:
+    name: Add-on image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version and verify consistency
+        id: version
+        run: |
+          VERSION=$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml | head -n 1)
+          CONFIG_VERSION=$(sed -n 's/^version: *"\(.*\)"$/\1/p' addon/config.yaml)
+          if [ -z "$VERSION" ]; then
+            echo "::error::could not read version from pyproject.toml"
+            exit 1
+          fi
+          if [ "$VERSION" != "$CONFIG_VERSION" ]; then
+            echo "::error::addon/config.yaml version ($CONFIG_VERSION) does not match pyproject.toml version ($VERSION)"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release tag
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+        run: |
+          if [ "${{ github.ref_name }}" != "v${{ steps.version.outputs.version }}" ]; then
+            echo "::error::tag ${{ github.ref_name }} does not match expected v${{ steps.version.outputs.version }}"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::tag ${{ github.ref_name }} does not point to a commit reachable from origin/main"
+            exit 1
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push multi-arch image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: addon/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ (github.event_name == 'push' && github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
+            ghcr.io/${{ github.repository }}:latest
+          labels: |
+            io.hass.version=${{ steps.version.outputs.version }}
+            io.hass.type=app
+            io.hass.arch=aarch64|amd64
+
+      - name: Make GHCR package public
+        if: ${{ (github.event_name == 'push' && github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method PATCH "/user/packages/container/${{ github.event.repository.name }}" \
+            -f visibility=public || \
+            echo "Could not set package visibility automatically; set it manually in GitHub -> Packages."
+
+  pypi:
+    name: Python package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version and verify consistency
+        id: version
+        run: |
+          VERSION=$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml | head -n 1)
+          CONFIG_VERSION=$(sed -n 's/^version: *"\(.*\)"$/\1/p' addon/config.yaml)
+          if [ "$VERSION" != "$CONFIG_VERSION" ]; then
+            echo "::error::addon/config.yaml version ($CONFIG_VERSION) does not match pyproject.toml version ($VERSION)"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release tag
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+        run: |
+          if [ "${{ github.ref_name }}" != "v${{ steps.version.outputs.version }}" ]; then
+            echo "::error::tag ${{ github.ref_name }} does not match expected v${{ steps.version.outputs.version }}"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::tag ${{ github.ref_name }} does not point to a commit reachable from origin/main"
+            exit 1
+          fi
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build distributions
+        run: uv build
+
+      - name: Publish to PyPI
+        if: ${{ (github.event_name == 'push' && github.ref_type == 'tag') || (github.event_name == 'workflow_dispatch' && github.event.inputs.pypi_target == 'pypi') }}
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: uv publish --trusted-publishing never
+
+      - name: Publish to TestPyPI (dry-run rehearsal)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.pypi_target == 'testpypi' }}
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.TESTPYPI_API_TOKEN }}
+        run: uv publish --publish-url https://test.pypi.org/legacy/ --trusted-publishing never

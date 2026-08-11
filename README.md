@@ -24,6 +24,22 @@ uv run exodus90 status     # sanity check
 
 `uv run exodus90 print` renders today's reading using the configured formats.
 
+## Home Assistant add-on
+
+Run the printer as a Home Assistant add-on (standalone container, no CLI
+needed):
+
+1. **Settings → Add-ons → Add-on Store → ⋮ → Repositories →** add
+   `https://github.com/oroszgy/exodus90-printer` and reload.
+2. Install **Exodus90 Printer**, configure your Exodus 90 `email`, `timezone`,
+   `printer_uri`, etc., and start it.
+3. On first start the add-on emails you an OTP; paste it into the `login_code`
+   option and restart to finish login.
+
+See [`addon/DOCS.md`](addon/DOCS.md) for full configuration, printer setup, and
+login details. Multi-arch (amd64/arm64) images are published to
+`ghcr.io/oroszgy/exodus90-printer` on every tagged release.
+
 ## Configuration
 
 Configuration lives in `~/.config/exodus90-printer/config.toml` and can be
@@ -84,6 +100,26 @@ Notes:
   surfaces via its mail/log output.
 - When the session lapses (typically after a few weeks), run `exodus90 login`
   again from a terminal.
+
+## Release process
+
+Releases are tag-driven and fully automated:
+
+```sh
+./scripts/release.sh patch   # or: minor / major
+```
+
+The script verifies you are on a clean, up-to-date `main`, bumps the version in
+`pyproject.toml` and `addon/config.yaml` (and refreshes `uv.lock`) with
+`bump-my-version`, then commits, tags `v<version>`, and pushes both.
+
+Pushing a `v*` tag runs the [publish workflow](.github/workflows/publish.yaml),
+which builds and pushes the multi-arch add-on image to
+`ghcr.io/oroszgy/exodus90-printer:<version>` (+ `:latest`) and builds and
+publishes the `exodus90-printer` package to PyPI. `workflow_dispatch` in the
+Actions tab re-publishes the current `main` to PyPI or to a TestPyPI dry-run
+target. Plain `main` pushes and pull requests only build and validate; nothing
+is published.
 
 ## Development
 

@@ -9,9 +9,12 @@ add-on's own cron schedule.
 1. Add this repository to Home Assistant:
 
    **Settings → Add-ons → Add-on Store → ⋮ → Repositories →** add
-   `https://github.com/oroszgy/exodus90-printer#ha-addon` and reload.
+   `https://github.com/oroszgy/exodus90-printer` and reload.
 2. Install **Exodus90 Printer**.
 3. Configure and start (see below).
+
+Updates appear in the add-on store automatically when a new tagged release is
+published.
 
 ## Configuration
 

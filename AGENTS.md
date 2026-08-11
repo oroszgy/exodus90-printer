@@ -87,3 +87,11 @@ jar) and expire roughly monthly; re-auth is interactive
   lands).
 - `cli.py` uses Typer callable defaults; `B008` is ignored per-file there —
   keep it scoped to that file only.
+
+## Releases
+
+`scripts/release.sh [--dry-run] (major|minor|patch)` bumps the version via
+`uvx bump-my-version bump` (config in `[tool.bumpversion]`), refreshes
+`uv.lock`, and pushes main + `v<version>`; the `publish.yaml` workflow publishes
+the GHCR add-on image and the PyPI package on `v*` tags /
+`workflow_dispatch`. Never edit `version` / `current_version` by hand.
