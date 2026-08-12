@@ -2,7 +2,6 @@
 set -eu
 
 CONFIG_PATH=/data/options.json
-VENV_PYTHON=/app/.venv/bin/python
 
 opt() { jq -r "$1" "$CONFIG_PATH"; }
 
@@ -12,7 +11,6 @@ log() { echo "[exodus90] $*"; }
 SCHEDULE="$(opt '.schedule')"
 TIMEZONE="$(opt '.timezone')"
 EMAIL="$(opt '.email')"
-LOGIN_CODE="$(opt '.login_code')"
 PROGRAM_ID="$(opt '.program_id')"
 FORMATS="$(jq -c '.formats' "$CONFIG_PATH")"
 PRINTER_NAME="$(opt '.printer_name')"
@@ -54,8 +52,17 @@ EOF
 
 log "Configured: program_id=$PROGRAM_ID output_dir=$OUTPUT_DIR formats=$FORMATS tz=$TIMEZONE"
 
+# --- dbus + avahi-daemon (needed for mDNS printer discovery) ---
+log "Starting dbus and avahi-daemon..."
+mkdir -p /run/dbus /var/run/dbus
+dbus-daemon --system --nofork &
+sleep 1
+avahi-daemon --no-drop-root --no-chroot &
+sleep 2
+
 # --- CUPS printer queue ---
-if [ -n "$PRINTER_URI" ]; then
+setup_printer() {
+    local uri="$1"
     log "Starting CUPS..."
     /usr/sbin/cupsd
     for _ in $(seq 1 30); do
@@ -64,42 +71,53 @@ if [ -n "$PRINTER_URI" ]; then
     done
     if [ ! -S /var/run/cups/cups.sock ]; then
         log "ERROR: cupsd did not start; printing will fail."
-    elif ! lpstat -p "$PRINTER_NAME" >/dev/null 2>&1; then
-        if lpadmin -p "$PRINTER_NAME" -E -v "$PRINTER_URI" -m everywhere; then
-            log "Printer queue '$PRINTER_NAME' -> $PRINTER_URI"
+        return 1
+    fi
+    if ! lpstat -p "$PRINTER_NAME" >/dev/null 2>&1; then
+        if lpadmin -p "$PRINTER_NAME" -E -v "$uri" -m everywhere; then
+            log "Printer queue '$PRINTER_NAME' -> $uri"
         else
-            log "ERROR: could not create printer queue '$PRINTER_NAME' for $PRINTER_URI."
+            log "ERROR: could not create printer queue '$PRINTER_NAME' for $uri."
         fi
     fi
     export EXODUS90_PRINTER="$PRINTER_NAME"
     echo "export EXODUS90_PRINTER='$PRINTER_NAME'" >> /data/exodus90.env
     lpoptions -d "$PRINTER_NAME" >/dev/null 2>&1 || true
+}
+
+if [ -n "$PRINTER_URI" ]; then
+    setup_printer "$PRINTER_URI"
 else
-    if printf '%s' "$FORMATS" | grep -q '"print"'; then
-        log "WARNING: formats include 'print' but printer_uri is empty; printing will fail until configured."
+    log "printer_uri empty; auto-discovering network printers via mDNS/DNS-SD..."
+    DISCOVERED="$(timeout 30 exodus90 discover 2>/dev/null || true)"
+    if [ -n "$DISCOVERED" ]; then
+        log "Auto-discovered printer: $DISCOVERED"
+        setup_printer "$DISCOVERED"
+    else
+        if printf '%s' "$FORMATS" | grep -q '"print"'; then
+            log "WARNING: formats include 'print' but no printer_uri is set and no network printer was discovered; printing will fail until configured."
+        else
+            log "No printer configured (formats do not include 'print'); skipping printer setup."
+        fi
     fi
 fi
 
-# --- login bootstrap (HA-native: email + login_code options) ---
-SESSION_FILE="$XDG_DATA_HOME/exodus90-printer/session/cookies.json"
-if [ -f "$SESSION_FILE" ]; then
-    log "Session present; skipping login."
-elif [ -n "$EMAIL" ]; then
-    if [ -n "$LOGIN_CODE" ]; then
-        if exodus90 login --email "$EMAIL" --code "$LOGIN_CODE"; then
-            log "Authenticated."
-        else
-            log "ERROR: login failed with the provided code; check 'login_code' and restart the add-on."
-        fi
+# --- login bootstrap (interactive, via the Web UI terminal) ---
+NEEDS_LOGIN=false
+if ! exodus90 auth >/dev/null 2>&1; then
+    NEEDS_LOGIN=true
+fi
+
+LOGIN_MODE=shell
+if [ "$NEEDS_LOGIN" = "true" ]; then
+    if [ -n "$EMAIL" ]; then
+        log "No valid session. Open the app's Web UI and enter the code that will be emailed to $EMAIL."
+        LOGIN_MODE=login
     else
-        if "$VENV_PYTHON" /opt/request_otp.py "$EMAIL"; then
-            log "OTP emailed to $EMAIL. Paste the code into the 'login_code' option in the configuration tab and restart the add-on."
-        else
-            log "ERROR: could not request the login code; check the 'email' option and network connectivity."
-        fi
+        log "No valid session and no email configured. Set 'email' in the configuration tab, then restart the app and log in from the Web UI."
     fi
 else
-    log "No session and no email configured. Add your email in the configuration tab to start the login flow."
+    log "Session present and valid; skipping login."
 fi
 
 # --- PDF retention ---
@@ -112,18 +130,26 @@ retention
 
 # --- startup print (catch-up after reboot / missed cron runs) ---
 if [ "$RUN_ON_STARTUP" = "true" ]; then
-    log "Running exodus90 print..."
-    if exodus90 print; then
-        log "Startup print completed."
+    if exodus90 auth >/dev/null 2>&1; then
+        log "Running exodus90 print..."
+        if exodus90 print; then
+            log "Startup print completed."
+        else
+            log "Startup print failed (no reading today or printer issue); see output above."
+        fi
     else
-        log "Startup print failed (session expired, no reading today, or printer issue); see output above."
+        log "Not logged in yet; skipping startup print. Complete login from the Web UI."
     fi
     retention
 fi
 
-# --- ingress web terminal (debugging) ---
+# --- ingress web terminal (debugging + interactive login) ---
 log "Starting web terminal on port 8099..."
-ttyd --writable -p 8099 tmux -u new -A -s exodus90 bash -l &
+if [ "$LOGIN_MODE" = "login" ]; then
+    ttyd --writable -p 8099 tmux -u new -A -s exodus90 "exodus90 login --email \"$EMAIL\"; bash -l" &
+else
+    ttyd --writable -p 8099 tmux -u new -A -s exodus90 bash -l &
+fi
 
 # --- daily schedule via cron ---
 HOUR="${SCHEDULE%%:*}"

@@ -7,6 +7,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         cups \
         cups-client \
+        avahi-daemon \
+        avahi-utils \
+        dbus \
         fonts-liberation \
         jq \
         tmux \
@@ -35,7 +38,6 @@ RUN uv sync --frozen --no-dev --no-editable \
     && rm -rf src pyproject.toml uv.lock README.md
 
 COPY addon/run.sh /run.sh
-COPY addon/request_otp.py /opt/request_otp.py
 RUN chmod a+x /run.sh
 
 CMD ["/run.sh"]

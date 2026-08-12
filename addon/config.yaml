@@ -14,6 +14,7 @@ ingress: true
 ingress_port: 8099
 ingress_entry: "/"
 panel_icon: mdi:printer
+host_network: true
 map:
   - type: share
     read_only: false
@@ -21,7 +22,6 @@ options:
   schedule: "05:30"
   timezone: "UTC"
   email: ""
-  login_code: ""
   program_id: 208
   formats:
     - pdf
@@ -36,7 +36,6 @@ schema:
   schedule: str
   timezone: str
   email: str
-  login_code: str
   program_id: int
   formats:
     - str

@@ -12,6 +12,7 @@ import typer
 from exodus90_printer.auth import request_otp, verify_otp
 from exodus90_printer.client import ExodusClient
 from exodus90_printer.config import OutputFormat, load_settings
+from exodus90_printer.discovery import discover_printer_uri, discover_printers
 from exodus90_printer.exceptions import ExodusError
 from exodus90_printer.render import render
 from exodus90_printer.render.markdown import render_markdown
@@ -81,6 +82,43 @@ def login(
         verify_otp(client, code_form, code)
         client.save_session()
     typer.echo(f"Authenticated. Session saved to {settings.session_path}")
+
+
+@app.command()
+@_handle_errors
+def auth(
+    config: Path | None = typer.Option(None, "--config", help="Path to the config TOML file."),
+) -> None:
+    """Check whether the persisted session is still valid."""
+    settings = load_settings(config)
+    with ExodusClient(settings) as client:
+        if not client.is_authenticated():
+            typer.echo("Not authenticated.", err=True)
+            raise typer.Exit(1)
+    typer.echo("Authenticated.")
+
+
+@app.command()
+@_handle_errors
+def printers() -> None:
+    """List network printers discovered via mDNS/DNS-SD (ippfind)."""
+    found = discover_printers()
+    if not found:
+        typer.echo("No network printers discovered (is avahi-daemon/ippfind running?).")
+        raise typer.Exit(1)
+    for printer in found:
+        typer.echo(f"{printer.host}\t{printer.uri}")
+
+
+@app.command("discover")
+@_handle_errors
+def discover() -> None:
+    """Print one ready-to-use IPP URI for a discovered network printer."""
+    uri = discover_printer_uri()
+    if uri is None:
+        typer.echo("No network printer discovered.", err=True)
+        raise typer.Exit(1)
+    typer.echo(uri)
 
 
 @app.command()
