@@ -17,6 +17,10 @@ uv run ruff format --check . # formatting
 Run `format --check` → `check` → `mypy` → `pytest` before finishing. `uv run
 exodus90 <cmd>` runs the CLI from source.
 
+Note: HA 2026.2 renamed "add-ons" to "apps"; user-facing docs say "app
+(formerly add-on)", technical names (`addon/`, `addon/config.yaml`, the GHCR
+image) stay unchanged.
+
 ## Scraping protocol (easy to get wrong)
 
 The app lazy-loads content via Turbo frames; `ExodusClient` has
@@ -70,10 +74,15 @@ jar) and expire roughly monthly; re-auth is interactive
 
 ## Config & output quirks
 
-- Config is deliberately a **flat** TOML (`~/.config/exodus90-printer/config.toml`,
-  see `config.example.toml`) because pydantic-settings
-  `TomlConfigSettingsSource` doesn't flatten nested tables. Add new settings
-  as top-level fields; `EXODUS90_*` env vars override.
+- Config is deliberately a **flat** TOML because pydantic-settings
+  `TomlConfigSettingsSource` doesn't flatten nested tables. `load_settings`
+  resolves: explicit `--config` → `./config.toml` (CWD/project root) →
+  `~/.config/exodus90-printer/config.toml`; the root `config.toml` is
+  gitignored (see `config.example.toml`). Add new settings as top-level
+  fields; `EXODUS90_*` env vars override.
+- `program_id`, `output_dir`, `formats` are **required** (no defaults in
+  `config.py`); `base_url` and the PDF font settings keep constants. The add-on
+  satisfies the required fields via `EXODUS90_*` env vars in `run.sh`.
 - `program_id` changes when the challenge/program changes — it's configurable,
   not hardcoded to 208.
 - PDF uses **xhtml2pdf** (WeasyPrint was ruled out: no pango on the system);

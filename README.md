@@ -24,17 +24,17 @@ uv run exodus90 status     # sanity check
 
 `uv run exodus90 print` renders today's reading using the configured formats.
 
-## Home Assistant add-on
+## Home Assistant app (formerly add-on)
 
-Run the printer as a Home Assistant add-on (standalone container, no CLI
-needed):
+Run the printer as a Home Assistant app (standalone container, no CLI needed):
 
-1. **Settings → Add-ons → Add-on Store → ⋮ → Repositories →** add
+1. **Settings → Apps → App Store → ⋮ → Repositories →** add
    `https://github.com/oroszgy/exodus90-printer` and reload.
 2. Install **Exodus90 Printer**, configure your Exodus 90 `email`, `timezone`,
    `printer_uri`, etc., and start it.
-3. On first start the add-on emails you an OTP; paste it into the `login_code`
-   option and restart to finish login.
+3. On first start (or after a session expires) open the app's **Web UI**
+   terminal; the login flow starts automatically — enter the OTP emailed to you
+   there to finish login.
 
 See [`addon/DOCS.md`](addon/DOCS.md) for full configuration, printer setup, and
 login details. Multi-arch (amd64/arm64) images are published to
@@ -42,16 +42,20 @@ login details. Multi-arch (amd64/arm64) images are published to
 
 ## Configuration
 
-Configuration lives in `~/.config/exodus90-printer/config.toml` and can be
-overridden with `EXODUS90_*` environment variables. A template is committed as
+Configuration lives in a `config.toml` in the project root (gitignored), or
+`~/.config/exodus90-printer/config.toml`, and can be overridden with
+`EXODUS90_*` environment variables. A template is committed as
 [`config.example.toml`](config.example.toml).
+
+`program_id`, `output_dir` and `formats` are **required** — the tool has no
+built-in assumptions about your challenge, output location, or formats.
 
 | Setting           | Env var                 | Default                                |
 | ----------------- | ----------------------- | -------------------------------------- |
 | `base_url`        | `EXODUS90_BASE_URL`     | `https://app.exodus90.com`             |
-| `program_id`      | `EXODUS90_PROGRAM_ID`   | `208`                                  |
-| `output_dir`      | `EXODUS90_OUTPUT_DIR`   | `~/Desktop/exodus90-readings`          |
-| `formats`         | `EXODUS90_FORMATS`      | `["pdf", "print"]`                     |
+| `program_id`      | `EXODUS90_PROGRAM_ID`   | *(required)*                           |
+| `output_dir`      | `EXODUS90_OUTPUT_DIR`   | *(required)*                           |
+| `formats`         | `EXODUS90_FORMATS`      | *(required)*                           |
 | `printer`         | `EXODUS90_PRINTER`      | system default printer                 |
 | `pdf_font_dir`    | `EXODUS90_PDF_FONT_DIR` | `/usr/share/fonts/liberation-serif-fonts` |
 | `pdf_font_family` | `EXODUS90_PDF_FONT_FAMILY` | `LiberationSerif`                   |
@@ -60,14 +64,20 @@ The program URL changes between challenges, so the **program id is configurable*
 when your challenge changes, update `program_id` (the numeric part of
 `https://app.exodus90.com/programs/<id>`).
 
+`exodus90 printers` lists network printers discovered via mDNS (requires
+avahi/`ippfind` on the host) so you can copy a URI or set `printer` easily.
+
 ## CLI
 
 ```sh
 exodus90 login                      # log in and persist the session
+exodus90 auth                       # is the persisted session still valid?
 exodus90 status                     # is the session valid, is there a reading today?
 exodus90 fetch [--date 2026-08-10]  # print a reading as Markdown to stdout
 exodus90 print [--date ...] [--format markdown] [--format pdf] [--format print]
 exodus90 days                       # list the days of the configured program
+exodus90 printers                   # list network printers discovered via mDNS
+exodus90 discover                   # print one IPP URI for a discovered printer
 ```
 
 `print` defaults to today's date and the formats from the config, and never
@@ -114,7 +124,7 @@ The script verifies you are on a clean, up-to-date `main`, bumps the version in
 `bump-my-version`, then commits, tags `v<version>`, and pushes both.
 
 Pushing a `v*` tag runs the [publish workflow](.github/workflows/publish.yaml),
-which builds and pushes the multi-arch add-on image to
+which builds and pushes the multi-arch app image to
 `ghcr.io/oroszgy/exodus90-printer:<version>` (+ `:latest`) and builds and
 publishes the `exodus90-printer` package to PyPI. `workflow_dispatch` in the
 Actions tab re-publishes the current `main` to PyPI or to a TestPyPI dry-run
