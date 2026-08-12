@@ -72,7 +72,7 @@ def render_days_list(days: list[Day]) -> str:
             "<td class='actions'>"
             f'<button type="button" class="day-print" data-date="{day.date.isoformat()}">'
             "Print</button> "
-            f'<a href="/reading/{day.date.isoformat()}" target="_blank" rel="noopener">View</a>'
+            f'<a href="reading/{day.date.isoformat()}" target="_blank" rel="noopener">View</a>'
             "</td>"
             "</tr>"
         )
@@ -402,7 +402,7 @@ def _error_page(message: str) -> str:
 </head>
 <body>
 <p>{escape(message)}</p>
-<p><a href="/">Back to the main page</a></p>
+<p><a href="../">Back to the main page</a></p>
 </body>
 </html>
 """

@@ -158,7 +158,8 @@ def test_days_html_renders_rows(
     assert "Alpha" in html
     assert "Beta" in html
     assert 'data-date="2026-08-01"' in html
-    assert "/reading/2026-08-01" in html
+    assert "reading/2026-08-01" in html
+    assert 'href="/reading/' not in html
 
 
 def test_days_html_not_authenticated(
@@ -325,6 +326,7 @@ def test_http_flow(monkeypatch: pytest.MonkeyPatch, make_settings: Callable[...,
         body = response.read().decode()
         assert response.status == 404
         assert "Invalid date" in body
+        assert 'href="../"' in body
 
         conn.request("POST", "/login", body="email=me%40example.com")
         response = conn.getresponse()
