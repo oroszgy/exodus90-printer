@@ -4,5 +4,6 @@
 tests/
 out/
 exodus90-readings/
+config.toml
 **/__pycache__/
 *.pyc

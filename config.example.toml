@@ -1,5 +1,7 @@
-# Copy to ~/.config/exodus90-printer/config.toml and adjust.
-# All keys are optional; every value can also be set via EXODUS90_* env vars.
+# Copy to the project root as config.toml (gitignored) or to
+# ~/.config/exodus90-printer/config.toml and adjust.
+# program_id, output_dir and formats are REQUIRED (no built-in default).
+# Every value can also be set via EXODUS90_* env vars.
 
 base_url = "https://app.exodus90.com"
 program_id = 208
@@ -9,6 +11,7 @@ output_dir = "~/Desktop/exodus90-readings"
 formats = ["pdf", "print"]
 
 # CUPS printer name; omit to use the system default printer.
+# `exodus90 printers` lists network printers discovered via mDNS.
 printer = "HL-B2080DW_series"
 
 pdf_font_dir = "/usr/share/fonts/liberation-serif-fonts"

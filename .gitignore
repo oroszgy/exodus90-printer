@@ -16,6 +16,8 @@ htmlcov/
 # Local environment & secrets
 .env
 *.toml.local
+# Local working config (see config.example.toml)
+/config.toml
 
 # Rendered output
 out/

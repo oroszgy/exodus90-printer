@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import date
 from pathlib import Path
 
@@ -39,17 +40,21 @@ def test_render_markdown(reading: Reading) -> None:
     assert "## Alfejezet" in md
 
 
-def test_render_pdf_contains_hungarian_glyphs(reading: Reading) -> None:
-    fonts = Settings().pdf_font_dir
-    if not any(fonts.glob("*-Regular.ttf")):
+def test_render_pdf_contains_hungarian_glyphs(
+    reading: Reading, make_settings: Callable[..., Settings]
+) -> None:
+    settings = make_settings()
+    if not any(settings.pdf_font_dir.glob("*-Regular.ttf")):
         pytest.skip("No serif fonts available for the PDF test.")
-    data = render_pdf(reading, Settings())
+    data = render_pdf(reading, settings)
     assert data.startswith(b"%PDF")
     assert b"Ragaszkodj ahhoz" in data
 
 
-def test_render_pdf_missing_font_raises(tmp_path: Path, reading: Reading) -> None:
-    settings = Settings(
+def test_render_pdf_missing_font_raises(
+    tmp_path: Path, reading: Reading, make_settings: Callable[..., Settings]
+) -> None:
+    settings = make_settings(
         pdf_font_dir=tmp_path,
         pdf_font_family="DoesNotExist",
     )
@@ -57,18 +62,21 @@ def test_render_pdf_missing_font_raises(tmp_path: Path, reading: Reading) -> Non
         render_pdf(reading, settings)
 
 
-def test_render_writes_markdown(tmp_path: Path, reading: Reading) -> None:
-    settings = Settings(output_dir=tmp_path, formats=["markdown"])
+def test_render_writes_markdown(
+    tmp_path: Path, reading: Reading, make_settings: Callable[..., Settings]
+) -> None:
+    settings = make_settings(output_dir=tmp_path, formats=["markdown"])
     outputs = render(reading, settings)
     assert "markdown" in outputs
     assert outputs["markdown"].read_text().startswith("# ")
 
 
-def test_render_writes_pdf(tmp_path: Path, reading: Reading) -> None:
-    fonts = Settings().pdf_font_dir
-    if not any(fonts.glob("*-Regular.ttf")):
+def test_render_writes_pdf(
+    tmp_path: Path, reading: Reading, make_settings: Callable[..., Settings]
+) -> None:
+    settings = make_settings(output_dir=tmp_path, formats=["pdf"])
+    if not any(settings.pdf_font_dir.glob("*-Regular.ttf")):
         pytest.skip("No serif fonts available for the PDF test.")
-    settings = Settings(output_dir=tmp_path, formats=["pdf"])
     outputs = render(reading, settings)
     assert "pdf" in outputs
     assert outputs["pdf"].read_bytes().startswith(b"%PDF")
