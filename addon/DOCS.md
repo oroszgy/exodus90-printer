@@ -33,7 +33,8 @@ published.
 | `output_dir`         | `/share/exodus90-readings`      | Where rendered files are written (visible on the host under `/share`).     |
 | `pdf_font_dir`       | `/usr/share/fonts/truetype/liberation` | Font directory for PDF rendering.                              |
 | `pdf_retention_days` | `30`                            | Delete rendered PDFs older than this many days.                            |
-| `run_on_startup`     | `true`                          | Also fetch/print on container start (catch-up after downtime).             |
+| `double_sided`       | `true`                          | Print on both sides of the paper (duplex); set `false` for one-sided.      |
+| `run_on_startup`     | `false`                         | Also fetch/print on container start (catch-up after downtime).             |
 
 ### Printer setup
 
@@ -81,6 +82,9 @@ shell with `exodus90 login --email <you@x>`.
 The app's **Open Web UI** page has everything you need day to day:
 
 - **Print today's reading** — one click, fetches and prints the current day.
+- **Days** — the full program list; each day has **Print** (send it to the
+  printer) and **View** (open the reading rendered as HTML, with a browser
+  print button).
 - **Status** — whether the session is valid and today's reading title.
 - **Login** — the OTP flow above.
 - **Run a command** — a small shell box for debugging, e.g.

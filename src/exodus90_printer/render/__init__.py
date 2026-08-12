@@ -35,7 +35,7 @@ def render(
     if "print" in formats:
         if pdf_path is None:
             raise ValueError("internal error: print requested without a PDF")
-        printer_renderer.print_pdf(pdf_path, settings.printer)
+        printer_renderer.print_pdf(pdf_path, settings.printer, settings.double_sided)
         outputs["print"] = pdf_path
 
     return outputs

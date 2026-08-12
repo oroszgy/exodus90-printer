@@ -34,7 +34,8 @@ Run the printer as a Home Assistant app (standalone container, no CLI needed):
 2. Install **Exodus90 Printer**, configure your Exodus 90 `email`, `timezone`,
    `printer_uri`, etc., and start it.
 3. On first start (or after a session expires) open the app's **Web UI**; use
-   the **Print today's reading** button and log in via the form there.
+   the **Print today's reading** button, print any day from the **Days** list,
+   or view a reading as HTML — and log in via the form there.
 
 See [`addon/DOCS.md`](addon/DOCS.md) for full configuration, printer setup, and
 login details. Multi-arch (amd64/arm64) images are published to
@@ -59,6 +60,7 @@ follows your current challenge.
 | `output_dir`      | `EXODUS90_OUTPUT_DIR`   | *(required)*                           |
 | `formats`         | `EXODUS90_FORMATS`      | *(required)*                           |
 | `printer`         | `EXODUS90_PRINTER`      | system default printer                 |
+| `double_sided`    | `EXODUS90_DOUBLE_SIDED` | `true` (duplex)                       |
 | `pdf_font_dir`    | `EXODUS90_PDF_FONT_DIR` | `/usr/share/fonts/liberation-serif-fonts` |
 | `pdf_font_family` | `EXODUS90_PDF_FONT_FAMILY` | `LiberationSerif`                   |
 

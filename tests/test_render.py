@@ -101,6 +101,28 @@ def test_print_pdf_with_fake_lp(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
     print_pdf(pdf, "Brother-3000")
     assert "/usr/bin/lp" in sent_to
     assert sent_to[sent_to.index("/usr/bin/lp") + 1] == "-d"
+    assert "sides=two-sided-long-edge" in sent_to
+    assert sent_to[-1] == str(pdf)
+
+
+def test_print_pdf_one_sided(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    sent_to: list[str] = []
+
+    class _Result:
+        returncode = 0
+        stderr = ""
+
+    def fake_run(command: list[str], **_kwargs: object) -> _Result:
+        sent_to.extend(command)
+        return _Result()
+
+    monkeypatch.setattr("shutil.which", lambda name: "/usr/bin/lp" if name == "lp" else None)
+    pdf = tmp_path / "reading.pdf"
+    pdf.write_bytes(b"%PDF-1.4 test")
+
+    monkeypatch.setattr("subprocess.run", fake_run)
+    print_pdf(pdf, None, double_sided=False)
+    assert "sides=one-sided" in sent_to
     assert sent_to[-1] == str(pdf)
 
 

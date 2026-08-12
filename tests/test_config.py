@@ -31,6 +31,15 @@ def test_constant_fields_keep_defaults(make_settings: Callable[..., Settings]) -
     assert settings.base_url == "https://app.exodus90.com"
     assert settings.formats == ["pdf"]
     assert settings.printer is None
+    assert settings.double_sided is True
+
+
+def test_double_sided_env_override(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("EXODUS90_DOUBLE_SIDED", "false")
+    monkeypatch.setenv("EXODUS90_OUTPUT_DIR", "/tmp/out")
+    monkeypatch.setenv("EXODUS90_FORMATS", '["pdf"]')
+    settings = load_settings(tmp_path / "missing.toml")
+    assert settings.double_sided is False
 
 
 def test_load_settings_reads_toml(tmp_path: Path) -> None:

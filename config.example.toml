@@ -18,5 +18,8 @@ formats = ["pdf", "print"]
 # `exodus90 printers` lists network printers discovered via mDNS.
 printer = "HL-B2080DW_series"
 
+# Print on both sides of the paper (duplex); set to false for one-sided.
+double_sided = true
+
 pdf_font_dir = "/usr/share/fonts/liberation-serif-fonts"
 pdf_font_family = "LiberationSerif"

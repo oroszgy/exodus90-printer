@@ -15,19 +15,23 @@ from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs
 
+from markdown import markdown as markdown_to_html  # type: ignore[import-untyped]
+
 from exodus90_printer.auth import CodeForm, request_otp, verify_otp
 from exodus90_printer.client import ExodusClient
 from exodus90_printer.config import Settings
 from exodus90_printer.exceptions import AuthError, ExodusError
-from exodus90_printer.scraper import discover_program_id, fetch_days, find_day
+from exodus90_printer.models import Day, Reading
+from exodus90_printer.scraper import discover_program_id, fetch_days, fetch_reading, find_day
 
 
-def run_print(timeout: int = 180) -> tuple[int, str]:
+def run_print(target_date: str | None = None, timeout: int = 180) -> tuple[int, str]:
     """Run ``exodus90 print`` and return ``(returncode, combined output)``."""
+    command = ["exodus90", "print"]
+    if target_date:
+        command += ["--date", target_date]
     try:
-        result = subprocess.run(
-            ["exodus90", "print"], capture_output=True, text=True, timeout=timeout
-        )
+        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired as exc:
         raise ExodusError("`exodus90 print` timed out.") from exc
     return result.returncode, ((result.stdout or "") + (result.stderr or "")).strip()
@@ -49,15 +53,70 @@ def _session_ok(settings: Settings) -> bool:
         return client.is_authenticated()
 
 
-def _today_status(settings: Settings) -> str:
-    """HTML fragment for today's reading title (assumes a valid session)."""
-    with ExodusClient(settings) as client:
-        program_id = (
-            settings.program_id if settings.program_id is not None else discover_program_id(client)
+def _resolve_program_id(client: ExodusClient, settings: Settings) -> int:
+    return settings.program_id if settings.program_id is not None else discover_program_id(client)
+
+
+def render_days_list(days: list[Day]) -> str:
+    """HTML fragment for the days list card."""
+    today = date.today()
+    rows = []
+    for day in days:
+        row_class = " today" if day.date == today else ""
+        ref = f"<span class='scripture'>{escape(day.scripture)}</span>" if day.scripture else ""
+        rows.append(
+            "<tr" + row_class + ">"
+            f"<td class='date'>{escape(day.date.isoformat())}</td>"
+            f"<td class='title'>{escape(day.title)}</td>"
+            f"<td>{ref}</td>"
+            "<td class='actions'>"
+            f'<button type="button" class="day-print" data-date="{day.date.isoformat()}">'
+            "Print</button> "
+            f'<a href="/reading/{day.date.isoformat()}" target="_blank" rel="noopener">View</a>'
+            "</td>"
+            "</tr>"
         )
-        day = find_day(fetch_days(client, program_id), date.today())
-    ref = f" — {escape(day.scripture)}" if day.scripture else ""
-    return f"<strong>{escape(day.title)}</strong>{ref}"
+    return "<table class='days'><tbody>" + "".join(rows) + "</tbody></table>"
+
+
+def render_reading_page(reading: Reading) -> str:
+    """A standalone, print-ready HTML page for a reading."""
+    header = reading.day.date.isoformat()
+    if reading.day.scripture:
+        header = f"{header} · {reading.day.scripture}"
+    body_html = markdown_to_html(reading.body, extensions=["extra"])
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(reading.day.title)} — Exodus90</title>
+<style>
+  :root {{ --text:#111; --muted:#555; }}
+  * {{ box-sizing: border-box; }}
+  body {{ margin:0; font-family: Georgia, 'Liberation Serif', serif; color:var(--text);
+    background:#fff; line-height:1.6; }}
+  main {{ max-width:720px; margin:0 auto; padding:2rem 1.5rem; }}
+  h1 {{ font-size:1.8rem; margin:0 0 .2rem; }}
+  .meta {{ color:var(--muted); margin:0 0 1.5rem; }}
+  .reader h1, .reader h2, .reader h3 {{ font-family: system-ui, sans-serif; }}
+  .reader blockquote {{ margin-left:1.2em; color:var(--muted); }}
+  .reader img, .reader svg {{ max-width:100%; height:auto; }}
+  button {{ font:inherit; padding:.4rem .8rem; cursor:pointer; }}
+</style>
+</head>
+<body>
+<main>
+  <button type="button" onclick="window.print()">Print this page</button>
+  <h1>{escape(reading.day.title)}</h1>
+  <p class="meta">{escape(header)}</p>
+  <div class="reader">
+  {body_html}
+  </div>
+</main>
+</body>
+</html>
+"""
 
 
 class WebUI:
@@ -69,29 +128,85 @@ class WebUI:
         self._code_form: CodeForm | None = None
         self._lock = threading.Lock()
 
+    def _program_days(self) -> list[Day] | None:
+        """The program's day list, or ``None`` when not authenticated."""
+        if not _session_ok(self.settings):
+            return None
+        with ExodusClient(self.settings) as client:
+            program_id = _resolve_program_id(client, self.settings)
+            return fetch_days(client, program_id)
+
+    def _status_from_days(self, days: list[Day] | None) -> str:
+        if days is None:
+            return "<p class='status warn'>Not logged in. Use the login form below.</p>"
+        try:
+            today = find_day(days, date.today())
+        except ExodusError:
+            return (
+                "<p class='status warn'>Authenticated, but today's reading "
+                "could not be determined.</p>"
+            )
+        ref = f" — {escape(today.scripture)}" if today.scripture else ""
+        return (
+            f"<p class='status ok'>Authenticated. Today's reading: "
+            f"<strong>{escape(today.title)}</strong>{ref}</p>"
+        )
+
     def page_html(self) -> str:
-        authenticated = _session_ok(self.settings)
+        try:
+            days = self._program_days()
+            authenticated = days is not None
+            status_html = self._status_from_days(days)
+        except ExodusError:
+            days = None
+            authenticated = _session_ok(self.settings)
+            status_html = "<p class='status warn'>The reading list could not be fetched.</p>"
+        days_html = render_days_list(days) if days else "<p>Log in to see the day list.</p>"
         return render_page(
-            status_html=self.status(),
+            status_html=status_html,
+            days_html=days_html,
             prefill_email=self.prefill_email,
             authenticated=authenticated,
         )
 
     def status(self) -> str:
         """HTML fragment describing authentication and today's reading."""
-        if not _session_ok(self.settings):
-            return "<p class='status warn'>Not logged in. Use the login form below.</p>"
         try:
-            today = _today_status(self.settings)
+            days = self._program_days()
         except ExodusError:
             return (
                 "<p class='status warn'>Authenticated, but today's reading "
                 "could not be determined.</p>"
             )
-        return f"<p class='status ok'>Authenticated. Today's reading: {today}</p>"
+        return self._status_from_days(days)
 
-    def print_reading(self) -> tuple[int, str]:
-        return run_print()
+    def days_html(self) -> str:
+        """HTML fragment for the days list card."""
+        try:
+            days = self._program_days()
+        except ExodusError:
+            return "<p class='status warn'>The reading list could not be fetched.</p>"
+        if days is None:
+            return "<p>Log in to see the day list.</p>"
+        return render_days_list(days)
+
+    def reading_html(self, target: str) -> str:
+        """A standalone HTML page for the reading of the given date."""
+        try:
+            target_date = date.fromisoformat(target)
+        except ValueError as exc:
+            raise ExodusError(f"Invalid date '{target}'; expected YYYY-MM-DD.") from exc
+        days = self._program_days()
+        if days is None:
+            raise AuthError("Not logged in.")
+        day = find_day(days, target_date)
+        with ExodusClient(self.settings) as client:
+            program_id = _resolve_program_id(client, self.settings)
+            reading = fetch_reading(client, day, program_id)
+        return render_reading_page(reading)
+
+    def print_reading(self, target_date: str | None = None) -> tuple[int, str]:
+        return run_print(target_date)
 
     def command(self, command: str) -> tuple[int, str]:
         return run_command(command)
@@ -115,7 +230,7 @@ class WebUI:
         return "Authenticated. Session saved."
 
 
-def render_page(status_html: str, prefill_email: str, authenticated: bool) -> str:
+def render_page(status_html: str, days_html: str, prefill_email: str, authenticated: bool) -> str:
     """Return the full HTML page, with the login card hidden when logged in."""
     hidden = "hidden" if authenticated else ""
     prefill = escape(prefill_email)
@@ -136,6 +251,14 @@ def render_page(status_html: str, prefill_email: str, authenticated: bool) -> st
   .card {{ background:var(--card); border-radius:.5rem; padding:1rem; margin-bottom:1rem; }}
   .status.ok {{ color:#86efac; }}
   .status.warn {{ color:#fde047; }}
+  table.days {{ width:100%; border-collapse:collapse; }}
+  table.days th, table.days td {{ text-align:left; padding:.4rem .5rem;
+    border-bottom:1px solid #334155; vertical-align:top; }}
+  table.days tr.today td {{ background:#334155; }}
+  table.days .date {{ white-space:nowrap; color:var(--muted); font-size:.85rem; }}
+  table.days .scripture {{ color:var(--muted); font-size:.85rem; }}
+  table.days .actions {{ white-space:nowrap; text-align:right; }}
+  table.days a {{ color:var(--accent); margin-left:.5rem; }}
   .result pre {{ white-space:pre-wrap; background:var(--bg); padding:.75rem; border-radius:.25rem;
     font-size:.8rem; max-height:18rem; overflow:auto; }}
   .result.fail pre {{ color:#fca5a5; }}
@@ -158,6 +281,12 @@ def render_page(status_html: str, prefill_email: str, authenticated: bool) -> st
   <section class="card">
     <button id="print-btn" type="button">Print today's reading</button>
     <div class="result" id="print-result"></div>
+  </section>
+
+  <section class="card" id="days-card">
+    <h2>Days</h2>
+    <div id="days">{days_html}</div>
+    <div class="result" id="day-print-result"></div>
   </section>
 
   <section class="card" id="login-card" {hidden}>
@@ -205,6 +334,20 @@ def render_page(status_html: str, prefill_email: str, authenticated: bool) -> st
     }});
   }});
 
+  var dayPrintResult = document.getElementById("day-print-result");
+  document.querySelectorAll(".day-print").forEach(function (btn) {{
+    btn.addEventListener("click", function () {{
+      btn.disabled = true;
+      post("print", {{ date: btn.dataset.date }}).then(function (html) {{
+        dayPrintResult.innerHTML = html;
+        btn.disabled = false;
+      }}).catch(function () {{
+        dayPrintResult.innerHTML = "<p class='fail'>Request failed.</p>";
+        btn.disabled = false;
+      }});
+    }});
+  }});
+
   var loginForm = document.getElementById("login-form");
   var codeForm = document.getElementById("code-form");
   var loginResult = document.getElementById("login-result");
@@ -249,6 +392,22 @@ def _result_html(action: str, code: int, output: str) -> str:
     return f"<div class='result {css}'><strong>{heading}</strong><pre>{escape(label)}</pre></div>"
 
 
+def _error_page(message: str) -> str:
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found</title>
+</head>
+<body>
+<p>{escape(message)}</p>
+<p><a href="/">Back to the main page</a></p>
+</body>
+</html>
+"""
+
+
 class _Handler(BaseHTTPRequestHandler):
     server: _WebServer
 
@@ -275,6 +434,12 @@ class _Handler(BaseHTTPRequestHandler):
             self._send(self.server.ui.page_html())
         elif self.path == "/status":
             self._send(self.server.ui.status())
+        elif self.path.startswith("/reading/"):
+            ui = self.server.ui
+            try:
+                self._send(ui.reading_html(self.path[len("/reading/") :]))
+            except (ExodusError, AuthError) as exc:
+                self._send(_error_page(str(exc)), status=404)
         else:
             self._send("Not found", status=404)
 
@@ -283,7 +448,7 @@ class _Handler(BaseHTTPRequestHandler):
         ui = self.server.ui
         if self.path == "/print":
             try:
-                code, output = ui.print_reading()
+                code, output = ui.print_reading(form.get("date") or None)
             except ExodusError as exc:
                 self._send(_result_html("print", 1, str(exc)))
             else:

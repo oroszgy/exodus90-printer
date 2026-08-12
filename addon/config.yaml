@@ -30,7 +30,8 @@ options:
   output_dir: "/share/exodus90-readings"
   pdf_font_dir: "/usr/share/fonts/truetype/liberation"
   pdf_retention_days: 30
-  run_on_startup: true
+  double_sided: true
+  run_on_startup: false
 schema:
   schedule: str
   timezone: str
@@ -42,4 +43,5 @@ schema:
   output_dir: str
   pdf_font_dir: str
   pdf_retention_days: int
+  double_sided: bool
   run_on_startup: bool

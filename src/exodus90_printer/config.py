@@ -55,6 +55,9 @@ class Settings(BaseSettings):
     printer: str | None = None
     """CUPS printer name; empty means the system default printer."""
 
+    double_sided: bool = True
+    """Print on both sides of the paper (duplex); ``False`` for one-sided."""
+
     pdf_font_dir: Path = Path("/usr/share/fonts/liberation-serif-fonts")
     """Directory holding the serif font files used for PDF generation."""
 

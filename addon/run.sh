@@ -17,6 +17,7 @@ PRINTER_URI="$(opt '.printer_uri')"
 OUTPUT_DIR="$(opt '.output_dir')"
 PDF_FONT_DIR="$(opt '.pdf_font_dir')"
 PDF_RETENTION_DAYS="$(opt '.pdf_retention_days')"
+DOUBLE_SIDED="$(opt '.double_sided')"
 RUN_ON_STARTUP="$(opt '.run_on_startup')"
 
 # --- environment ---
@@ -28,6 +29,7 @@ export PATH="/app/.venv/bin:/uv/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export EXODUS90_OUTPUT_DIR="$OUTPUT_DIR"
 export EXODUS90_PDF_FONT_DIR="$PDF_FONT_DIR"
 export EXODUS90_FORMATS="$FORMATS"
+export EXODUS90_DOUBLE_SIDED="$DOUBLE_SIDED"
 if [ -n "$PROGRAM_ID" ] && [ "$PROGRAM_ID" != "null" ]; then
     export EXODUS90_PROGRAM_ID="$PROGRAM_ID"
 fi
@@ -43,6 +45,7 @@ export PATH="/app/.venv/bin:/uv/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export EXODUS90_OUTPUT_DIR="$OUTPUT_DIR"
 export EXODUS90_PDF_FONT_DIR="$PDF_FONT_DIR"
 export EXODUS90_FORMATS='$FORMATS'
+export EXODUS90_DOUBLE_SIDED='$DOUBLE_SIDED'
 EOF
 if [ -n "$PROGRAM_ID" ] && [ "$PROGRAM_ID" != "null" ]; then
     echo "export EXODUS90_PROGRAM_ID='$PROGRAM_ID'" >> /data/exodus90.env
