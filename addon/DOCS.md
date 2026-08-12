@@ -29,7 +29,6 @@ published.
 | `timezone`           | `UTC`                           | [IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name. |
 | `program_id`         | *(auto)*                      | Numeric id of your challenge (`https://app.exodus90.com/programs/<id>`). Leave empty to auto-discover the currently running challenge. |
 | `formats`            | `["pdf","print"]`               | Any of `markdown`, `pdf`, `print`.                                         |
-| `printer_name`       | `exodus90`                      | CUPS queue name used for the `print` format.                               |
 | `printer_uri`        | *(empty)*                       | Printer device URI, e.g. `ipp://192.168.1.100/ipp/print`. Empty = auto-discover. |
 | `output_dir`         | `/share/exodus90-readings`      | Where rendered files are written (visible on the host under `/share`).     |
 | `pdf_font_dir`       | `/usr/share/fonts/truetype/liberation` | Font directory for PDF rendering.                              |
@@ -39,7 +38,8 @@ published.
 ### Printer setup
 
 The app bundles a CUPS server (listening on localhost inside the container,
-never exposed on your network).
+never exposed on your network). The printer queue is created with a fixed
+internal name (`exodus90`) — no queue name needs to be configured.
 
 **If you leave `printer_uri` empty**, the app auto-discovers network printers
 advertising IPP via mDNS/DNS-SD (`ippfind`/avahi) on startup and sets up the
@@ -63,44 +63,36 @@ available.
 
 ## Login (OTP)
 
-The Exodus 90 session cookie expires roughly monthly. Login is interactive and
-happens in the app's Web UI terminal — no codes to paste into the config:
+The Exodus 90 session cookie expires roughly monthly. Login happens from the
+app's Web UI — no codes to paste into the config:
 
-1. Set your `email` and start the app.
-2. Open the app's **Web UI** (terminal). When no valid session exists, the
-   login flow starts automatically there, emails you a fresh code, and prompts
-   you to type it in.
-3. Enter the code from the email. The log then shows you're authenticated and
-   the session is stored persistently (survives restarts and updates).
+1. Set your `email` (used to prefill the form) and start the app.
+2. Open the app's **Web UI**. When no valid session exists, the page shows a
+   **Login** card.
+3. Enter your email and click **Send verification code** — a code is emailed to
+   you — then type the code and click **Verify**.
 
-If the session expires later, restart the app and repeat — the same flow runs
-again. You can also log in on demand from the terminal with
-`exodus90 login --email <you@x>`.
+The session is stored persistently and survives restarts and updates. If it
+expires later, reopen the Web UI and log in again. You can also log in from a
+shell with `exodus90 login --email <you@x>`.
 
-## Web UI (terminal)
+## Web UI
 
-The app exposes an in-app terminal (**Open Web UI**) for debugging and login.
-It runs inside the container with the correct environment:
+The app's **Open Web UI** page has everything you need day to day:
 
-```
-exodus90 auth                    # is the session valid?
-exodus90 status                  # session + today's reading
-exodus90 fetch --date 2026-08-10
-exodus90 print --format markdown
-exodus90 printers                # list network printers discovered via mDNS
-exodus90 discover                # print one IPP URI for a discovered printer
-```
-
-You can also log in interactively from the terminal with
-`exodus90 login --email <you@x>`.
+- **Print today's reading** — one click, fetches and prints the current day.
+- **Status** — whether the session is valid and today's reading title.
+- **Login** — the OTP flow above.
+- **Run a command** — a small shell box for debugging, e.g.
+  `exodus90 days`, `exodus90 fetch --date 2026-08-10`, `exodus90 status`.
 
 ## Notes
 
 - The app uses **host networking** (`host_network: true`) so the bundled avahi
   responder can discover printers via mDNS on your LAN. As a side effect the
-  web terminal listens on port 8099 of the HAOS host; keep it behind a
-  firewall if that matters on your network ("Open Web UI" goes through the
-  authenticated Home Assistant ingress).
+  Web UI listens on port 8099 of the HAOS host; keep it behind a firewall if
+  that matters on your network ("Open Web UI" goes through the authenticated
+  Home Assistant ingress).
 - The app never prompts during scheduled runs; all scheduled runs are
   unattended.
 - Session cookies persist in the app's `/data` volume across restarts and

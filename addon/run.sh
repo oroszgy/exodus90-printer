@@ -13,7 +13,6 @@ TIMEZONE="$(opt '.timezone')"
 EMAIL="$(opt '.email')"
 PROGRAM_ID="$(opt '.program_id')"
 FORMATS="$(jq -c '.formats' "$CONFIG_PATH")"
-PRINTER_NAME="$(opt '.printer_name')"
 PRINTER_URI="$(opt '.printer_uri')"
 OUTPUT_DIR="$(opt '.output_dir')"
 PDF_FONT_DIR="$(opt '.pdf_font_dir')"
@@ -70,6 +69,9 @@ avahi-daemon --no-drop-root --no-chroot &
 sleep 2
 
 # --- CUPS printer queue ---
+# The queue name is purely an internal label; no user input needed.
+PRINTER_NAME="exodus90"
+
 setup_printer() {
     local uri="$1"
     log "Starting CUPS..."
@@ -111,20 +113,9 @@ else
     fi
 fi
 
-# --- login bootstrap (interactive, via the Web UI terminal) ---
-NEEDS_LOGIN=false
+# --- session status (login happens from the Web UI form) ---
 if ! exodus90 auth >/dev/null 2>&1; then
-    NEEDS_LOGIN=true
-fi
-
-LOGIN_MODE=shell
-if [ "$NEEDS_LOGIN" = "true" ]; then
-    if [ -n "$EMAIL" ]; then
-        log "No valid session. Open the app's Web UI and enter the code that will be emailed to $EMAIL."
-        LOGIN_MODE=login
-    else
-        log "No valid session and no email configured. Set 'email' in the configuration tab, then restart the app and log in from the Web UI."
-    fi
+    log "No valid session. Open the app's Web UI and log in with the form (a code is emailed to you)."
 else
     log "Session present and valid; skipping login."
 fi
@@ -152,12 +143,12 @@ if [ "$RUN_ON_STARTUP" = "true" ]; then
     retention
 fi
 
-# --- ingress web terminal (debugging + interactive login) ---
-log "Starting web terminal on port 8099..."
-if [ "$LOGIN_MODE" = "login" ]; then
-    ttyd --writable -p 8099 tmux -u new -A -s exodus90 "exodus90 login --email \"$EMAIL\"; bash -l" &
+# --- ingress Web UI (print button + login form + command box) ---
+log "Starting Web UI on port 8099..."
+if [ -n "$EMAIL" ]; then
+    exodus90 web --port 8099 --email "$EMAIL" &
 else
-    ttyd --writable -p 8099 tmux -u new -A -s exodus90 bash -l &
+    exodus90 web --port 8099 &
 fi
 
 # --- daily schedule via cron ---

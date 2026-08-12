@@ -22,6 +22,7 @@ from exodus90_printer.scraper import (
     fetch_reading_for_date,
     find_day,
 )
+from exodus90_printer.web import run_server
 
 app = typer.Typer(
     name="exodus90",
@@ -193,6 +194,19 @@ def print_reading(
     outputs = render(reading, settings, output_formats)
     for output_format, path in outputs.items():
         typer.echo(f"{output_format}: {path}")
+
+
+@app.command()
+@_handle_errors
+def web(
+    host: str = typer.Option("0.0.0.0", help="Address to bind."),
+    port: int = typer.Option(8099, help="Port to serve on."),
+    email: str | None = typer.Option(None, help="Prefill the login form with this email."),
+    config: Path | None = typer.Option(None, "--config", help="Path to the config TOML file."),
+) -> None:
+    """Serve the Web UI (used by the Home Assistant app)."""
+    settings = load_settings(config)
+    run_server(settings, host=host, port=port, prefill_email=email or "")
 
 
 @app.command()

@@ -33,9 +33,8 @@ Run the printer as a Home Assistant app (standalone container, no CLI needed):
    `https://github.com/oroszgy/exodus90-printer` and reload.
 2. Install **Exodus90 Printer**, configure your Exodus 90 `email`, `timezone`,
    `printer_uri`, etc., and start it.
-3. On first start (or after a session expires) open the app's **Web UI**
-   terminal; the login flow starts automatically — enter the OTP emailed to you
-   there to finish login.
+3. On first start (or after a session expires) open the app's **Web UI**; use
+   the **Print today's reading** button and log in via the form there.
 
 See [`addon/DOCS.md`](addon/DOCS.md) for full configuration, printer setup, and
 login details. Multi-arch (amd64/arm64) images are published to
@@ -82,6 +81,7 @@ exodus90 print [--date ...] [--format markdown] [--format pdf] [--format print]
 exodus90 days                       # list the days of the configured program
 exodus90 printers                   # list network printers discovered via mDNS
 exodus90 discover                   # print one IPP URI for a discovered printer
+exodus90 web                        # serve the Web UI (used by the HA app)
 ```
 
 `print` defaults to today's date and the formats from the config, and never

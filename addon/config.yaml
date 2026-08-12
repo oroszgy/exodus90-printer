@@ -26,7 +26,6 @@ options:
   formats:
     - pdf
     - print
-  printer_name: "exodus90"
   printer_uri: ""
   output_dir: "/share/exodus90-readings"
   pdf_font_dir: "/usr/share/fonts/truetype/liberation"
@@ -39,7 +38,6 @@ schema:
   program_id: "int?"
   formats:
     - str
-  printer_name: str
   printer_uri: str
   output_dir: str
   pdf_font_dir: str
