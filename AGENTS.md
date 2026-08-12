@@ -98,11 +98,13 @@ jar) and expire roughly monthly; re-auth is interactive
   Print goes through CUPS `lp` (`render/printer.py`).
 - HA store icons are `addon/icon.png` (128×128) and `addon/logo.png` (250×100),
   read from the repo by convention (never baked into the image). Regenerate
-  with `scripts/generate_icons.sh`; SVG sources live in `addon/assets/` and
-  embed the white exodus90 "90" mark as a base64 data URI. The mark comes from
-  `app.exodus90.com/favicon.png` (`magick -fuzz 12% -transparent '#FD5925'`);
-  render with `magick -background none` (flag must precede the SVG) or the
-  corners come out opaque white.
+  with `scripts/generate_icons.sh`. The icon is the exodus90 favicon itself
+  (source `addon/assets/exodus90-icon.png`, scaled from
+  `app.exodus90.com/favicon.png`); the logo is an SVG (`addon/assets/logo.svg`)
+  with the white "90" mark + "PRINTER" text. The mark is cropped from the
+  favicon at its bounding box (`magick -fuzz 12% -transparent '#FD5925'`) and
+  embedded as a base64 data URI; render the SVG with `magick -background none`
+  (flag must precede the SVG) or the corners come out opaque white.
 
 ## Conventions
 

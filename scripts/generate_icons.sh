@@ -9,7 +9,7 @@ if ! command -v magick >/dev/null 2>&1; then
     exit 1
 fi
 
-magick -background none addon/assets/icon.svg -depth 8 -strip addon/icon.png
+magick addon/assets/exodus90-icon.png -depth 8 -strip addon/icon.png
 magick -background none addon/assets/logo.svg -depth 8 -strip addon/logo.png
 
 echo "Regenerated addon/icon.png and addon/logo.png"
