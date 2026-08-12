@@ -118,6 +118,6 @@ jar) and expire roughly monthly; re-auth is interactive
 
 `scripts/release.sh [--dry-run] (major|minor|patch)` bumps the version via
 `uvx bump-my-version bump` (config in `[tool.bumpversion]`), refreshes
-`uv.lock`, and pushes main + `v<version>`; the `publish.yaml` workflow publishes
-the GHCR add-on image and the PyPI package on `v*` tags /
-`workflow_dispatch`. Never edit `version` / `current_version` by hand.
+`uv.lock`, and pushes main + `v<version>`; the `publish.yaml` workflow
+publishes the GHCR add-on image and attaches the built wheel/sdist to the
+GitHub release on `v*` tags. Never edit `version` / `current_version` by hand.

@@ -131,11 +131,11 @@ The script verifies you are on a clean, up-to-date `main`, bumps the version in
 
 Pushing a `v*` tag runs the [publish workflow](.github/workflows/publish.yaml),
 which builds and pushes the multi-arch app image to
-`ghcr.io/oroszgy/exodus90-printer:<version>` (+ `:latest`) and builds and
-publishes the `exodus90-printer` package to PyPI. `workflow_dispatch` in the
-Actions tab re-publishes the current `main` to PyPI or to a TestPyPI dry-run
-target. Plain `main` pushes and pull requests only build and validate; nothing
-is published.
+`ghcr.io/oroszgy/exodus90-printer:<version>` (+ `:latest`) and builds the
+`sdist` and wheel, attaching them to the GitHub release for that tag.
+`workflow_dispatch` in the Actions tab re-publishes the current `main`
+(add-on image only). Plain `main` pushes and pull requests only build and
+validate; nothing is published.
 
 ## Development
 
