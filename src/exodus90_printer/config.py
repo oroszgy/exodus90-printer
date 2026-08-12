@@ -34,16 +34,17 @@ class Settings(BaseSettings):
     < environment variables (``EXODUS90_*``)
     < keyword arguments passed to the constructor.
 
-    ``program_id``, ``output_dir`` and ``formats`` are required and have no
-    built-in default; they must come from the config file or environment.
+    ``output_dir`` and ``formats`` are required and have no built-in default;
+    they must come from the config file or environment.
     """
 
     base_url: str = "https://app.exodus90.com"
     """Base URL of the Exodus 90 web app."""
 
-    program_id: int
-    """The user's active program/challenge. The program URL may change, so this
-    is configurable: ``EXODUS90_PROGRAM_ID`` or ``program_id`` in the config."""
+    program_id: int | None = None
+    """The user's active program/challenge, or ``None`` to auto-discover it
+    from the app's today page (which reflects the current program). Explicitly
+    set ``EXODUS90_PROGRAM_ID`` or ``program_id`` in the config to pin one."""
 
     output_dir: Path
     """Where rendered files are written."""

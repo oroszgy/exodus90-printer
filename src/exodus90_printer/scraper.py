@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import date
 
 from bs4 import BeautifulSoup, Tag
@@ -9,6 +10,30 @@ from bs4 import BeautifulSoup, Tag
 from exodus90_printer.client import ExodusClient
 from exodus90_printer.exceptions import FetchError, NoReadingForDateError
 from exodus90_printer.models import Day, Reading
+
+_PROGRAM_CARD = re.compile(r"^/programs/(\d+)$")
+
+
+def discover_program_id(client: ExodusClient) -> int:
+    """Return the user's current program id by inspecting the today page.
+
+    The today page shows a card for the active program whose container carries
+    the id in its class (``program_<id>``) and wraps a link to the program:
+    ``div[class*="program_"] > a[href^="/programs/"]``.
+    """
+    response = client.get("/today")
+    soup = BeautifulSoup(response.text, "lxml")
+    anchor = soup.select_one('div[class*="program_"] > a[href^="/programs/"]')
+    if anchor is None or anchor.get("href") is None:
+        raise FetchError(
+            "Could not determine the current program; the app layout may have changed."
+        )
+    match = _PROGRAM_CARD.fullmatch(str(anchor["href"]))
+    if match is None:
+        raise FetchError(
+            "Could not determine the current program; the app layout may have changed."
+        )
+    return int(match.group(1))
 
 
 def fetch_days(client: ExodusClient, program_id: int) -> list[Day]:

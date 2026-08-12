@@ -31,6 +31,11 @@ The app lazy-loads content via Turbo frames; `ExodusClient` has
   `Turbo-Frame: program_days_frame`. `/programs/{program_id}` itself returns no
   day buttons. Parse `button[data-reading-date]`; day id = `data-modal`,
   title = `p.text-left.grow`, scripture ref = `#{day_id} h2`.
+- **Program discovery**: `discover_program_id` GETs `/today` and parses
+  `div[class*="program_"] > a[href^="/programs/"]` — the active program's card
+  (e.g. `div.program_198` wrapping `/programs/198`). Other program links (past
+  challenges) live in a carousel without a `program_N` ancestor, so this
+  matches exactly one element.
 - **Reading body**: GET `/readings/{day_id}` with header
   `Turbo-Frame: {day_id}_frame`; the Markdown lives in the
   `data-content` attribute of `div[data-reader-target=body]`.
@@ -53,7 +58,8 @@ The app lazy-loads content via Turbo frames; `ExodusClient` has
 ## Tests & fixtures
 
 - `tests/fixtures/` are real saved app pages: `days_page.html`,
-  `program_page.html`, `reading_page.html`, `login_page.html`, `code_page.html`.
+  `program_page.html`, `reading_page.html`, `login_page.html`, `code_page.html`,
+  `today_page.html`.
   Parser tests parse these, so fixture updates = intended markup changes.
 - Fake clients in tests must emulate httpx semantics: use `httpx.Headers` for
   response headers (case-insensitive `.get("location")`), and `status_code` +
@@ -80,11 +86,13 @@ jar) and expire roughly monthly; re-auth is interactive
   `~/.config/exodus90-printer/config.toml`; the root `config.toml` is
   gitignored (see `config.example.toml`). Add new settings as top-level
   fields; `EXODUS90_*` env vars override.
-- `program_id`, `output_dir`, `formats` are **required** (no defaults in
-  `config.py`); `base_url` and the PDF font settings keep constants. The add-on
-  satisfies the required fields via `EXODUS90_*` env vars in `run.sh`.
-- `program_id` changes when the challenge/program changes — it's configurable,
-  not hardcoded to 208.
+- `output_dir`, `formats` are **required** (no defaults in `config.py`);
+  `program_id` is optional (`None` = auto-discovered from `/today` via
+  `discover_program_id`), and `base_url` plus the PDF font settings keep
+  constants. The add-on satisfies the required fields via `EXODUS90_*` env vars
+  in `run.sh` and only exports `EXODUS90_PROGRAM_ID` when the option is set.
+- `program_id` changes when the challenge/program changes — it's auto-discovered
+  by default, but can be pinned via config/`EXODUS90_PROGRAM_ID`.
 - PDF uses **xhtml2pdf** (WeasyPrint was ruled out: no pango on the system);
   fonts are Liberation Serif from `/usr/share/fonts/liberation-serif-fonts`.
   Print goes through CUPS `lp` (`render/printer.py`).

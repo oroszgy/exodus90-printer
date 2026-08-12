@@ -21,6 +21,11 @@ def test_required_user_fields_have_no_default() -> None:
         Settings()  # type: ignore[call-arg]
 
 
+def test_program_id_optional_defaults_to_none(make_settings: Callable[..., Settings]) -> None:
+    settings = Settings(output_dir=Path("/tmp/out"), formats=["pdf"])
+    assert settings.program_id is None
+
+
 def test_constant_fields_keep_defaults(make_settings: Callable[..., Settings]) -> None:
     settings = make_settings()
     assert settings.base_url == "https://app.exodus90.com"

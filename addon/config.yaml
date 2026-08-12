@@ -22,7 +22,7 @@ options:
   schedule: "05:30"
   timezone: "UTC"
   email: ""
-  program_id: 208
+  program_id: null
   formats:
     - pdf
     - print
@@ -36,7 +36,7 @@ schema:
   schedule: str
   timezone: str
   email: str
-  program_id: int
+  program_id: "int?"
   formats:
     - str
   printer_name: str

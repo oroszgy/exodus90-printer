@@ -10,6 +10,7 @@ import pytest
 from exodus90_printer.exceptions import FetchError, NoReadingForDateError
 from exodus90_printer.models import Day
 from exodus90_printer.scraper import (
+    discover_program_id,
     fetch_days,
     fetch_reading,
     fetch_reading_for_date,
@@ -42,6 +43,27 @@ def program_client() -> _FakeClient:
             "/readings/program_day_3320": (FIXTURES / "reading_page.html").read_text(),
         }
     )
+
+
+@pytest.fixture()
+def today_client() -> _FakeClient:
+    return _FakeClient({"/today": (FIXTURES / "today_page.html").read_text()})
+
+
+def test_discover_program_id_returns_current_program(today_client: _FakeClient) -> None:
+    assert discover_program_id(today_client) == 198  # type: ignore[arg-type]
+
+
+def test_discover_program_id_requests_today_page(today_client: _FakeClient) -> None:
+    discover_program_id(today_client)  # type: ignore[arg-type]
+    path, headers = today_client.requests[0]
+    assert path == "/today"
+
+
+def test_discover_program_id_missing_card_raises() -> None:
+    client = _FakeClient({"/today": "<html><body>no program card</body></html>"})
+    with pytest.raises(FetchError):
+        discover_program_id(client)  # type: ignore[arg-type]
 
 
 def test_fetch_days_maps_date_to_day(program_client: _FakeClient) -> None:

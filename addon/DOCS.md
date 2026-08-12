@@ -27,7 +27,7 @@ published.
 | `email`              | *(empty)*                       | Your Exodus 90 account email. Empty = login is never attempted.            |
 | `schedule`           | `05:30`                         | Daily print time (`HH:MM`, local time per `timezone`).                      |
 | `timezone`           | `UTC`                           | [IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name. |
-| `program_id`         | `208`                           | Numeric id of your challenge (`https://app.exodus90.com/programs/<id>`).    |
+| `program_id`         | *(auto)*                      | Numeric id of your challenge (`https://app.exodus90.com/programs/<id>`). Leave empty to auto-discover the currently running challenge. |
 | `formats`            | `["pdf","print"]`               | Any of `markdown`, `pdf`, `print`.                                         |
 | `printer_name`       | `exodus90`                      | CUPS queue name used for the `print` format.                               |
 | `printer_uri`        | *(empty)*                       | Printer device URI, e.g. `ipp://192.168.1.100/ipp/print`. Empty = auto-discover. |

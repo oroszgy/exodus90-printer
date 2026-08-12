@@ -26,10 +26,12 @@ export XDG_CONFIG_HOME=/data
 export XDG_DATA_HOME=/data
 export TZ="$TIMEZONE"
 export PATH="/app/.venv/bin:/uv/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export EXODUS90_PROGRAM_ID="$PROGRAM_ID"
 export EXODUS90_OUTPUT_DIR="$OUTPUT_DIR"
 export EXODUS90_PDF_FONT_DIR="$PDF_FONT_DIR"
 export EXODUS90_FORMATS="$FORMATS"
+if [ -n "$PROGRAM_ID" ] && [ "$PROGRAM_ID" != "null" ]; then
+    export EXODUS90_PROGRAM_ID="$PROGRAM_ID"
+fi
 
 mkdir -p "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
 
@@ -39,18 +41,25 @@ export XDG_CONFIG_HOME=/data
 export XDG_DATA_HOME=/data
 export TZ="$TIMEZONE"
 export PATH="/app/.venv/bin:/uv/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export EXODUS90_PROGRAM_ID="$PROGRAM_ID"
 export EXODUS90_OUTPUT_DIR="$OUTPUT_DIR"
 export EXODUS90_PDF_FONT_DIR="$PDF_FONT_DIR"
 export EXODUS90_FORMATS='$FORMATS'
 EOF
+if [ -n "$PROGRAM_ID" ] && [ "$PROGRAM_ID" != "null" ]; then
+    echo "export EXODUS90_PROGRAM_ID='$PROGRAM_ID'" >> /data/exodus90.env
+fi
 chmod 600 /data/exodus90.env
 
 cat > /etc/profile.d/exodus90-env.sh <<EOF
 [ -f /data/exodus90.env ] && . /data/exodus90.env
 EOF
 
-log "Configured: program_id=$PROGRAM_ID output_dir=$OUTPUT_DIR formats=$FORMATS tz=$TIMEZONE"
+if [ -n "$PROGRAM_ID" ] && [ "$PROGRAM_ID" != "null" ]; then
+    log "Configured: program_id=$PROGRAM_ID"
+else
+    log "Configured: program_id=auto (discovered from today page)"
+fi
+log "output_dir=$OUTPUT_DIR formats=$FORMATS tz=$TIMEZONE"
 
 # --- dbus + avahi-daemon (needed for mDNS printer discovery) ---
 log "Starting dbus and avahi-daemon..."

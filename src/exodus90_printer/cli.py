@@ -11,12 +11,17 @@ import typer
 
 from exodus90_printer.auth import request_otp, verify_otp
 from exodus90_printer.client import ExodusClient
-from exodus90_printer.config import OutputFormat, load_settings
+from exodus90_printer.config import OutputFormat, Settings, load_settings
 from exodus90_printer.discovery import discover_printer_uri, discover_printers
 from exodus90_printer.exceptions import ExodusError
 from exodus90_printer.render import render
 from exodus90_printer.render.markdown import render_markdown
-from exodus90_printer.scraper import fetch_days, fetch_reading_for_date, find_day
+from exodus90_printer.scraper import (
+    discover_program_id,
+    fetch_days,
+    fetch_reading_for_date,
+    find_day,
+)
 
 app = typer.Typer(
     name="exodus90",
@@ -37,6 +42,11 @@ def _handle_errors[F: Callable[..., object]](fn: F) -> F:
             raise typer.Exit(1) from exc
 
     return wrapper  # type: ignore[return-value]
+
+
+def _resolve_program_id(client: ExodusClient, settings: Settings) -> int:
+    """Return the configured program id, or discover the current one."""
+    return settings.program_id if settings.program_id is not None else discover_program_id(client)
 
 
 def _parse_date(value: str | None) -> date:
@@ -132,15 +142,12 @@ def status(
         if not client.is_authenticated():
             typer.echo("Not authenticated. Run `exodus90 login`.", err=True)
             raise typer.Exit(1)
-        days = fetch_days(client, settings.program_id)
+        days = fetch_days(client, _resolve_program_id(client, settings))
         today = date.today()
         try:
             day = find_day(days, today)
         except ExodusError:
-            typer.echo(
-                f"Authenticated. Program {settings.program_id} has no reading for "
-                f"today ({today.isoformat()})."
-            )
+            typer.echo(f"Authenticated. No program has a reading for today ({today.isoformat()}).")
             raise typer.Exit(1) from None
         typer.echo(
             f"Authenticated. Today's reading ({today.isoformat()}): {day.title}"
@@ -160,7 +167,7 @@ def fetch(
     settings = load_settings(config)
     requested = _parse_date(target_date)
     with ExodusClient(settings) as client:
-        reading = fetch_reading_for_date(client, settings.program_id, requested)
+        reading = fetch_reading_for_date(client, _resolve_program_id(client, settings), requested)
     typer.echo(render_markdown(reading))
 
 
@@ -182,7 +189,7 @@ def print_reading(
     requested = _parse_date(target_date)
     output_formats = _parse_formats(formats) or settings.formats
     with ExodusClient(settings) as client:
-        reading = fetch_reading_for_date(client, settings.program_id, requested)
+        reading = fetch_reading_for_date(client, _resolve_program_id(client, settings), requested)
     outputs = render(reading, settings, output_formats)
     for output_format, path in outputs.items():
         typer.echo(f"{output_format}: {path}")
@@ -196,7 +203,7 @@ def days(
     """List the days of the configured program."""
     settings = load_settings(config)
     with ExodusClient(settings) as client:
-        for day in fetch_days(client, settings.program_id):
+        for day in fetch_days(client, _resolve_program_id(client, settings)):
             ref = f" ({day.scripture})" if day.scripture else ""
             typer.echo(f"{day.date.isoformat()}  {day.title}{ref}")
 

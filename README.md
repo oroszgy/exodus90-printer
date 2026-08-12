@@ -9,8 +9,9 @@ from a cron job.
 - The app uses passwordless email OTP login. `exodus90 login` completes that flow
   once and persists the session cookie (in
   `~/.local/share/exodus90-printer/session/cookies.json`).
-- Each run fetches the configured program page, finds the reading for the day,
-  downloads its body (served as Markdown), and renders the requested outputs.
+- Each run resolves the current program (auto-discovered from the today page
+  unless `program_id` is pinned), finds the reading for the day, downloads its
+  body (served as Markdown), and renders the requested outputs.
 - When the session expires (typically after a few weeks), commands fail with a
   clear message; re-run `exodus90 login`.
 
@@ -47,22 +48,25 @@ Configuration lives in a `config.toml` in the project root (gitignored), or
 `EXODUS90_*` environment variables. A template is committed as
 [`config.example.toml`](config.example.toml).
 
-`program_id`, `output_dir` and `formats` are **required** — the tool has no
-built-in assumptions about your challenge, output location, or formats.
+`output_dir` and `formats` are **required** — the tool has no built-in
+assumptions about your output location or formats. `program_id` is optional:
+when omitted it is **auto-discovered** from the app's today page, so it always
+follows your current challenge.
 
 | Setting           | Env var                 | Default                                |
 | ----------------- | ----------------------- | -------------------------------------- |
 | `base_url`        | `EXODUS90_BASE_URL`     | `https://app.exodus90.com`             |
-| `program_id`      | `EXODUS90_PROGRAM_ID`   | *(required)*                           |
+| `program_id`      | `EXODUS90_PROGRAM_ID`   | auto-discovered (current program)      |
 | `output_dir`      | `EXODUS90_OUTPUT_DIR`   | *(required)*                           |
 | `formats`         | `EXODUS90_FORMATS`      | *(required)*                           |
 | `printer`         | `EXODUS90_PRINTER`      | system default printer                 |
 | `pdf_font_dir`    | `EXODUS90_PDF_FONT_DIR` | `/usr/share/fonts/liberation-serif-fonts` |
 | `pdf_font_family` | `EXODUS90_PDF_FONT_FAMILY` | `LiberationSerif`                   |
 
-The program URL changes between challenges, so the **program id is configurable**:
-when your challenge changes, update `program_id` (the numeric part of
-`https://app.exodus90.com/programs/<id>`).
+The program URL changes between challenges. By default the tool figures out
+which program is currently running automatically; if you need to pin one (e.g.
+during the gap between challenges), set `program_id` explicitly to the numeric
+part of `https://app.exodus90.com/programs/<id>`.
 
 `exodus90 printers` lists network printers discovered via mDNS (requires
 avahi/`ippfind` on the host) so you can copy a URI or set `printer` easily.
