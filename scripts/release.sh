@@ -40,18 +40,18 @@ if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
     exit 1
 fi
 
-PREV="$(uv run uvx bump-my-version show current_version)"
+PREV="$(uv tool run bump-my-version show current_version)"
 
 if [ "$DRY_RUN" = 1 ]; then
-    uv run uvx bump-my-version bump --dry-run "$PART"
+    uv tool run bump-my-version bump --dry-run "$PART"
     echo "Dry run complete; nothing was changed."
     exit 0
 fi
 
-uv run uvx bump-my-version bump "$PART"
+uv tool run bump-my-version bump "$PART"
 uv lock
 
-NEW="$(uv run uvx bump-my-version show current_version)"
+NEW="$(uv tool run bump-my-version show current_version)"
 echo "Bumped version: $PREV -> $NEW"
 
 git add pyproject.toml addon/config.yaml uv.lock
