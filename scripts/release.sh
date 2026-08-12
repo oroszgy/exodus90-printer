@@ -61,4 +61,4 @@ git tag "v$NEW"
 git push origin main
 git push origin "v$NEW"
 
-echo "Released v$NEW (GHCR + PyPI workflows will publish)."
+echo "Released v$NEW (the GHCR image and GitHub release will be published by CI)."
