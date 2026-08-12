@@ -1,5 +1,5 @@
 name: "Exodus90 Printer"
-version: "0.4.1"
+version: "0.4.2"
 slug: exodus90_printer
 description: "Fetch and print the daily Exodus 90 reading"
 url: "https://github.com/oroszgy/exodus90-printer"
