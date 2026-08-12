@@ -96,6 +96,13 @@ jar) and expire roughly monthly; re-auth is interactive
 - PDF uses **xhtml2pdf** (WeasyPrint was ruled out: no pango on the system);
   fonts are Liberation Serif from `/usr/share/fonts/liberation-serif-fonts`.
   Print goes through CUPS `lp` (`render/printer.py`).
+- HA store icons are `addon/icon.png` (128×128) and `addon/logo.png` (250×100),
+  read from the repo by convention (never baked into the image). Regenerate
+  with `scripts/generate_icons.sh`; SVG sources live in `addon/assets/` and
+  embed the white exodus90 "90" mark as a base64 data URI. The mark comes from
+  `app.exodus90.com/favicon.png` (`magick -fuzz 12% -transparent '#FD5925'`);
+  render with `magick -background none` (flag must precede the SVG) or the
+  corners come out opaque white.
 
 ## Conventions
 
