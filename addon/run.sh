@@ -164,7 +164,7 @@ if ! [[ "$HOUR" =~ ^[0-9]+$ ]] || ! [[ "$MIN" =~ ^[0-9]+$ ]] || [ "$HOUR" -gt 23
 fi
 HOUR=$((10#$HOUR))
 MIN=$((10#$MIN))
-CRON_LINE="$MIN $HOUR * * * find \"$OUTPUT_DIR\" -maxdepth 1 -name '*.pdf' -type f -mtime +$PDF_RETENTION_DAYS -delete; . /data/exodus90.env; exodus90 print >> /proc/1/fd/1 2>&1"
+CRON_LINE="$MIN $HOUR * * * find \"$OUTPUT_DIR\" -maxdepth 1 -name '*.pdf' -type f -mtime +$PDF_RETENTION_DAYS -delete; . /data/exodus90.env; exodus90 print >> /proc/1/fd/1 2>&1; exodus90 print-night-vigil >> /proc/1/fd/1 2>&1"
 printf '%s\n' "$CRON_LINE" | crontab -
 log "Scheduled daily run at $HOUR:$MIN."
 

@@ -39,6 +39,11 @@ The app lazy-loads content via Turbo frames; `ExodusClient` has
 - **Reading body**: GET `/readings/{day_id}` with header
   `Turbo-Frame: {day_id}_frame`; the Markdown lives in the
   `data-content` attribute of `div[data-reader-target=body]`.
+- **Night vigil**: only on `/today`, only on Thursdays, as a
+  `div[id^="daily_gospel_meditation_"]` reader modal. Its `h1` (title) and `h2`
+  (subtitle) need `_element_text`, and the body is the same
+  `div[data-reader-target=body]` `data-content` pattern — no extra request.
+  `fetch_night_vigil` returns `None` off-Thursday or when no such reader exists.
 - **lxml quirk**: on the live `/days` page, `get_text()` returns `""` for the
   modal h1/h2 (button titles are fine). Use `_element_text` (falls back to
   `Tag.string`) in `scraper.py`; don't "fix" it with another parser.

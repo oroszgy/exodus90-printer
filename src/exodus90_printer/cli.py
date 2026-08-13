@@ -19,6 +19,7 @@ from exodus90_printer.render.markdown import render_markdown
 from exodus90_printer.scraper import (
     discover_program_id,
     fetch_days,
+    fetch_night_vigil,
     fetch_reading_for_date,
     find_day,
 )
@@ -192,6 +193,47 @@ def print_reading(
     with ExodusClient(settings) as client:
         reading = fetch_reading_for_date(client, _resolve_program_id(client, settings), requested)
     outputs = render(reading, settings, output_formats)
+    for output_format, path in outputs.items():
+        typer.echo(f"{output_format}: {path}")
+
+
+def _night_vigil_unavailable() -> None:
+    typer.echo("No night vigil available today (it appears on Thursdays).")
+
+
+@app.command("fetch-night-vigil")
+@_handle_errors
+def fetch_night_vigil_cmd(
+    config: Path | None = typer.Option(None, "--config", help="Path to the config TOML file."),
+) -> None:
+    """Fetch the night vigil and print it as markdown to stdout."""
+    settings = load_settings(config)
+    with ExodusClient(settings) as client:
+        reading = fetch_night_vigil(client, date.today())
+    if reading is None:
+        _night_vigil_unavailable()
+        return
+    typer.echo(render_markdown(reading))
+
+
+@app.command()
+@_handle_errors
+def print_night_vigil(
+    formats: list[str] | None = typer.Option(
+        None,
+        "--format",
+        help="Output format; repeatable: markdown, pdf, print. Defaults to config.",
+    ),
+    config: Path | None = typer.Option(None, "--config", help="Path to the config TOML file."),
+) -> None:
+    """Fetch the night vigil and render it (cron-safe, no prompts)."""
+    settings = load_settings(config)
+    with ExodusClient(settings) as client:
+        reading = fetch_night_vigil(client, date.today())
+    if reading is None:
+        _night_vigil_unavailable()
+        return
+    outputs = render(reading, settings, _parse_formats(formats) or settings.formats)
     for output_format, path in outputs.items():
         typer.echo(f"{output_format}: {path}")
 

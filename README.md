@@ -80,6 +80,8 @@ exodus90 auth                       # is the persisted session still valid?
 exodus90 status                     # is the session valid, is there a reading today?
 exodus90 fetch [--date 2026-08-10]  # print a reading as Markdown to stdout
 exodus90 print [--date ...] [--format markdown] [--format pdf] [--format print]
+exodus90 fetch-night-vigil         # print the night vigil (Thursdays) as Markdown to stdout
+exodus90 print-night-vigil         # render the night vigil (Thursdays) using the configured formats
 exodus90 days                       # list the days of the configured program
 exodus90 printers                   # list network printers discovered via mDNS
 exodus90 discover                   # print one IPP URI for a discovered printer
@@ -88,6 +90,12 @@ exodus90 web                        # serve the Web UI (used by the HA app)
 
 `print` defaults to today's date and the formats from the config, and never
 prompts — safe for cron.
+
+On Thursdays the app publishes the **night vigil** announcement (for the Friday
+2 a.m. hour) on its today page. `print-night-vigil` renders it with the
+configured formats; `fetch-night-vigil` prints it as Markdown. Both quietly
+print `No night vigil available today` and exit 0 on any other day, so they are
+safe to run from a daily cron line.
 
 ## Install & Cron
 
@@ -105,13 +113,15 @@ changes to this repo.
 Then add a cron line that prints each day's reading automatically:
 
 ```
-# print today's reading at 05:30
-30 5 * * *  exodus90 print >> ~/.cache/exodus90-printer/cron.log 2>&1
+# print today's reading and the Thursday night vigil at 05:30
+30 5 * * *  exodus90 print >> ~/.cache/exodus90-printer/cron.log 2>&1; exodus90 print-night-vigil >> ~/.cache/exodus90-printer/cron.log 2>&1
 ```
 
 Notes:
 
 - `exodus90 print` never prompts and defaults to today, so it is safe for cron.
+- `exodus90 print-night-vigil` is also safe for cron: it only renders on
+  Thursdays and exits 0 otherwise.
 - The command exits non-zero on session expiry or a missing reading, which cron
   surfaces via its mail/log output.
 - When the session lapses (typically after a few weeks), run `exodus90 login`

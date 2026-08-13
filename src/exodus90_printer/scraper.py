@@ -116,3 +116,40 @@ def fetch_reading_for_date(client: ExodusClient, program_id: int, target_date: d
     days = fetch_days(client, program_id)
     day = find_day(days, target_date)
     return fetch_reading(client, day, program_id)
+
+
+def fetch_night_vigil(client: ExodusClient, target_date: date) -> Reading | None:
+    """Return the night vigil announced on the today page, if any.
+
+    The vigil is shown on the today page on Thursdays (for the Friday 2 a.m.
+    hour) as a ``daily_gospel_meditation_*`` reader modal whose body, like a
+    regular reading, lives in a ``div[data-reader-target=body]``
+    ``data-content`` attribute. Returns ``None`` on other days or when the
+    program has no vigil.
+    """
+    if target_date.weekday() != 3:
+        return None
+    response = client.get("/today")
+    soup = BeautifulSoup(response.text, "lxml")
+    reader = soup.select_one('div[id^="daily_gospel_meditation_"]')
+    if reader is None:
+        return None
+    body_element = reader.select_one("div[data-reader-target=body]")
+    content = None
+    if body_element is not None and "data-content" in body_element.attrs:
+        content = str(body_element["data-content"])
+    if content is None:
+        raise FetchError(
+            "No night vigil body found on the today page; the app layout may have changed."
+        )
+    title_element = reader.select_one("h1")
+    subtitle_element = reader.select_one("h2")
+    title = _element_text(title_element) if title_element is not None else ""
+    subtitle = _element_text(subtitle_element) if subtitle_element is not None else None
+    day = Day(
+        day_id=str(reader.get("id") or ""),
+        date=target_date,
+        title=title,
+        scripture=subtitle or None,
+    )
+    return Reading(day=day, program_id=0, body=content)

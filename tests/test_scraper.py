@@ -12,6 +12,7 @@ from exodus90_printer.models import Day
 from exodus90_printer.scraper import (
     discover_program_id,
     fetch_days,
+    fetch_night_vigil,
     fetch_reading,
     fetch_reading_for_date,
     find_day,
@@ -115,3 +116,42 @@ def test_fetch_reading_for_date(program_client: _FakeClient) -> None:
     reading = fetch_reading_for_date(program_client, 208, date(2026, 8, 1))  # type: ignore[arg-type]
     assert isinstance(reading.day, Day)
     assert reading.body
+
+
+def test_fetch_night_vigil_extracts_body(today_client: _FakeClient) -> None:
+    reading = fetch_night_vigil(today_client, date(2026, 8, 13))  # type: ignore[arg-type]
+    assert reading is not None
+    assert reading.day.day_id == "daily_gospel_meditation_9095"
+    assert reading.day.date == date(2026, 8, 13)
+    assert reading.day.title == "Making a Night Vigil"
+    assert reading.day.scripture == "2 a.m. Friday Morning (That’s Tonight!)"
+    assert reading.body.startswith("# Night Vigil")
+
+
+def test_fetch_night_vigil_requests_today_page(today_client: _FakeClient) -> None:
+    fetch_night_vigil(today_client, date(2026, 8, 13))  # type: ignore[arg-type]
+    path, headers = today_client.requests[0]
+    assert path == "/today"
+    assert headers == {}
+
+
+def test_fetch_night_vigil_returns_none_off_thursday(today_client: _FakeClient) -> None:
+    reading = fetch_night_vigil(today_client, date(2026, 8, 12))  # type: ignore[arg-type]
+    assert reading is None
+    assert today_client.requests == []
+
+
+def test_fetch_night_vigil_returns_none_without_reader(today_client: _FakeClient) -> None:
+    html = today_client.pages["/today"].replace("daily_gospel_meditation_9095", "daily")
+    today_client.pages["/today"] = html
+    reading = fetch_night_vigil(today_client, date(2026, 8, 13))  # type: ignore[arg-type]
+    assert reading is None
+
+
+def test_fetch_night_vigil_missing_body_raises(today_client: _FakeClient) -> None:
+    html = today_client.pages["/today"].replace(
+        'data-reader-target="body"', 'data-reader-target="none"'
+    )
+    today_client.pages["/today"] = html
+    with pytest.raises(FetchError):
+        fetch_night_vigil(today_client, date(2026, 8, 13))  # type: ignore[arg-type]

@@ -99,6 +99,9 @@ The app's **Open Web UI** page has everything you need day to day:
   Home Assistant ingress).
 - The app never prompts during scheduled runs; all scheduled runs are
   unattended.
+- On Thursdays the scheduled run also prints the **night vigil** announcement
+  (for the Friday 2 a.m. hour) with the configured formats; on other days that
+  step quietly does nothing.
 - Session cookies persist in the app's `/data` volume across restarts and
   updates; rendered PDFs go to `/share/exodus90-readings`.
 - The app log shows every scheduled run; a failed run (expired session, no
