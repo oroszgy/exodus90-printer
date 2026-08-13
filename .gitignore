@@ -22,3 +22,8 @@ htmlcov/
 # Rendered output
 out/
 exodus90-readings/
+
+#IDE
+.idea/
+.opencode
+config.toml
