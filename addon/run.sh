@@ -132,19 +132,19 @@ retention() {
 retention
 
 # --- startup print (catch-up after reboot / missed cron runs) ---
-if [ "$RUN_ON_STARTUP" = "true" ]; then
-    if exodus90 auth >/dev/null 2>&1; then
-        log "Running exodus90 print..."
-        if exodus90 print; then
-            log "Startup print completed."
-        else
-            log "Startup print failed (no reading today or printer issue); see output above."
-        fi
-    else
-        log "Not logged in yet; skipping startup print. Complete login from the Web UI."
-    fi
-    retention
-fi
+#if [ "$RUN_ON_STARTUP" = "true" ]; then
+#    if exodus90 auth >/dev/null 2>&1; then
+#        log "Running exodus90 print..."
+#        if exodus90 print; then
+#            log "Startup print completed."
+#        else
+#            log "Startup print failed (no reading today or printer issue); see output above."
+#        fi
+#    else
+#        log "Not logged in yet; skipping startup print. Complete login from the Web UI."
+#    fi
+#    retention
+#fi
 
 # --- ingress Web UI (print button + login form + command box) ---
 log "Starting Web UI on port 8099..."
