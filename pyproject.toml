@@ -1,6 +1,6 @@
 [project]
 name = "exodus90-printer"
-version = "0.5.0"
+version = "0.5.1"
 description = "Fetch and print the daily readings from the Exodus 90 app"
 readme = "README.md"
 license = "MIT"
@@ -63,7 +63,7 @@ addopts = "-ra"
 testpaths = ["tests"]
 
 [tool.bumpversion]
-current_version = "0.5.0"
+current_version = "0.5.1"
 commit = false
 tag = false
 tag_name = "v{new_version}"
