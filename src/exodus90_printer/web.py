@@ -22,6 +22,8 @@ from exodus90_printer.client import ExodusClient
 from exodus90_printer.config import Settings
 from exodus90_printer.exceptions import AuthError, ExodusError
 from exodus90_printer.models import Day, Reading
+from exodus90_printer.render.pdf import render_pdf
+from exodus90_printer.render.util import output_stem
 from exodus90_printer.scraper import discover_program_id, fetch_days, fetch_reading, find_day
 
 
@@ -62,7 +64,12 @@ def render_days_list(days: list[Day]) -> str:
     today = date.today()
     rows = []
     for day in days:
-        row_class = " today" if day.date == today else ""
+        if day.date < today:
+            row_class = ' class="past"'
+        elif day.date == today:
+            row_class = ' class="today"'
+        else:
+            row_class = ""
         ref = f"<span class='scripture'>{escape(day.scripture)}</span>" if day.scripture else ""
         rows.append(
             "<tr" + row_class + ">"
@@ -72,6 +79,7 @@ def render_days_list(days: list[Day]) -> str:
             "<td class='actions'>"
             f'<button type="button" class="day-print" data-date="{day.date.isoformat()}">'
             "Print</button> "
+            f'<a class="day-pdf" href="pdf/{day.date.isoformat()}">Download PDF</a> '
             f'<a href="reading/{day.date.isoformat()}" target="_blank" rel="noopener">View</a>'
             "</td>"
             "</tr>"
@@ -205,6 +213,21 @@ class WebUI:
             reading = fetch_reading(client, day, program_id)
         return render_reading_page(reading)
 
+    def pdf_bytes(self, target_date: str) -> tuple[str, bytes]:
+        """A freshly generated PDF for the reading of the given date."""
+        try:
+            target = date.fromisoformat(target_date)
+        except ValueError as exc:
+            raise ExodusError(f"Invalid date '{target_date}'; expected YYYY-MM-DD.") from exc
+        days = self._program_days()
+        if days is None:
+            raise AuthError("Not logged in.")
+        day = find_day(days, target)
+        with ExodusClient(self.settings) as client:
+            program_id = _resolve_program_id(client, self.settings)
+            reading = fetch_reading(client, day, program_id)
+        return f"{output_stem(reading)}.pdf", render_pdf(reading, self.settings)
+
     def print_reading(self, target_date: str | None = None) -> tuple[int, str]:
         return run_print(target_date)
 
@@ -241,34 +264,58 @@ def render_page(status_html: str, days_html: str, prefill_email: str, authentica
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Exodus90 Printer</title>
 <style>
-  :root {{ --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#fd5925; }}
+  :root {{
+    --app-bg: var(--primary-background-color, #fafafa);
+    --app-card: var(--card-background-color, #ffffff);
+    --app-text: var(--primary-text-color, #212121);
+    --app-muted: var(--secondary-text-color, #727272);
+    --app-disabled: var(--disabled-text-color, #bdbdbd);
+    --app-accent: var(--primary-color, #03a9f4);
+    --app-accent-rgb: var(--rgb-primary-color, 3, 169, 244);
+    --app-divider: var(--divider-color, rgba(0, 0, 0, 0.12));
+    --app-text-on-accent: var(--text-primary-color, #ffffff);
+    --app-success: var(--success-color, #43a047);
+    --app-warning: var(--warning-color, #ffa600);
+    --app-error: var(--error-color, #db4437);
+  }}
   * {{ box-sizing: border-box; }}
   body {{ margin:0; font-family: system-ui, -apple-system, sans-serif;
-    background:var(--bg); color:var(--text); }}
+    background:var(--app-bg); color:var(--app-text); }}
   main {{ max-width:720px; margin:0 auto; padding:1.5rem; }}
   h1 {{ font-size:1.4rem; margin:0 0 1rem; }}
   h2 {{ font-size:1rem; margin:0 0 .5rem; }}
-  .card {{ background:var(--card); border-radius:.5rem; padding:1rem; margin-bottom:1rem; }}
-  .status.ok {{ color:#86efac; }}
-  .status.warn {{ color:#fde047; }}
+  .card {{ background:var(--app-card); border-radius:.5rem; padding:1rem; margin-bottom:1rem; }}
+  .status.ok {{ color:var(--app-success); }}
+  .status.warn {{ color:var(--app-warning); }}
   table.days {{ width:100%; border-collapse:collapse; }}
   table.days th, table.days td {{ text-align:left; padding:.4rem .5rem;
-    border-bottom:1px solid #334155; vertical-align:top; }}
-  table.days tr.today td {{ background:#334155; }}
-  table.days .date {{ white-space:nowrap; color:var(--muted); font-size:.85rem; }}
-  table.days .scripture {{ color:var(--muted); font-size:.85rem; }}
+    border-bottom:1px solid var(--app-divider); vertical-align:top; }}
+  table.days tr.today td {{ background:rgba(var(--app-accent-rgb), 0.12); }}
+  table.days tr.past td {{ color:var(--app-disabled); }}
+  table.days tr.past td.actions {{ color:var(--app-text); }}
+  table.days .date {{ white-space:nowrap; color:var(--app-muted); font-size:.85rem; }}
+  table.days .scripture {{ color:var(--app-muted); font-size:.85rem; }}
   table.days .actions {{ white-space:nowrap; text-align:right; }}
-  table.days a {{ color:var(--accent); margin-left:.5rem; }}
-  .result pre {{ white-space:pre-wrap; background:var(--bg); padding:.75rem; border-radius:.25rem;
-    font-size:.8rem; max-height:18rem; overflow:auto; }}
-  .result.fail pre {{ color:#fca5a5; }}
+  table.days a {{ color:var(--app-accent); margin-left:.5rem; }}
+  table.days .actions a.day-pdf {{
+    display:inline-block; margin-left:.5rem; padding:.3rem .6rem;
+    border:1px solid var(--app-accent); border-radius:.25rem;
+    color:var(--app-accent); text-decoration:none; font-size:.85rem;
+  }}
+  table.days .actions a.day-pdf:hover {{
+    background:var(--app-accent); color:var(--app-text-on-accent);
+  }}
+  .result pre {{ white-space:pre-wrap; background:var(--app-bg); padding:.75rem;
+    border-radius:.25rem; font-size:.8rem; max-height:18rem; overflow:auto; }}
+  .result.fail pre {{ color:var(--app-error); }}
   button, input {{ font:inherit; }}
-  button {{ background:var(--accent); border:0; color:#fff; padding:.5rem 1rem;
-    border-radius:.25rem; cursor:pointer; }}
+  button {{ background:var(--app-accent); border:0; color:var(--app-text-on-accent);
+    padding:.5rem 1rem; border-radius:.25rem; cursor:pointer; }}
   button:disabled {{ opacity:.6; cursor:wait; }}
-  input {{ background:var(--bg); color:var(--text); border:1px solid #334155; padding:.5rem;
-    border-radius:.25rem; width:100%; margin-bottom:.5rem; }}
-  label {{ display:block; color:var(--muted); font-size:.85rem; margin-bottom:1rem; }}
+  input {{ background:var(--app-card); color:var(--app-text);
+    border:1px solid var(--app-divider); padding:.5rem; border-radius:.25rem;
+    width:100%; margin-bottom:.5rem; }}
+  label {{ display:block; color:var(--app-muted); font-size:.85rem; margin-bottom:1rem; }}
   form {{ margin:0; }}
   [hidden] {{ display:none; }}
 </style>
@@ -415,14 +462,29 @@ class _Handler(BaseHTTPRequestHandler):
         if not args or str(args[0]) != "200":
             super().log_message(format, *args)
 
-    def _send(self, body: str, status: int = 200) -> None:
-        data = body.encode("utf-8")
+    def _send(
+        self,
+        body: str | bytes,
+        status: int = 200,
+        content_type: str = "text/html; charset=utf-8",
+        headers: dict[str, str] | None = None,
+    ) -> None:
+        data = body.encode("utf-8") if isinstance(body, str) else body
         self.send_response(status)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
+        for key, value in (headers or {}).items():
+            self.send_header(key, value)
         self.end_headers()
         self.wfile.write(data)
+
+    def _send_pdf(self, filename: str, data: bytes) -> None:
+        self._send(
+            data,
+            content_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
 
     def _form(self) -> dict[str, str]:
         length = int(self.headers.get("Content-Length", 0))
@@ -440,6 +502,14 @@ class _Handler(BaseHTTPRequestHandler):
                 self._send(ui.reading_html(self.path[len("/reading/") :]))
             except (ExodusError, AuthError) as exc:
                 self._send(_error_page(str(exc)), status=404)
+        elif self.path.startswith("/pdf/"):
+            ui = self.server.ui
+            try:
+                filename, data = ui.pdf_bytes(self.path[len("/pdf/") :])
+            except (ExodusError, AuthError) as exc:
+                self._send(_error_page(str(exc)), status=404)
+            else:
+                self._send_pdf(filename, data)
         else:
             self._send("Not found", status=404)
 

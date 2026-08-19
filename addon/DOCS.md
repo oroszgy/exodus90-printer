@@ -90,8 +90,9 @@ The app's **Open Web UI** page has everything you need day to day:
 
 - **Print today's reading** — one click, fetches and prints the current day.
 - **Days** — the full program list; each day has **Print** (send it to the
-  printer) and **View** (open the reading rendered as HTML, with a browser
-  print button).
+  printer), **Download PDF** (save a freshly generated PDF of that reading),
+  and **View** (open the reading rendered as HTML, with a browser print
+  button). Past days are shown dimmed.
 - **Status** — whether the session is valid and today's reading title.
 - **Login** — the OTP flow above.
 - **Run a command** — a small shell box for debugging, e.g.

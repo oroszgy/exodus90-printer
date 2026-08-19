@@ -6,7 +6,7 @@ import http.client
 import subprocess
 import threading
 from collections.abc import Callable
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 
@@ -159,6 +159,8 @@ def test_days_html_renders_rows(
     assert "Beta" in html
     assert 'data-date="2026-08-01"' in html
     assert "reading/2026-08-01" in html
+    assert "pdf/2026-08-01" in html
+    assert "Download PDF" in html
     assert 'href="/reading/' not in html
 
 
@@ -199,6 +201,55 @@ def test_reading_html_requires_login(
     monkeypatch.setattr(ui, "_program_days", lambda: None)
     with pytest.raises(AuthError, match="Not logged in"):
         ui.reading_html(TODAY.isoformat())
+
+
+def test_pdf_bytes_generates_pdf(
+    fake_client: _FakeClient,
+    monkeypatch: pytest.MonkeyPatch,
+    make_settings: Callable[..., Settings],
+) -> None:
+    day = _day()
+    reading = Reading(day=day, program_id=208, body="# Title")
+    ui = WebUI(make_settings())
+    monkeypatch.setattr(ui, "_program_days", lambda: [day])
+    monkeypatch.setattr(web, "fetch_reading", lambda _client, d, pid: reading)
+    monkeypatch.setattr(web, "render_pdf", lambda _reading, _settings: b"%PDF-1.4 fake")
+    filename, data = ui.pdf_bytes(TODAY.isoformat())
+    assert filename == f"{TODAY.isoformat()}-trust-and-obey.pdf"
+    assert data == b"%PDF-1.4 fake"
+
+
+def test_pdf_bytes_invalid_date(
+    monkeypatch: pytest.MonkeyPatch, make_settings: Callable[..., Settings]
+) -> None:
+    with pytest.raises(ExodusError, match="Invalid date"):
+        WebUI(make_settings()).pdf_bytes("not-a-date")
+
+
+def test_pdf_bytes_requires_login(
+    monkeypatch: pytest.MonkeyPatch, make_settings: Callable[..., Settings]
+) -> None:
+    ui = WebUI(make_settings())
+    monkeypatch.setattr(ui, "_program_days", lambda: None)
+    with pytest.raises(AuthError, match="Not logged in"):
+        ui.pdf_bytes(TODAY.isoformat())
+
+
+def test_days_html_marks_past_and_today(
+    monkeypatch: pytest.MonkeyPatch, make_settings: Callable[..., Settings]
+) -> None:
+    today = date.today()
+    days = [
+        Day(day_id="p", date=today - timedelta(days=1), title="Past", scripture=None),
+        Day(day_id="t", date=today, title="Today", scripture=None),
+        Day(day_id="f", date=today + timedelta(days=1), title="Future", scripture=None),
+    ]
+    ui = WebUI(make_settings())
+    monkeypatch.setattr(ui, "_program_days", lambda: days)
+    html = ui.days_html()
+    assert '<tr class="past">' in html
+    assert '<tr class="today">' in html
+    assert "<tr>" in html
 
 
 def test_login_requests_otp_and_keeps_form(
@@ -328,6 +379,18 @@ def test_http_flow(monkeypatch: pytest.MonkeyPatch, make_settings: Callable[...,
         assert "Invalid date" in body
         assert 'href="../"' in body
 
+        conn.request("GET", "/pdf/not-a-date")
+        response = conn.getresponse()
+        body = response.read().decode()
+        assert response.status == 404
+        assert "Invalid date" in body
+
+        conn.request("GET", f"/pdf/{TODAY.isoformat()}")
+        response = conn.getresponse()
+        body = response.read().decode()
+        assert response.status == 404
+        assert "Not logged in" in body
+
         conn.request("POST", "/login", body="email=me%40example.com")
         response = conn.getresponse()
         body = response.read().decode()
@@ -338,6 +401,40 @@ def test_http_flow(monkeypatch: pytest.MonkeyPatch, make_settings: Callable[...,
         response = conn.getresponse()
         body = response.read().decode()
         assert "Authenticated" in body
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_http_pdf_download(
+    monkeypatch: pytest.MonkeyPatch, make_settings: Callable[..., Settings]
+) -> None:
+    fake = _FakeClient()
+    day = _day()
+    reading = Reading(day=day, program_id=208, body="# Title")
+    monkeypatch.setattr(web, "ExodusClient", lambda _settings: fake)
+    monkeypatch.setattr(web, "_session_ok", lambda _settings: True)
+    monkeypatch.setattr(web, "fetch_days", lambda _client, pid: [day])
+    monkeypatch.setattr(web, "fetch_reading", lambda _client, d, pid: reading)
+    monkeypatch.setattr(web, "render_pdf", lambda _reading, _settings: b"%PDF-1.4 fake")
+
+    server = web._WebServer(("127.0.0.1", 0), WebUI(make_settings()))
+    port = server.server_address[1]
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=10)
+        conn.request("GET", f"/pdf/{TODAY.isoformat()}")
+        response = conn.getresponse()
+        data = response.read()
+        assert response.status == 200
+        assert response.getheader("Content-Type") == "application/pdf"
+        assert response.getheader("Cache-Control") == "no-store"
+        expected = f'attachment; filename="{TODAY.isoformat()}-trust-and-obey.pdf"'
+        assert response.getheader("Content-Disposition") == expected
+        assert int(response.getheader("Content-Length") or "0") == len(data)
+        assert data == b"%PDF-1.4 fake"
     finally:
         server.shutdown()
         server.server_close()
