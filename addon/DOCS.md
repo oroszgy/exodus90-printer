@@ -54,6 +54,13 @@ blocked between networks), set `printer_uri` explicitly:
 ipp://<printer-ip>/ipp/print
 ```
 
+**Use an IP-based URI like `ipp://192.168.1.100/ipp/print`, never the mDNS
+service URI** (`ipp://<name>._ipp._tcp.local/`) that some tools print out.
+Service URIs depend on DNS-SD resolution, which can fail transiently at
+startup; a failed queue creation then leaves a broken raw queue that sends the
+PDF as raw data, and printers without a PDF raster path print it as pages of
+garbage. Give the printer a fixed IP (DHCP reservation) so the URI stays valid.
+
 Other supported URI schemes: `socket://<ip>:9100`, `lpd://<ip>/<queue>`,
 `ipp://<cups-server>:631/printers/<queue>` for an existing CUPS server.
 Printing to a USB printer attached to the HAOS host is not supported.
