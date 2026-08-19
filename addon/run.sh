@@ -87,13 +87,35 @@ setup_printer() {
         log "ERROR: cupsd did not start; printing will fail."
         return 1
     fi
-    if ! lpstat -p "$PRINTER_NAME" >/dev/null 2>&1; then
-        if lpadmin -p "$PRINTER_NAME" -E -v "$uri" -m everywhere; then
-            log "Printer queue '$PRINTER_NAME' -> $uri"
-        else
-            log "ERROR: could not create printer queue '$PRINTER_NAME' for $uri."
+    # The queue must have a real driverless PPD. lpadmin -m everywhere can fail
+    # transiently when an mDNS (.local) URI cannot be resolved yet, and a failed
+    # lpadmin leaves a broken raw queue behind that would send PDFs as garbage.
+    local attempt ppd_ok
+    attempt=0
+    ppd_ok=""
+    while [ "$attempt" -lt 5 ]; do
+        attempt=$((attempt + 1))
+        if ! lpstat -p "$PRINTER_NAME" >/dev/null 2>&1; then
+            if ! lpadmin -p "$PRINTER_NAME" -E -v "$uri" -m everywhere; then
+                log "WARNING: lpadmin failed (attempt $attempt/5) for $uri; retrying."
+                sleep 3
+                continue
+            fi
         fi
+        if [ -n "$(lpoptions -p "$PRINTER_NAME" -l 2>/dev/null)" ]; then
+            ppd_ok=1
+            break
+        fi
+        log "WARNING: queue '$PRINTER_NAME' has no PPD (raw/broken); recreating (attempt $attempt/5)."
+        lpadmin -x "$PRINTER_NAME" >/dev/null 2>&1 || true
+        sleep 3
+    done
+    if [ -z "$ppd_ok" ]; then
+        log "ERROR: could not create a working printer queue '$PRINTER_NAME' for $uri; printing will fail until this is fixed."
+        lpadmin -x "$PRINTER_NAME" >/dev/null 2>&1 || true
+        return 1
     fi
+    log "Printer queue '$PRINTER_NAME' -> $uri"
     export EXODUS90_PRINTER="$PRINTER_NAME"
     echo "export EXODUS90_PRINTER='$PRINTER_NAME'" >> /data/exodus90.env
     lpoptions -d "$PRINTER_NAME" >/dev/null 2>&1 || true
