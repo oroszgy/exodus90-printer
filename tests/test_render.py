@@ -132,3 +132,58 @@ def test_print_pdf_no_lp(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
     pdf.write_bytes(b"%PDF")
     with pytest.raises(ExodusError, match="lp"):
         print_pdf(pdf, None)
+
+
+def test_print_pdf_rejects_raw_queue(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    class _Result:
+        returncode = 1
+        stdout = ""
+        stderr = "lpoptions: Unable to get PPD file for raw: The printer or class does not exist."
+
+    def fake_run(command: list[str], **_kwargs: object) -> _Result:
+        assert command[0].endswith("lpoptions"), "lp must not be called for a raw queue"
+        return _Result()
+
+    monkeypatch.setattr(
+        "shutil.which",
+        lambda name: (
+            "/usr/bin/lp" if name == "lp" else "/usr/bin/lpoptions" if name == "lpoptions" else None
+        ),
+    )
+    monkeypatch.setattr("subprocess.run", fake_run)
+    pdf = tmp_path / "reading.pdf"
+    pdf.write_bytes(b"%PDF-1.4 test")
+
+    with pytest.raises(ExodusError, match="no PPD"):
+        print_pdf(pdf, "raw")
+
+
+def test_print_pdf_accepts_ppd_queue(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    sent_to: list[str] = []
+
+    class _Result:
+        returncode = 0
+        stdout = ""
+        stderr = ""
+
+    def fake_run(command: list[str], **_kwargs: object) -> _Result:
+        if command[0].endswith("lpoptions"):
+            result = _Result()
+            result.stdout = "PageSize/Media Size: *A4 A5 A6\n"
+            return result
+        sent_to.extend(command)
+        return _Result()
+
+    monkeypatch.setattr(
+        "shutil.which",
+        lambda name: (
+            "/usr/bin/lp" if name == "lp" else "/usr/bin/lpoptions" if name == "lpoptions" else None
+        ),
+    )
+    monkeypatch.setattr("subprocess.run", fake_run)
+    pdf = tmp_path / "reading.pdf"
+    pdf.write_bytes(b"%PDF-1.4 test")
+
+    print_pdf(pdf, "Brother-3000")
+    assert "/usr/bin/lp" in sent_to
+    assert sent_to[sent_to.index("/usr/bin/lp") + 1] == "-d"
